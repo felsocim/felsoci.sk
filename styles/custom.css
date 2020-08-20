@@ -1,0 +1,44 @@
+% Import global font face (URW++ Nimbus Sans L).
+
+@font-face {
+  font-family: "Nimbus Sans L Regular";
+  src: url("fonts/nimbus-sans-l-regular.eot");
+  src: url("fonts/nimbus-sans-l-regular.eot?#iefix") format("embedded-opentype"),
+       url("fonts/nimbus-sans-l-regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nimbus Sans L Regular Italic";
+  src: url("fonts/nimbus-sans-l-regular-italic.eot");
+  src: url("fonts/nimbus-sans-l-regular-italic.eot?#iefix") format("embedded-opentype"),
+       url("fonts/nimbus-sans-l-regular-italic.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nimbus Sans L Bold";
+  src: url("fonts/nimbus-sans-l-bold.eot");
+  src: url("fonts/nimbus-sans-l-bold.eot?#iefix") format("embedded-opentype"),
+       url("fonts/nimbus-sans-l-bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nimbus Sans L Bold Italic";
+  src: url("fonts/nimbus-sans-l-bold-italic.eot");
+  src: url("fonts/nimbus-sans-l-bold-italic.eot?#iefix") format("embedded-opentype"),
+       url("fonts/nimbus-sans-l-bold-italic.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+% Global rules
+
+body {
+  font-family: "Nimbus Sans L Regular", "Arial", "Helvetica", sans-serif;
+  font-size: 10pt;
+}
