@@ -1,44 +1,54 @@
-% Import global font face (URW++ Nimbus Sans L).
-
-@font-face {
-  font-family: "Nimbus Sans L Regular";
-  src: url("fonts/nimbus-sans-l-regular.eot");
-  src: url("fonts/nimbus-sans-l-regular.eot?#iefix") format("embedded-opentype"),
-       url("fonts/nimbus-sans-l-regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Nimbus Sans L Regular Italic";
-  src: url("fonts/nimbus-sans-l-regular-italic.eot");
-  src: url("fonts/nimbus-sans-l-regular-italic.eot?#iefix") format("embedded-opentype"),
-       url("fonts/nimbus-sans-l-regular-italic.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Nimbus Sans L Bold";
-  src: url("fonts/nimbus-sans-l-bold.eot");
-  src: url("fonts/nimbus-sans-l-bold.eot?#iefix") format("embedded-opentype"),
-       url("fonts/nimbus-sans-l-bold.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Nimbus Sans L Bold Italic";
-  src: url("fonts/nimbus-sans-l-bold-italic.eot");
-  src: url("fonts/nimbus-sans-l-bold-italic.eot?#iefix") format("embedded-opentype"),
-       url("fonts/nimbus-sans-l-bold-italic.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-% Global rules
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Slab:wght@400;700&display=swap');
 
 body {
-  font-family: "Nimbus Sans L Regular", "Arial", "Helvetica", sans-serif;
-  font-size: 10pt;
+  color: #404040;
+  font-family: "Lato", sans-serif;
+  font-size: 100%;
+}
+
+a {
+  color: #115589;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #404040;
+}
+
+a#site-name {
+  color: #404040;
+  font-family: "Roboto Slab", sans-serif;
+  font-size: 240%;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+hr#upper-hline {
+  border: 5px solid #115589;
+  margin-bottom: 0;
+}
+
+hr#lower-hline {
+  border: 3px solid #404040;
+  margin-top: 0;
+}
+
+hr#footer-hline {
+  margin-bottom: 0;
+}
+
+nav#top-navigation p {
+  font-size: 120%;
+  font-weight: bold;
+  margin: 0.7em 0;
+  word-spacing: 1em;
+}
+
+.footer {
+  font-size: 80%;
+  padding: 1em;
+}
+
+nav#bottom-navigation p {
+  margin: 0.7em 0;
 }
