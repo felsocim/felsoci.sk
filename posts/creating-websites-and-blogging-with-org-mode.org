@@ -1,0 +1,11 @@
+#+TITLE: Creating website and blogging with Org mode
+
+* Hello world
+
+#+BEGIN_SYNOPSIS
+A sample post synopsis
+#+END_SYNOPSIS
+
+This is a sample text
+
+** Title 2
