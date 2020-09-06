@@ -15,7 +15,7 @@ a:hover {
   color: #404040;
 }
 
-a#site-name {
+#site-name {
   color: #404040;
   font-family: "Roboto Slab", sans-serif;
   font-size: 240%;
@@ -23,32 +23,52 @@ a#site-name {
   text-decoration: none;
 }
 
-hr#upper-hline {
-  border: 5px solid #115589;
-  margin-bottom: 0;
+#preamble-upper-separator  {
+  border: 3px solid #115589;
+  border-radius: 16px;
+  margin-bottom: 2px;
 }
 
-hr#lower-hline {
-  border: 3px solid #404040;
-  margin-top: 0;
+#preamble-lower-separator {
+  border: 2px solid #404040;
+  border-radius: 16px;
+  margin-top: 0px;
 }
 
-hr#footer-hline {
-  margin-bottom: 0;
+#postamble-separator {
+  margin-bottom: 1.5em;
 }
 
-nav#top-navigation p {
+#preamble-navigation p {
   font-size: 120%;
   font-weight: bold;
   margin: 0.7em 0;
   word-spacing: 1em;
 }
 
-.footer {
-  font-size: 80%;
-  padding: 1em;
+#postamble-navigation p {
+  margin: 0.7em 0;
 }
 
-nav#bottom-navigation p {
-  margin: 0.7em 0;
+#preamble, #content, #postamble {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#postamble {
+  font-size: 80%;
+}
+
+@media (min-width: 768px) {
+  #preamble, #content, #postamble {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  #preamble, #content, #postamble {
+    width: 970px;
+  }
 }

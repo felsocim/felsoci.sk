@@ -1,3 +1,6 @@
+#+TITLE: Home
+#+OPTIONS: title:nil
+
 * Hello world
 
 This is a sample text

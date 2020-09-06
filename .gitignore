@@ -1,4 +1,8 @@
+# Export outputs
 *.html
 !shared/*.html
 *.pdf
 *.tex
+
+# List of blog posts
+blog/posts.org

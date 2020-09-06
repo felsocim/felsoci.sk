@@ -1,9 +1,0 @@
-#+TITLE: Blog
-
-- [[file:creating-websites-and-blogging-with-org-mode.org][Creating website and blogging with Org mode]]
-  
-  Published on 01/09/2020
-  
-  A sample post synopsis
-  
-  [[file:creating-websites-and-blogging-with-org-mode.org][Read more]]

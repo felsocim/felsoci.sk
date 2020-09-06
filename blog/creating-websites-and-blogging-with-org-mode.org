@@ -1,4 +1,5 @@
 #+TITLE: Creating website and blogging with Org mode
+#+AUTHOR: Marek Felsoci
 
 * Hello world
 
