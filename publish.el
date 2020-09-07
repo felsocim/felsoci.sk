@@ -111,6 +111,9 @@ PLIST holds the project's property list."
 ;; Force publishing of unchanged files to make sure all the pages get published.
 (setq org-publish-use-timestamps-flag nil)
 
+;; Override the default LaTeX publishing command.
+(setq org-latex-pdf-process (list "latexmk --shell-escape -f -pdf %f"))
+
 ;; Set static HTML header and footer files globally for the whole project.
 (setq org-html-preamble (org-file-contents "./shared/header.html"))
 (setq org-html-postamble (org-file-contents "./shared/footer.html"))
@@ -134,8 +137,8 @@ PLIST holds the project's property list."
              :section-numbers nil
              :with-toc nil
 
-             :html-head-extra "<link rel=\"stylesheet\"
-href=\"../styles/custom.css\""
+             :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
+href=\"../styles/custom.css\">"
              :html-head nil
              :html-head-include-default-style nil
              :html-head-include-scripts nil
@@ -162,11 +165,16 @@ href=\"../styles/custom.css\""
               :section-numbers nil
               :with-toc nil
 
-              :html-head-extra "<link rel=\"stylesheet\"
-href=\"styles/custom.css\""
+              :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
+href=\"styles/custom.css\">"
               :html-head nil
               :html-head-include-default-style nil
               :html-head-include-scripts nil)
+        (list "cv" ;; LaTeX-typeset curriculum vitae
+              :base-directory "./cv"
+              :base-extension "org"
+              :publishing-directory "/var/www/html/cv"
+              :publishing-function '(org-latex-publish-to-pdf))
         (list "styles" ;; Cascade style sheets (CSS)
               :base-directory "./styles"
               :base-extension "css"

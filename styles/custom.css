@@ -4,6 +4,7 @@ body {
   color: #404040;
   font-family: "Lato", sans-serif;
   font-size: 100%;
+  text-align: justify;
 }
 
 a {
@@ -35,6 +36,10 @@ a:hover {
   margin-top: 0px;
 }
 
+#current-position {
+  font-size: 110%;
+}
+
 #postamble-separator {
   margin-bottom: 1.5em;
 }
@@ -48,6 +53,12 @@ a:hover {
 
 #postamble-navigation p {
   margin: 0.7em 0;
+}
+
+#last-modification-date {
+  color: #909090;
+  font-size: 80%;
+  text-align: center;
 }
 
 #preamble, #content, #postamble {
