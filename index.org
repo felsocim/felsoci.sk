@@ -15,17 +15,15 @@ Ph.D. candidate at
 </span>
 #+END_EXPORT
 
-[[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitae]] @@html:&bull;@@
-file:./images/linkedin.png [[https://linkedin.com/in/felsocim][LinkedIn profile]]
+[[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitae]]
 
-[[./images/gitlab.png]] [[https://gitlab.inria.fr/mfelsoci][GitLab at Inria]]
-@@html:&bull;@@ [[./images/gitlab.png]]
-[[https://git.unistra.fr/felsoci][GitLab at the University of Strasbourg]]
-@@html:&bull;@@ [[./images/github.png]] [[https://github.com/felsocim][GitHub]]
+[[https://linkedin.com/in/felsocim][file:./images/linkedin.png]]
 
-|          | Work                   | University of Bordeaux      | Personal         |
-|----------+------------------------+-----------------------------+------------------|
-| *E-mail* | [[mailto:marek.felsoci@inria.fr][marek.felsoci@inria.fr]] | [[mailto:marek.felsoci@u-bordeaux.fr][marek.felsoci@u-bordeaux.fr]] | [[mailto:marek@felsoci.sk][marek@felsoci.sk]] |
+|            | E-mail                      |
+|------------+-----------------------------|
+| Work       | [[mailto:marek.felsoci@inria.fr][marek.felsoci@inria.fr]]      |
+| University | [[mailto:marek.felsoci@u-bordeaux.fr][marek.felsoci@u-bordeaux.fr]] |
+| Personal   | [[mailto:marek@felsoci.sk][marek@felsoci.sk]]            |
 
 * Biography
 :PROPERTIES:
