@@ -1,4 +1,4 @@
-#+TITLE: Creating website and blogging with Org mode
+#+TITLE: Lorem ipsum dolor
 #+AUTHOR: Marek Felsoci
 
 * Hello world

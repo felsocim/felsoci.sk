@@ -61,6 +61,20 @@ a:hover {
   text-align: center;
 }
 
+.post-title {
+  margin-bottom: 0.2em;
+}
+
+.post-metadata {
+  color: #909090;
+  font-size: 80%;
+}
+
+.post-separator {
+  border-top: 1px dotted #909090;
+  border-bottom: 0;
+}
+
 #preamble, #content, #postamble {
   padding-right: 15px;
   padding-left: 15px;

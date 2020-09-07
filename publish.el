@@ -43,13 +43,19 @@ sitemap style argument STYLE is unused in this implementation."
     ;; Return a formatted string. Each '%s' shall be replaced by the remaining
     ;; function arguments as it is the case for the 'printf' function in C.
     (format "
+@@html:<h2 class=\"post-title\">@@
 [[file:%s][%s]]
-
+@@html:</h2><span class=\"post-metadata\">@@
 Published on %s by %s
+@@html:</span>@@
 
 %s
 
-[[file:%s][Read more]]
+@@html:
+<form action=\"@@%s@@html:.html\" method=\"POST\">
+  <button type=\"submit\">Read more</button>
+</form>
+@@
 "
             entry
             (org-publish-find-title entry project)
@@ -59,7 +65,39 @@ Published on %s by %s
              (format "%s"
                      (org-publish-find-property entry :author project)) 1 -1)
             (get-post-synopsis fixed-entry)
-            entry)))
+            ;; We need to strip the '.org' extension because the link is not
+            ;; converted into a HTML link during the export as we do not use a
+            ;; standard Org-formatted link such as '[[target][text]]'.
+            (file-name-sans-extension entry))))
+
+(defun format-blog-sitemap (title posts)
+  "Generate customized sitemap TITLE of POSTS returned by `format-blog-item'."
+  (concat
+   ;; Print the sitemap document's title.
+   "#+TITLE: " title "\n\n"
+   ;; Concatenate all the posts from POSTS into a single string to be saved to
+   ;; the sitemap document.
+   (mapconcat
+    ;; For each post, print the latter followed by a newline character.
+    (lambda (post)
+      (format "%s\n" (car post)))
+    ;; POSTS is a nested list having the following form:
+    ;;
+    ;; - "unordered"
+    ;; - <list of possibly nested posts>
+    ;; - <list of possibly nested posts>
+    ;; - ...
+    ;;
+    ;; Therefore, we have to transform it into a simple list containing only the
+    ;; leading elements of the nested post lists. To achieve this, we apply a
+    ;; sequence filter on POSTS. We strip the "unordered" string from the
+    ;; beginning using `cdr'. We apply `car' as a filter on the lists of nested
+    ;; posts which shall make `seq-filter' return only the leading elements of
+    ;; the latter.
+    (seq-filter #'car (cdr posts))
+    ;; Each post shall be separated using another newline character in the final
+    ;; string containing all the posts from POSTS.
+    "\n@@html:<hr class=\"post-separator\">@@")))
 
 (defun add-suffix-to-html-title (suffix html-files)
   "A post-processing export function to append a string SUFFIX to the string
@@ -146,6 +184,7 @@ href=\"../styles/custom.css\">"
              :auto-sitemap t
              :sitemap-filename "posts.org"
              :sitemap-title "Posts"
+             :sitemap-function 'format-blog-sitemap
              :sitemap-format-entry 'format-blog-item
              :sitemap-sort-files 'anti-chronologically)
         (list "pages" ;; Static pages

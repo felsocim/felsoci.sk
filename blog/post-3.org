@@ -1,4 +1,4 @@
-#+TITLE: Creating website and blogging with Org mode
+#+TITLE: Sit amet
 #+AUTHOR: Marek Felsoci
 
 * Hello world
