@@ -8,14 +8,14 @@
 <span id="current-position">
 #+END_EXPORT
 
-Ph.D. candidate at
+*Ph.D. candidate* @
 [[https://www.inria.fr/en][French National Institute for Research in Computer science and Automation (Inria)]]
 
 #+BEGIN_EXPORT html
 </span>
 #+END_EXPORT
 
-[[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitae]]
+[[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitæ]]
 
 [[https://linkedin.com/in/felsocim][file:./images/linkedin.png]]
 
@@ -43,6 +43,10 @@ science and Automation in Talence, France while being enrolled at the University
 of Bordeaux, Bordeaux, France. His current research interest is in the domain of
 design of fast solvers for coupled sparse and dense linear systems arising from
 numerical modelizations in high-frequency aeroacoustics.
+
+Marek Felšöci joined the
+[[https://afodib.labri.fr][Association de la formation doctorale d'informatique de Bordeaux (AFoDIB)]]
+in 2019 as secretary.
 
 * Latest news
 :PROPERTIES:
