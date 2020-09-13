@@ -216,7 +216,8 @@ href=\"styles/custom.css\">"
               :publishing-function '(org-latex-publish-to-pdf))
         (list "styles" ;; Cascade style sheets (CSS)
               :base-directory "./styles"
-              :base-extension "css"
+              :base-extension ".*"
+              :recursive t
               :publishing-directory "/var/www/html/styles"
               :publishing-function '(org-publish-attachment))
         (list "images" ;; Images and figures
