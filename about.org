@@ -1,3 +1,84 @@
-* Hello world
+#+TITLE: About
 
-This is a sample text
+I am call_age(birth-date="1996-04-23 00:00:00") years old Ph.D. candidate in
+computer science at
+[[https://www.inria.fr/en][French National Institute for Research in Computer science and Automation (Inria)]]
+and enrolled at [[https://u-bordeaux.com][University of Bordeaux]]. For couple
+of years, I have been passionate about parallel computing, program optimization
+and compilation. Thanks to my previous university studies, internships at ICube
+laboratory and my current Ph.D. topic (see my [[./cv/cv-felsoci.pdf][Résumé]]) I
+can focus on something I like and believe in.
+
+In my free time I like to work on extra projects, learn new foreign languages or
+read history and linguistics-related literature. And when I want to take a real
+break, I prefer spending time with my friends and family, listening to music,
+biking or reading fantasy and mystery novels.
+
+As you may have deduced from my name, I am not a native French. I come from
+Slovakia, but I have been in France since fall 2012.
+
+To be honest, being young teenager, I have never imagined leaving home country
+at the age of 16. I was doing well in school so I could enter the bilingual
+French-Slovak high school
+[[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium M. R. Štefánika]]
+in Košice.
+
+During the first year, I was having 20 hours of French lectures per week. I had
+no idea one can learn to speak a new language fluently after only 10 months. At
+the end of that year, me and some other students from our class were offered an
+occasion to spend the next year in France. I must admit, I was not pretty sure
+about doing it at first.
+
+That being said, I do not regret it, at least for now. Finally, I enjoyed my
+year at the
+[[https://lp2i-poitiers.fr/][Lycée Pilote Innovant International]] high school
+in Poitiers so much, that I requested to extend my stay for an another year.
+This way, I also managed to finish my high school two years in advance. Let me
+explain. The high school in Slovakia was supposed to last 5 years (standard is
+4, but the first year was dedicated essentially to French). Meanwhile, in
+France, high school lasts only 3 years and as I came to France for the second
+year, I was able to graduate in summer of 2014.
+
+Eventually, I continued my studies in Strasbourg where I have got my B.S. and
+M.S. degrees in computer science from the
+[[http://www.en.unistra.fr][University of Strasbourg]].
+
+My current age in the first phrase is dynamically determined during the export
+of this page to HTML. The Emacs Lisp function =get-age= I wrote to determine the
+value is detailed below for those who would be interested.
+
+#+NAME: age
+#+BEGIN_SRC emacs-lisp :var birth-date=""
+(defun get-age (date-of-birth)
+  ;; Compute current age based on DATE-OF-BIRTH.
+  (let*
+      (;; Get the time value corresponding to the date of birth.
+       (time-of-birth (date-to-time date-of-birth))
+       ;; Extract the day, the month and the year of birth as integers from the
+       ;; time value of the date of birth.
+       ;;
+       ;; Note that, `decode-time' returns a list of nine elements such as
+       ;; '(seconds minutes hour day month year dow dst utcoff)'.
+       (day-of-birth (nth 3 (decode-time time-of-birth)))
+       (month-of-birth (nth 4 (decode-time time-of-birth)))
+       (year-of-birth (nth 5 (decode-time time-of-birth)))
+       ;; Get the current time.
+       (now (current-time))
+       ;; Extract the current year as integer.
+       (current-year (nth 5 (decode-time now)))
+       ;; Encode the date of current year's birthday into a time value.
+       (birthday-this-year
+        (encode-time 0 0 0 day-of-birth month-of-birth current-year))
+       ;; Compute the difference between the current year and the year of birth.
+       (year-difference (- current-year year-of-birth)))
+    ;; If the current date is before the current year's birthday date, subtract
+    ;; one from the year difference before returning the age.
+    (if (time-less-p now birthday-this-year)
+        (- year-difference 1)
+      year-difference)))
+
+;; Print out the age.
+(print (get-age birth-date))
+#+END_SRC
+
+#+INCLUDE: ./shared/setup.org
