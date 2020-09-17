@@ -130,6 +130,13 @@ a:hover {
   }
 }
 
+.src {
+  border: 1px dashed #000000;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 10px;
+}
+
 #cc {
   float: right;
 }
