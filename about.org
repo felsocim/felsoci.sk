@@ -3,33 +3,32 @@
 I am call_age(birth-date="1996-04-23 00:00:00") years old Ph.D. candidate in
 computer science at
 [[https://www.inria.fr/en][French National Institute for Research in Computer science and Automation (Inria)]]
-and enrolled at [[https://u-bordeaux.com][University of Bordeaux]]. For couple
-of years, I have been passionate about parallel computing, program optimization
-and compilation. Thanks to my previous university studies, internships at ICube
-laboratory and my current Ph.D. topic (see my [[./cv/cv-felsoci.pdf][Résumé]]) I
-can focus on something I like and believe in.
+while being enrolled at [[https://u-bordeaux.com][University of Bordeaux]]. For
+couple of years, I have been passionate about parallel computing, program
+optimization and compilation. Thanks to my previous university studies at the
+[[http://en.unistra.fr/][University of Strasbourg]], internships at
+[[https://icps.icube.unistra.fr/][ICube laboratory]] and my current Ph.D. topic
+(see [[./research.org][Research]] and [[./cv/cv-felsoci.pdf][Curriculum Vitæ]])
+I can work on something I like and believe in.
 
 In my free time I like to work on extra projects, learn new foreign languages or
 read history and linguistics-related literature. And when I want to take a real
-break, I prefer spending time with my friends and family, listening to music,
-biking or reading fantasy and mystery novels.
+break, I prefer spending time with my friends and family, traveling, listening
+to music, biking or reading fantasy and mystery novels.
 
 As you may have deduced from my name, I am not a native French. I come from
-Slovakia, but I have been in France since fall 2012.
-
-To be honest, being young teenager, I have never imagined leaving home country
-at the age of 16. I was doing well in school so I could enter the bilingual
-French-Slovak high school
+Slovakia, but I have been in France since fall 2012. To be honest, being young
+teenager, I have never imagined leaving home country at the age of 16. I was
+doing well in school so I could enter the bilingual French-Slovak high school
 [[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium M. R. Štefánika]]
-in Košice.
+in Košice. During the first year, I was having 20 hours of French lectures per
+week. I had no idea one can learn to speak a new language fluently after only 10
+months. At the end of that year, the best students of the class were offered an
+occasion to spend the next year in France. I was delighted to have this chance,
+but I must admit that, at first, I was not pretty sure about going abroad so
+early.
 
-During the first year, I was having 20 hours of French lectures per week. I had
-no idea one can learn to speak a new language fluently after only 10 months. At
-the end of that year, me and some other students from our class were offered an
-occasion to spend the next year in France. I must admit, I was not pretty sure
-about doing it at first.
-
-That being said, I do not regret it, at least for now. Finally, I enjoyed my
+That being said, I do not regret it, at least for now. Finally, I enjoyed the
 year at the
 [[https://lp2i-poitiers.fr/][Lycée Pilote Innovant International]] high school
 in Poitiers so much, that I requested to extend my stay for an another year.
@@ -43,9 +42,14 @@ Eventually, I continued my studies in Strasbourg where I have got my B.S. and
 M.S. degrees in computer science from the
 [[http://www.en.unistra.fr][University of Strasbourg]].
 
-My current age in the first phrase is dynamically determined during the export
-of this page to HTML. The Emacs Lisp function =get-age= I wrote to determine the
-value is detailed below for those who would be interested.
+* Addendum
+:PROPERTIES:
+:CUSTOM_ID: about-addendum
+:END:
+
+My current age in the first paragraph is dynamically determined during the
+export of this page to HTML thanks to the Emacs Lisp function =get-age= I wrote.
+See the implementation in the code block below.
 
 #+NAME: age
 #+BEGIN_SRC emacs-lisp :var birth-date=""
