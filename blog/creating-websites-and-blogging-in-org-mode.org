@@ -1,0 +1,67 @@
+#+TITLE: Creating website and blogging in Org mode
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+I discovered the power of Org mode after joining Inria (see
+[[../index.org][Home]]) to work on my Ph.D. thesis which is also entirely
+written in Org mode. Indeed, one can easily export an Org mode document to a
+HTML page or a PDF document typeset in LaTeX. Recently, I committed myself to
+overhaul my personal website and decided to produce it in Org. So, in this post,
+I detail the whole process step by step.
+#+END_SYNOPSIS
+
+* Project's structure
+:PROPERTIES:
+:CUSTOM_ID: projects-structure
+:END:
+
+The idea here is to build a static HTML website generated from a collection of
+Org documents. The site shall have a couple of content pages such as Home, About
+and so on as well as a blog. All of the pages shall share the same header and
+footer dynamically included on export.
+
+When it comes to the style of the site, I am looking for simplicity. Although,
+there are some
+[[https://github.com/fniessen/org-html-themes][great Org HTML templates]], they
+are rather adapted for standalone HTML pages than for creating a complete
+website with navigation. So, I prefer to define a custom CSS style sheet to make
+the assembly of the site easier to maintain.
+
+The file structure of the project is described in Example [[filetree]]. The
+~blog~ folder holds blog post Org documents. In ~cv~ I put the version of my
+Curriculum Vitaæ published only as a PDF document and accessible for download
+from the home page. ~images~ naturally contains all the image files featured on
+the site. The custom CSS sheet is placed in ~styles~ as well as the
+[[https://fonts.google.com/specimen/Roboto][Roboto font]] that comes to replace
+the one choosen by default by the client's browser. ~shared~ holds the common
+static header and footer files as well as an Org setup file that I will explain
+the use of later. Eventually, the Org documents corresponding to the content
+pages are stored in the root of the project's folder.
+
+#+NAME: filetree
+#+BEGIN_EXAMPLE
+.
+├── blog
+│   ├── creating-website-and-blogging-in-org-mode.org
+│   └── ...
+├── cv
+│   └── cv-felsoci.org
+├── images
+│   ├── marek.jpg
+│   └── ...
+├── styles
+│   ├── fonts
+│   │   ├── roboto-bold.eot
+│   │   └── ...
+│   └── custom.css
+├── shared
+│   ├── footer.html
+│   ├── header.html
+│   └── setup.org
+├── about.org
+├── index.org
+├── publish.el
+├── README.md
+├── research.org
+└── teaching.org
+#+END_EXAMPLE
