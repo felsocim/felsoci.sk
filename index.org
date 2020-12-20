@@ -52,8 +52,7 @@ in 2019 as secretary.
 :CUSTOM_ID: latest-news
 :END:
 
-- *December 20, 2020* - Completed the site content and preparing for going
-  online.
+- *December 20, 2020* - My personal website is online!
 - *September 7, 2020* - Starting a new personal website and blog entirely
   powered by [[https://orgmode.org][Org mode for Emacs]].
 
