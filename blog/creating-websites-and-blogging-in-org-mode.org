@@ -628,3 +628,5 @@ Feel free to send me your feedback!
 Many thanks to Dennis Ogbe who published a similar post on
 [[https://ogbe.net/blog/blogging_with_org.html][his website]]. It helped me a
 lot while building my own publishing configuration!
+
+#+INCLUDE: ../shared/setup.org
