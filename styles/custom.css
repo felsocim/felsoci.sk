@@ -37,7 +37,7 @@
 body {
   color: #404040;
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
+  font-size: 12pt;
   text-align: justify;
 }
 
@@ -118,6 +118,31 @@ a:hover {
   font-size: 80%;
 }
 
+.src, .example {
+  border: 1px dashed #000000;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 10px;
+}
+
+code {
+  border: 1px dashed #000000;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px;
+}
+
+.figure {
+  margin: 1.5em auto;
+}
+
+.figure p {
+  font-size: 90%;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   #preamble, #content, #postamble {
     width: 750px;
@@ -128,13 +153,6 @@ a:hover {
   #preamble, #content, #postamble {
     width: 970px;
   }
-}
-
-.src, .example {
-  border: 1px dashed #000000;
-  border-radius: 8px;
-  font-size: 12px;
-  padding: 10px;
 }
 
 #cc {

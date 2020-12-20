@@ -2,12 +2,12 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-I discovered the power of Org mode after joining Inria (see
-[[../index.org][Home]]) to work on my Ph.D. thesis which is also entirely
-written in Org mode. Indeed, one can easily export an Org mode document to a
+I discovered the power of [[https://orgmode.org/][Org mode]] after joining Inria
+(see [[../index.org][Home]]) to work on my Ph.D. thesis which is also entirely
+written in Org mode. Indeed, one can easily export an Org mode document to an
 HTML page or a PDF document typeset in LaTeX. Recently, I committed myself to
-overhaul my personal website and decided to produce it in Org. So, in this post,
-I detail the whole process step by step.
+overhaul my personal website and decided to produce it using Org. So, in this
+post, I detail the whole process step by step.
 #+END_SYNOPSIS
 
 * Project's structure
@@ -16,29 +16,18 @@ I detail the whole process step by step.
 :END:
 
 The idea here is to build a static HTML website generated from a collection of
-Org documents. The site shall have a couple of content pages such as Home, About
-and so on as well as a blog. All of the pages shall share the same header and
-footer dynamically included on export.
+Org documents. On one hand, the site have a couple of content pages such as
+/Home/, /About/ and so on. On the other hand, it features a small blog as well.
 
 When it comes to the style of the site, I am looking for simplicity. Although,
 there are some
 [[https://github.com/fniessen/org-html-themes][great Org HTML templates]], they
 are rather adapted for standalone HTML pages than for creating a complete
-website with navigation. So, I prefer to define a custom CSS style sheet to make
-the assembly of the site easier to maintain.
+website with navigation. So, I prefer to define a tiny custom CSS style sheet to
+make the assembly of the site as easy to maintain as possible.
 
-The file structure of the project is described in Example [[filetree]]. The
-~blog~ folder holds blog post Org documents. In ~cv~ I put the version of my
-Curriculum Vitaæ published only as a PDF document and accessible for download
-from the home page. ~images~ naturally contains all the image files featured on
-the site. The custom CSS sheet is placed in ~styles~ as well as the
-[[https://fonts.google.com/specimen/Roboto][Roboto font]] that comes to replace
-the one choosen by default by the client's browser. ~shared~ holds the common
-static header and footer files as well as an Org setup file that I will explain
-the use of later. Eventually, the Org documents corresponding to the content
-pages are stored in the root of the project's folder.
+The file structure of the project is described below.
 
-#+NAME: filetree
 #+BEGIN_EXAMPLE
 .
 ├── blog
@@ -65,3 +54,577 @@ pages are stored in the root of the project's folder.
 ├── research.org
 └── teaching.org
 #+END_EXAMPLE
+
+The ~blog~ folder holds the Org documents of the blog posts. ~cv~ contains a
+formal version of my CV published as a PDF document and accessible for download
+from the home page. ~images~ naturally contains all the image files featured on
+the site. The custom CSS sheet resides in ~styles~ so as the
+[[https://fonts.google.com/specimen/Roboto][Roboto]] font. ~shared~ holds the
+common static header and footer files and a common Org
+[[#setup-file][setup file]]. The Org documents corresponding to the content
+pages are stored in the root of the project's folder. Finally, the Emacs Lisp
+script ~publish.el~ controls the publishing of the site.
+
+** Header and footer
+:PROPERTIES:
+:CUSTOM_ID: header-and-footer
+:END:
+
+All the pages of the site have the same header and footer. The latter are stored
+directly in HTML format and reside in the ~shared~ folder.
+
+The header contains the site name and the navigation. The footer contains the
+legal information, the bottom navigation menu and a short information section.
+
+** Setup file
+:PROPERTIES:
+:CUSTOM_ID: setup-file
+:END:
+
+In order to include the last modification time as well as the author's name to
+every page, I use a common Org file.
+
+Besides a few lines of HTML, it call the Elisp function =modification-time= to
+determine and include the last modifcation date and time on every page that
+includes the setup file using the =#+INCLUDE= directive.
+
+Finally, it uses the =#+AUTHOR= directive to configure the same author's name
+everywhere.
+
+* Publishing script
+:PROPERTIES:
+:CUSTOM_ID: publishing-script
+:header-args: :tangle ../publish.el :padline no
+:END:
+
+The core of the project is the Elisp publishing script ~publish.el~ responsible
+for generating the final HTML source of the site.
+
+It begins by importing the Emacs packages required for:
+
+- Org mode support,
+  #+BEGIN_SRC elisp
+(require 'org)
+  #+END_SRC
+- HTML export backend,
+  #+BEGIN_SRC elisp
+(require 'ox-html)
+  #+END_SRC
+- publishing functions,
+  #+BEGIN_SRC elisp
+(require 'ox-publish)
+  #+END_SRC
+- source code block export to HTML,
+  #+BEGIN_SRC elisp
+(require 'htmlize)
+  #+END_SRC
+- bibliography support.
+  #+BEGIN_SRC elisp
+(require 'org-ref)
+  #+END_SRC
+
+** Blog post synopsis
+:PROPERTIES:
+:CUSTOM_ID: blog-post-synopsis
+:END:
+
+Each blog post may contain a synopsis used to introduce the content of the post
+in the list of blog posts:
+
+#+CAPTION: Excerpt of the list of blog posts.
+#+ATTR_HTML: :width 50%
+#+NAME: figure:blog-item
+[[../images/post-item.png]]
+
+In the source Org document, the synopsis text must be enclosed between the
+=#+BEGIN_SYNOPSIS= and =#+END_SYNOPSIS= tags.
+
+For extracting the synopsis, I define the function =get-post-synopsis= taking as
+argument a =blog-post=.
+
+#+BEGIN_SRC elisp
+(defun get-post-synopsis (blog-post)
+#+END_SRC
+
+The first thing to do is to load the Org file pointed by =blog-post=
+
+#+BEGIN_SRC elisp
+  (with-temp-buffer
+    (insert-file-contents blog-post)
+#+END_SRC
+
+and move the cursor to the beginning of the document.
+
+#+BEGIN_SRC elisp
+    (goto-char (point-min))
+#+END_SRC
+
+In the core of the function, I use the markers =beg= and =end= to select the
+area in the buffer between the first and the last character of the synopsis. To
+exclude the newlines after the opening and before the closing tag, I move
+forward the starting marker by one and move backwards the ending marker by one
+too.
+
+#+BEGIN_SRC elisp
+    (let
+        ((beg (+ 1 (re-search-forward "^#\\+BEGIN_SYNOPSIS$")))
+         (end (- (progn
+                   (re-search-forward "^#\\+END_SYNOPSIS$")
+                   (match-beginning 0)) 1)))
+#+END_SRC
+
+At the end, the function returns the sub-string of the buffer corresponding to
+the area between the two markers.
+
+#+BEGIN_SRC elisp
+      (buffer-substring beg end))))
+#+END_SRC
+
+** List of blog posts
+:PROPERTIES:
+:CUSTOM_ID: list-of-blog-posts
+:END:
+
+For a handy access to blog posts, the site features a page containing the list
+of all blog posts with a [[#blog-post-synopsis][short synopsis]], the date of
+publishing, the author's name and the link to the post in form of a button (see
+Figure [[figure:blog-item]]).
+
+To create this page, we use the sitemap functionality in Org mode. The default
+appearance of the sitemap is rather basic. To customize it so the list of blog
+posts suits the design of the site, we need to define our own functions for
+formatting the sitemap (list of blog posts) and its items (blog posts).
+
+*** Formatting items
+:PROPERTIES:
+:CUSTOM_ID: formatting-items
+:END:
+
+The function =format-blog-item= changes the formatting of the sitemap item
+=entry= (blog post) belonging to =project= (see
+[[#project-components][Project components]]). Note that, =entry= is the absolute
+path to the Org file of the blog post being processed. Also, I don't use the
+sitemap =style= argument here.
+
+#+BEGIN_SRC elisp
+(defun format-blog-item (entry style project)
+  (let
+#+END_SRC
+
+Unfortunately, when the function is called by the Emacs export machinery, the
+absolute path provided in =entry= is incorrect. It lacks the parent directory
+~blog~ because Emacs thinks it is running in the project's root although the
+current working directory when exporting blog posts is ~blog~ (see
+[[#blog][Blog]]). Therefore, I have to re-include ~blog/~ into the path.
+
+For example, if the initial =entry= holds ~/home/marek/src/felsoci.sk/post.org~,
+I need to transform it to ~/home/marek/src/felsoci.sk/blog/post.org~.
+
+#+BEGIN_SRC elisp
+      ((fixed-entry
+        (concat
+         (file-name-directory entry) "blog/" (file-name-nondirectory entry))))
+#+END_SRC
+
+Finally, return the Org string corresponding to the blog post (sitemap) entry
+formatted using the =format= function similar to =sprintf= in C.
+
+#+BEGIN_SRC elisp
+    (format "
+@@html:<h2 class=\"post-title\">@@
+[[file:%s][%s]]
+@@html:</h2><span class=\"post-metadata\">@@
+Published on %s by %s
+@@html:</span>@@
+
+%s
+
+@@html:
+<form action=\"@@%s@@html:.html\" method=\"POST\">
+  <button type=\"submit\">Read more</button>
+</form>
+@@
+"
+#+END_SRC
+
+All of the =%s= are replaced by the values of the arguments following the string
+to format:
+
+1. the path to the blog post Org document
+   #+BEGIN_SRC elisp
+            entry
+   #+END_SRC
+2. the title of the post found in the Org document under the =#+TITLE= directive
+   #+BEGIN_SRC elisp
+            (org-publish-find-title entry project)
+   #+END_SRC
+3. the formatted date of publishing
+   #+BEGIN_SRC elisp
+            (format-time-string "%d/%m/%Y"
+                                (org-publish-find-date entry project))
+   #+END_SRC
+4. the author's name extracted from the project property list =project=
+   #+BEGIN_SRC elisp
+            (substring
+             (format "%s"
+                     (org-publish-find-property entry :author project)) 1 -1)
+   #+END_SRC
+5. the synopsis of the blog post retrieved using our custom parsing function
+   =get-post-synopsis=
+   #+BEGIN_SRC elisp
+            (get-post-synopsis fixed-entry)
+   #+END_SRC
+6. the path to the blog post file without extension because the link is not
+   converted into a HTML link during the export as we do not use a standard
+   Org-formatted link such as =[[target][text]]= but a button
+   #+BEGIN_SRC elisp
+            (file-name-sans-extension entry))))
+   #+END_SRC
+
+*** Formatting the list
+:PROPERTIES:
+:CUSTOM_ID: formatting-the-list
+:END:
+
+The function =format-blog-sitemap= replaces the default function for generating
+sitemap which represents the list of blog posts in our case. It outputs an Org
+document having the title =title=. The blog posts formatted by the function
+=format-blog-item= are available as a list through the =posts= argument.
+
+Actually, the function represents a concatenation of the =title=
+
+#+BEGIN_SRC elisp
+(defun format-blog-sitemap (title posts)
+  (concat
+   "#+TITLE: " title "\n\n"
+#+END_SRC
+
+and the items of =posts= separated by a newline character and a horizontal line
+in the resulting Org document (see Figure [[figure:blog-item]]).
+
+Note that, =posts= is a nested list having the form:
+
+- ‘unordered’
+- ‘list of possibly nested posts’
+- ‘list of possibly nested posts’
+- ...
+
+Therefore, I have to transform it into a simple list containing only the
+leading elements of the nested post lists. To achieve this, I apply a sequence
+filter on =posts=. Then, I strip the ‘unordered’ string from the beginning using
+=cdr=. Finally, I apply =car= as a filter on the lists of possibly nested posts
+which makes =seq-filter= return only the leading elements of the latter.
+
+#+BEGIN_SRC elisp
+   (mapconcat
+    (lambda (post)
+      (format "%s\n" (car post)))
+    (seq-filter #'car (cdr posts))
+    "\n@@html:<hr class=\"post-separator\">@@")))
+#+END_SRC
+
+** Page titles
+:PROPERTIES:
+:CUSTOM_ID: page-titles
+:END:
+
+By default, the title of a published HTML page corresponds to the title of the
+original Org document. In addition to this title, I want to add a suffix, e. g.
+‘Title - My site’.
+
+To achieve this, I define the function =add-suffix-to-html-title= taking as
+argument the =suffix= to append and the list of =html-files= to process.
+
+#+BEGIN_SRC elisp
+(defun add-suffix-to-html-title (suffix html-files)
+#+END_SRC
+
+For each HTML file in =html-files=, the function reads the content of the file,
+
+#+BEGIN_SRC elisp
+  (while (setq html-file (pop html-files))
+    (with-temp-buffer
+      (insert-file-contents html-file)
+#+END_SRC
+
+navigates the cursor to the end of the buffer and backward searches for the
+closing =</title>= HTML tag.
+
+#+BEGIN_SRC elisp
+      (goto-char (point-max))
+      (re-search-backward "<\\/title>")
+#+END_SRC
+
+The cursor being at the beginning of the match, it inserts the text in =suffix=
+to the buffer immediately after the last character of the original document's
+title and saves the modified buffer.
+
+#+BEGIN_SRC elisp
+      (insert suffix)
+      (write-region 1 (point-max) html-file))))
+#+END_SRC
+
+Then, I define two wrappers for this function because I want to add a different
+suffix depending on whether the page is a content page or a blog post.
+
+The wrapper =add-suffix-to-html-title-for-pages= calls the original function
+=add-suffix-to-html-title= when exporting content pages and adds the suffix
+‘ - Marek Felšöci's personal website’. Note that, the list of corresponding HTML
+files is acquired through the project component property =:publishing-directory=
+read from the =plist= argument (see
+[[#project-components][Project components]]).
+
+#+BEGIN_SRC elisp
+(defun add-suffix-to-html-title-for-pages (plist)
+  (add-suffix-to-html-title
+   " - Marek Felšöci's personal website"
+   (directory-files
+    (plist-get plist :publishing-directory) t "\\.html$")))
+#+END_SRC
+
+The wrapper =add-suffix-to-html-title-for-blog-posts= calls the original
+function =add-suffix-to-html-title= when exporting blog posts and adds the
+suffix ‘ - Marek Felšöci's blog’ to the titles of blog posts.
+
+#+BEGIN_SRC elisp
+(defun add-suffix-to-html-title-for-blog-posts (plist)
+  (add-suffix-to-html-title
+   " - Marek Felšöci's blog"
+   (directory-files
+    (plist-get plist :publishing-directory) t "\\.html$")))
+#+END_SRC
+
+** General configuration
+:PROPERTIES:
+:CUSTOM_ID: general-configuration
+:END:
+
+Before configuring the publishing of the site, I set a couple of general
+preferences.
+
+I deactivate the using of Org timestamp flags to force publishing of all files
+and not only changed files. It makes sure everything gets published.
+
+#+BEGIN_SRC elisp
+(setq org-publish-use-timestamps-flag nil)
+#+END_SRC
+
+Also, I want to preserve the indentation in code blocks on export and tangle.
+
+#+BEGIN_SRC elisp
+(setq org-src-preserve-indentation t)
+#+END_SRC
+
+Next, I override the default LaTeX publishing command to use =latexmk=.
+
+#+BEGIN_SRC elisp
+(setq org-latex-pdf-process (list "latexmk --shell-escape -f -pdf %f"))
+#+END_SRC
+
+Finally, I instrument the publishing function to include the header and the
+footer to every exported page.
+
+#+BEGIN_SRC elisp
+(setq org-html-preamble (org-file-contents "./shared/header.html"))
+(setq org-html-postamble (org-file-contents "./shared/footer.html"))
+#+END_SRC
+
+** Project components
+:PROPERTIES:
+:CUSTOM_ID: project-components
+:END:
+
+The last thing to do is to define the =org-publish-project-alist=. It represents
+the list of project's components and their individual export configuration as a
+list of properties, e. g. =:publishing-directory=.
+
+#+BEGIN_SRC elisp
+(setq org-publish-project-alist
+      (list
+#+END_SRC
+
+I split the site project into 5 components.
+
+*** Blog
+:PROPERTIES:
+:CUSTOM_ID: blog
+:END:
+
+All of the configuration properties are pretty self-explanatory.
+
+#+BEGIN_SRC elisp
+       (list "blog"
+             :base-directory "./blog"
+             :base-extension "org"
+             :publishing-directory "/var/www/html/blog"
+             :htmllized-source t
+             :with-author t
+             :with-creator t
+             :with-date t
+             :headline-level 4
+             :section-numbers nil
+             :with-toc nil
+             :html-head nil
+             :html-head-include-default-style nil
+             :html-head-include-scripts nil
+#+END_SRC
+
+Although, I highlight the publishing function I choose. It tells Emacs to
+publish the Org documents composing this project component in the HTML format.
+
+#+BEGIN_SRC elisp
+             :publishing-function '(org-html-publish-to-html)
+#+END_SRC
+
+The =:completion-function= property allows to define a function to execute once
+the publishing function terminates. Here, I set
+=add-suffix-to-html-title-for-blog-posts= as completion function (see
+[[#page-titles][Page titles]]).
+
+#+BEGIN_SRC elisp
+             :completion-function '(add-suffix-to-html-title-for-blog-posts)
+#+END_SRC
+
+Then, I add the following line to the HTML head of each document in order to
+include my custom CSS style.
+
+#+BEGIN_SRC elisp
+             :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
+href=\"../styles/custom.css\">"
+#+END_SRC
+
+Eventually, I configure the sitemap corresponding to the list of blog posts.
+The title is ‘Posts’ and the posts are sorted from the latest to the oldest
+one.
+
+#+BEGIN_SRC elisp
+             :auto-sitemap t
+             :sitemap-filename "posts.org"
+             :sitemap-title "Posts"
+             :sitemap-sort-files 'anti-chronologically
+#+END_SRC
+
+Moreover, I use the functions =format-blog-sitemap= and =format-blog-item= to
+format the entires of the site map (blog post items) as well as the sitemap
+(list of blog posts) itself (see [[#list-of-blog-posts][List of blog posts]]).
+
+#+BEGIN_SRC elisp
+             :sitemap-function 'format-blog-sitemap
+             :sitemap-format-entry 'format-blog-item)
+#+END_SRC
+
+*** Content pages
+:PROPERTIES:
+:CUSTOM_ID: content-pages
+:END:
+
+The export configuration for the content pages such as /Home/ and /About/ is
+very close to the previous one
+
+#+BEGIN_SRC elisp
+        (list "pages"
+              :base-directory "."
+              :base-extension "org"
+              :publishing-directory "/var/www/html"
+              :publishing-function '(org-html-publish-to-html)
+              :htmllized-source t
+              :with-author t
+              :with-creator t
+              :with-date t
+              :headline-level 4
+              :section-numbers nil
+              :with-toc nil
+              :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
+href=\"styles/custom.css\">"
+              :html-head nil
+              :html-head-include-default-style nil
+              :html-head-include-scripts nil
+#+END_SRC
+
+except for the title suffix function (see [[#page-titles][Page titles]]).
+
+#+BEGIN_SRC elisp
+              :completion-function '(add-suffix-to-html-title-for-pages)
+#+END_SRC
+
+Furthermore, I must exclude the ~blog~ directory from the list of input
+documents to prevent duplicate export.
+
+#+BEGIN_SRC elisp
+              :exclude (regexp-opt '("blog")))
+#+END_SRC
+
+*** CV
+:PROPERTIES:
+:CUSTOM_ID: cv
+:END:
+
+The most important thing in the export configuration for the CV is the
+publishing function. Here, I use the function allowing me to publish PDF
+documents on output.
+
+#+BEGIN_SRC elisp
+        (list "cv"
+              :base-directory "./cv"
+              :base-extension "org"
+              :publishing-directory "/var/www/html/cv"
+              :publishing-function '(org-latex-publish-to-pdf))
+#+END_SRC
+
+*** Styles and images
+:PROPERTIES:
+:CUSTOM_ID: styles-and-images
+:END:
+
+In case of static files such as CSS styles and images which are published as is,
+I use the publishing function for attachments. In case of the =styles=
+directory, I enable recursive lookup in order to include also the =fonts=
+sub-folder (see [[#projects-structure][Project's structure]]).
+
+#+BEGIN_SRC elisp
+        (list "styles"
+              :base-directory "./styles"
+              :base-extension ".*"
+              :recursive t
+              :publishing-directory "/var/www/html/styles"
+              :publishing-function '(org-publish-attachment))
+        (list "images"
+              :base-directory "./images"
+              :base-extension ".*"
+              :publishing-directory "/var/www/html/images"
+              :publishing-function '(org-publish-attachment))
+#+END_SRC
+
+I complete the list by adding the list of all the components of the project as
+well as the name of the latter.
+
+#+BEGIN_SRC elisp
+        (list "felsoci.sk"
+              :components '("blog" "pages" "styles" "images"))))
+#+END_SRC
+
+* Ready, steady, go!
+:PROPERTIES:
+:CUSTOM_ID: ready-steady-go
+:END:
+
+At this point, I am ready to go. To launch the publishing, I use the following
+shell command.
+
+Notice that, in this command line, I disable the confirmation before evaluating
+each code block for the sake of simplicity.
+
+#+BEGIN_SRC shell
+emacs --batch --no-init-file --eval '(setq org-confirm-babel-evaluate nil)' --load publish.el --funcall org-publish-all
+#+END_SRC
+
+Feel free to send me your feedback!
+
+* Acknowledgement
+:PROPERTIES:
+:CUSTOM_ID: acknowledgement
+:END:
+
+Many thanks to Dennis Ogbe who published a similar post on
+[[https://ogbe.net/blog/blogging_with_org.html][his website]]. It helped me a
+lot while building my own publishing configuration!
