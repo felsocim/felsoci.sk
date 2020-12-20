@@ -3,11 +3,10 @@
 #+EMAIL: marek.felsoci@inria.fr
 #+OPTIONS: toc:nil title:nil author:nil date:nil num:nil
 #+LaTeX_CLASS: article
-#+LaTeX_CLASS_OPTIONS: [a4paper, 10pt]
+#+LaTeX_CLASS_OPTIONS: [a4paper, 12pt]
 #+LaTeX_HEADER: \usepackage[margin = 25mm, head = 10mm, foot = 0mm]{geometry}
 #+LaTeX_HEADER: \usepackage{
-#+LaTeX_HEADER:   fourier, fancyhdr, textcomp, graphicx, lastpage, marvosym,
-#+LaTeX_HEADER:   titlesec
+#+LaTeX_HEADER:   fancyhdr, textcomp, graphicx, lastpage, marvosym, titlesec
 #+LaTeX_HEADER: }
 #+LaTeX_HEADER: \hypersetup{colorlinks = true, urlcolor = blue}
 #+LaTeX_HEADER: \setlength{\parskip}{2mm}
@@ -33,7 +32,7 @@
 
 *University of Strasbourg*
 
-Expected 09/2019
+2017 - 2019
 
 \textsc{Master's degree in Computer Science and Engineering}
 
@@ -42,7 +41,7 @@ Expected 09/2019
 - *Fields:* Compilation and optimization, Parallel computing, Distributed
   systems and grids, Embedded and real-time systems, Electronics, Performance
   evaluation, Networking protocols, Routing, Security, Internet of Things
-- *Latest rank:* 5/29
+- *With honors* (mention Bien)
 
 *University of Strasbourg*
 
@@ -78,6 +77,20 @@ Expected 09/2019
 - Accepted in Lycée Pilote Innovant International after the first year.
 
 * Research
+
+*HiePACS team, French National Institute for Research in Computer science and*
+*Automation (Inria)*
+
+Since 2020
+
+\textsc{Ph.D. thesis: Fast solvers for high-frequency aeroacoustics}
+
+/Bordeaux, France/
+
+- develop efficient methods for solving large coupled FEM/BEM linear systems
+  arising from aeroacoustic problems
+- industrial context of Airbus
+- *Supervised by:* Guillaume Sylvand and Emmanuel Agullo
 
 *Scientific and Parallel Computing team, ICube Laboratory*
 
@@ -197,7 +210,7 @@ Expected 09/2019
 
 *Programming*
 
-- C, C++, C#, Java, Python, Caml, Prolog, MIPS
+- C, C++, C#, Java, Python, Caml, Elisp, Prolog, MIPS
 
 *Compilation*
 
@@ -209,27 +222,28 @@ Expected 09/2019
 
 *Polyhedral optimization*
 
-ISL, OpenScop, Polly, ClooG, Clan, Candl
+- ISL, OpenScop, Polly, ClooG, Clan, Candl
 
 *Scripting*
 
-Bash, Batch, PowerShell
+- Bash, Batch, PowerShell
 
 *Web development*
 
-JavaScript, react.js, PHP, node.js
+- JavaScript, react.js, PHP, node.js
 
 *Databases*
 
-PL/SQL, MySQL, MongoDB
+- PL/SQL, MySQL, MongoDB
 
 *Network administration*
 
-Juniper, Cisco, IPv4 and IPv6
+- Juniper, Cisco, IPv4 and IPv6
 
 *Miscellaneous*
 
-Unix and Windows systems, GDB, Valgrind, Git, Subversion, \LaTeX, GNS3, Arduino
+- Unix and Windows systems, GDB, Valgrind, Git, Subversion, \LaTeX, GNS3,
+  Arduino
 
 * Language skills
 
@@ -237,7 +251,7 @@ Unix and Windows systems, GDB, Valgrind, Git, Subversion, \LaTeX, GNS3, Arduino
 *Czech* (mother tongue), *German* (basic skills $\sim$ A1), *Ukrainian*
 (intermediate $\sim$ B1)
 
-* Interests
+* Free-time activities
 
 learning new foreign languages, reading (detective and fantasy novels,
 linguistics and history-related books), biking
