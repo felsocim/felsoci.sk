@@ -1,10 +1,9 @@
 #+TITLE: Home
 #+OPTIONS: title:nil
 
-#+ATTR_HTML: :alt Marek Felšöci
-[[./images/marek.jpg]]
-
 #+BEGIN_EXPORT html
+<img src="./images/marek.jpg" alt="Marek Felšöci"/>
+
 <span id="current-position">
 #+END_EXPORT
 
@@ -17,7 +16,7 @@
 
 [[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitæ]]
 
-[[https://linkedin.com/in/felsocim][file:./images/linkedin.png]]
+[[./images/linkedin.png]] [[https://linkedin.com/in/felsocim][Profile]]
 
 |            | E-mail                      |
 |------------+-----------------------------|
@@ -53,6 +52,8 @@ in 2019 as secretary.
 :CUSTOM_ID: latest-news
 :END:
 
+- *December 20, 2020* - Completed the site content and preparing for going
+  online.
 - *September 7, 2020* - Starting a new personal website and blog entirely
   powered by [[https://orgmode.org][Org mode for Emacs]].
 
