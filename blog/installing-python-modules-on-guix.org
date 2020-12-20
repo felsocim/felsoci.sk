@@ -17,7 +17,7 @@ installed using =guix install python-gcvb=. This means that, one needs to
 manually write the Guix package definition for *gcvb* in order to be able to
 install the module on Guix like in the case of any other custom package.
 
-* Defining /gcvb/ as a Guix package
+* Defining gcvb as a Guix package
 :PROPERTIES:
 :CUSTOM_ID: dfining-gcvb-as-a-guix-packages
 :END:
