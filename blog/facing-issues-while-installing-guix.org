@@ -1,0 +1,179 @@
+#+TITLE: Facing issues while installing Guix
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+I have recently performed a clean installation of the
+[[http://guix.gnu.org/][GNU Guix]] Linux distribution on a new laptop computer.
+During the setup process, I have experienced some serious issues. In this post,
+I investigate their causes and propose methods for fixing them.
+#+END_SYNOPSIS
+
+* Encryption
+:PROPERTIES:
+:CUSTOM_ID: ecryption
+:END:
+
+If you plan to encrypt the entire hard drive, use the automatic partitionning
+with encryption. Otherwise, GRUB fails to recognize the booting partition. Note
+that, defining a separate partition for the ~/boot~ filesystem is not supported
+in Guix.
+
+* Struggling with UEFI
+:PROPERTIES:
+:CUSTOM_ID: struggling-with-uefi
+:END:
+
+On modern computers, the Unified Extensible Firmware Interface (UEFI) comes to
+replace the legacy Basic Input/Output System (BIOS) firmware interface allowing
+to start up an operating system. Normally, it is possible to choose whether your
+machine should use UEFI or BIOS to boot the operating system. Although,
+sometimes you do not have the choice. This is also the case of
+*DELL Latitude 5490* which I used to install Guix on. This model allows to boot
+in legacy mode only from external devices such as USB flash drives or SD cards.
+Internal boot is only possible in UEFI mode. Guix can be installed in UEFI mode
+but I have experienced several issues during the installation process that I
+address in following sections.
+
+** Secure boot
+:PROPERTIES:
+:CUSTOM_ID: secure-boot
+:END:
+
+The first thing to do when booting from an external media in UEFI mode is to
+disable the *Secure boot* feature in your UEFI system settings. Otherwise, it
+prevents the computer from booting from any external device for security
+reasons.
+
+** Searching for missing partition
+:PROPERTIES:
+:CUSTOM_ID: searching-for-missing-partition
+:END:
+
+Another problem may arise on the launch of the setup program from the
+installation media in the case you are booting from a USB flash drive. The
+kernel reports *Searching for missing partition...* but, the partition is never
+detected and after a couple of tries the setup fails. Apparently, the system is
+unable to mount one of the partitions present on the bootable USB. The fix is
+simple, unplug and plug the bootable USB drive again before the detection delay
+expires.
+
+** No bootable devices found
+:PROPERTIES:
+:CUSTOM_ID: no-bootable-devices-found
+:END:
+
+The rest of the setup process should work smoothly. Although, after the final
+reboot, the freshly installed system may remain unbootable. On a computer using
+UEFI, you should have a dedicated EFI partition holding the bootloaders of all
+the operating systems installed on your machine. In the root of this partition,
+there is a folder named ~EFI~ containing a specific folder for each bootloader:
+
+#+BEGIN_EXAMPLE
+.
+└── EFI
+    ├── Guix
+    │   └── grubx64.efi
+    ├── debian
+    │   └── grubx64.efi
+    └── ...
+#+END_EXAMPLE
+
+UEFI should be able to detect these bootloaders and let you choose which
+operating system you want to launch. Unfortunately, some dumb UEFI
+implementations make it look for a bootloader only in a fallback location
+referred to as *removable media path*. The latter is also present on the EFI
+partition. While some most popular systems, such as Windows or Ubuntu, install
+their bootloaders to both locations, Guix as well as many other Linux
+distributions does not do that by default. This cause a
+*No bootable devices found* error message since the first run. A detailed
+explanation of this problem can be found on
+[[https://mjg59.livejournal.com/138188.html][https://mjg59.livejournal.com/138188.html]].
+
+The solution is to manually copy the bootloader configuration from the dedicated
+folder over to the fallback *removable media path* location. Be careful, because
+you can copy the configuration of only one boot entry which means that the other
+operating systems becomes unbootable!
+
+*** Step 1: Boot from installation media
+:PROPERTIES:
+:CUSTOM_ID: step-1-boot-from-installation-media
+:END:
+
+To perform the repair, you need to have access to a terminal and to the internal
+hard drive. Boot from your Guix installation media again and on the welcome
+screen select the *Install using the shell based process* option. This will
+bring you to a root shell.
+
+*** Step 2: Mount the EFI partition
+:PROPERTIES:
+:CUSTOM_ID: step-2-mount-the-efi-partition
+:END:
+
+The next step is to mount the EFI partition in oder to be able to manipulate its
+contents. The mounting command should look as follows.
+
+#+BEGIN_SRC shell
+mount /dev/sda1 /mnt
+#+END_SRC
+
+Here =/dev/sda1/= corresponds to the EFI partition and =/mnt= is the target
+mount point on the system. Then, navigate to the ~EFI~ folder on the EFI
+partition:
+
+#+BEGIN_SRC shell
+cd /mnt/EFI
+#+END_SRC
+
+In this folder, you should see folders corresponding to the boot entries present
+on your system. In my case, there was only one folder named ~Guix~ corresponding
+to my Guix installation. Before proceeding to the next step, create the
+*removable media path* folder (if it does not exist yet) named ~boot~ under the
+EFI folder:
+
+#+BEGIN_SRC shell
+mkdir boot
+#+END_SRC
+
+At this point, the ~boot~ folder should be at ~/mnt/EFI/boot~.
+
+*** Step 3: Copy the bootloader configuration
+:PROPERTIES:
+:CUSTOM_ID: step-3-copy-the-bootloader-configuration
+:END:
+
+Pick a bootloader and copy the associated ~.efi~ file from the dedicated folder
+to ~/mnt/EFI/boot~ using the name ~bootx64.efi~. Just replace ~x64~ by the
+correct architecture name:
+
+- *amd64*: ~bootx64.efi~
+- *i386*: ~bootia32.efi~
+- *armhf*: ~bootarm.efi~
+- *arm64*: ~bootaa64.efi~
+
+Guix uses the GRUB bootloader by default. In my case, I have used the following
+copy command:
+
+#+BEGIN_SRC shell
+cp Guix/grubx64.efi boot/bootx64.efi
+#+END_SRC
+
+Yours should look similarly.
+
+*** Step 4: Reboot
+:PROPERTIES:
+:CUSTOM_ID: step-4-reboot
+:END:
+
+After a reboot the system should start normally.
+
+*** Step 5: Restoring broken multi-boot configuration
+:PROPERTIES:
+:CUSTOM_ID: step-5-restoring-broken-multi-boot-configuration
+:END:
+
+As I have mentionned before, this manipulation makes other operating systems on
+your machine unbootable. For now, we did not investigate any restoration method
+as we use only one system. Although,
+[[https://wiki.debian.org/GrubEFIReinstall][this article]] may be helpful.
+
+#+INCLUDE: ../shared/setup.org

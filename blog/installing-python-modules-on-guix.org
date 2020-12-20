@@ -1,0 +1,216 @@
+#+TITLE: Installing Python modules on Guix
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+On [[http://guix.gnu.org/][GNU Guix]], software binaries are stored under
+~/gnu/store/~ which is a read-only file system. Therefore, when installing a
+Python module, such as [[https://github.com/jm-cc/gcvb][*gcvb*]], simply invoking
+=pip install= does not work as it can not access the Python directories in
+~/gnu/store/~ for writing. In this post, I tackle all the issues faced during
+the installation of the *gcvb* benchmarking module but, it may help you install
+other Python modules as well.
+#+END_SYNOPSIS
+
+Rather unknown outside of a restrained group of users, the *gcvb* module is not
+available as a standalone package through Guix channels and can not be
+installed using =guix install python-gcvb=. This means that, one needs to
+manually write the Guix package definition for *gcvb* in order to be able to
+install the module on Guix like in the case of any other custom package.
+
+* Defining /gcvb/ as a Guix package
+:PROPERTIES:
+:CUSTOM_ID: dfining-gcvb-as-a-guix-packages
+:END:
+
+** Dealing with dependencies
+:PROPERTIES:
+:CUSTOM_ID: dealing-with-dependencies
+:END:
+
+Before writing the definition of the *gcvb* module itself, I must deal with
+its dependencies. *gcvb* requires two other Python modules to work, *pyyaml* and
+*dash-bootstrap-components*. Usually, the dependency modules are listed in the
+~setupy.py~ file of the target module with the =install_requires=,
+=setup_requires=, =tests_require=, =extras_require= keywords. Although, you may
+discover other dependencies during the build phase of the package based on the
+error messages you may get.
+
+*** pyyaml
+:PROPERTIES:
+:CUSTOM_ID: pyyaml
+:END:
+
+This module is directly available from the official Guix channel. As such, it
+can be installed it the usual way using
+
+#+BEGIN_SRC shell
+guix install python-pyyaml
+#+END_SRC
+
+Note that, the name of the packages corresponding to Python modules is usually
+preceded by *python-*.
+
+*** dash-bootstrap-components
+:PROPERTIES:
+:CUSTOM_ID: dash-bootstrap-components
+:END:
+
+This module can not be directly installed using =guix install=. Nevertheless, it
+is available through [[https://pypi.org][pypi.org]]. This makes possible to use
+the =guix import= command to generate the corresponding Guix package
+description. The =-r= option tells the command to do the same for all of its
+dependencies as well.
+
+#+BEGIN_SRC shell
+guix import pypi dash-bootstrap-components -r
+#+END_SRC
+
+Eventually, I save the output of the previous command to a Scheme file, i. e.
+~gcvb.scm~, for later use.
+
+** gcvb
+:PROPERTIES:
+:CUSTOM_ID: gcvb
+:END:
+
+At this point, I can define the *gcvb* package itself by adding the following
+at the end of the ~gcvb.scm~ file.
+
+#+BEGIN_SRC scheme
+(define-public gcvb
+  (package
+    (name "gcvb")
+    (version "0.0.1")
+    (source (origin
+        (method git-fetch)
+        (uri (git-reference
+          (url "https://github.com/jm-cc/gcvb")
+          (commit "a62cd85c5e631524fcade39542e992f5cec577fd")))
+        (sha256
+          (base32
+            "00qk7v9q9xl7qlgcgswb196fyb77n3rrg4nf9ia50ix4d0hycjzd"))))
+    (build-system python-build-system)
+    (propagated-inputs
+     `(("PyYAML" ,python-pyyaml)))
+    (native-inputs
+     `(("python-dash-bootstrap-components" ,python-dash-bootstrap-components)))
+    (home-page "https://github.com/jm-cc/gcvb")
+    (synopsis "Python 3 module aiming at facilitating non-regression, validation
+and benchmarking of simulation codes")
+    (description
+      "gcvb (generate compute validate benchmark) is a Python 3 module aiming at
+facilitating non-regression, validation and benchmarking of simulation codes.
+gcvb is not a complete tool of continuous integration (CI). It is rather a
+component of the testing part of a CI workflow. It can compare the different
+metrics of your computation with references that can be a file, depends of the
+'configuration' or are absolute.")
+    (license license:x11)))
+#+END_SRC
+
+My package definition is based on the definition of the *itsdangerous* Python
+package acquired using the =guix import= command as explained earlier. According
+to the section
+[[https://guix.gnu.org/manual/en/html_node/Python-Modules.html#Python-Modules][Python Modules]]
+of the official Guix documentation, I declare the *pyyaml* dependency as a
+=propagated-input= and the *dash-bootstrap-components* as a =native-input=.
+
+* Including the package to a channel
+:PROPERTIES:
+:CUSTOM_ID: including-the-package-to-a-channel
+:END:
+
+In order to make the *gcvb* package definition publicly available, I include it
+into the ~guix-hpc~ channel.
+
+The first step, is to clone the channel's repository:
+
+#+BEGIN_SRC shell
+git clone https://gitlab.inria.fr/guix-hpc/guix-hpc
+#+END_SRC
+
+Then, I put the ~gcvb.scm~ file into a directory named ~airbus~ created in the
+root of the repository. For the definition file to be valid, I add the following
+header to the file.
+
+#+BEGIN_SRC scheme
+;;; This module extends GNU Guix and is licensed under the same terms, those
+;;; of the GNU GPL version 3 or (at your option) any later version.
+;;;
+;;; Copyright © 2017, 2019, 2020 Inria
+
+(define-module (airbus gcvb)
+  #:use-module (guix)
+  #:use-module (guix git-download)
+  #:use-module (guix hg-download)
+  #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (guix build-system python)
+  #:use-module (gnu packages)
+  #:use-module (gnu packages graph)
+  #:use-module (gnu packages check)
+  #:use-module (gnu packages python)
+  #:use-module (gnu packages python-xyz)
+  #:use-module (gnu packages python-web)
+  #:use-module (gnu packages xml)
+  #:use-module (guix utils)
+  #:use-module (srfi srfi-1))
+#+END_SRC
+
+Please refer to
+[[https://gitlab.inria.fr/guix-hpc/guix-hpc/-/raw/master/airbus/gcvb.scm]] for
+the complete ~gcvb.scm~ file.
+
+** /Error 404/ while building the dependencies
+:PROPERTIES:
+:CUSTOM_ID: error-404-while-building-the-dependencies
+:END:
+
+During the build phase of *gcvb* I have encountered several *Not found* errors.
+These come from broken links to the source tarballs of the *gcvb* dependencies
+automatically generated using =guix import=. My workaround is to replace all of
+the broken links by copying the links to the packages from
+[[https://pypi.org][pypi.org]]. Pay attention to the package versions. The
+hashes must remain the same.
+
+** Errors while testing dependencies
+:PROPERTIES:
+:CUSTOM_ID: errors-while-testing-dependencies
+:END:
+
+By default, when a package is built, a series of tests is executed to check the
+operation of the package. Some dependency packages of *gcvb* require for their
+test phases to work the packages that are not build yet. Moreover, the latter
+have the former as dependencies which creates unsatisfiable cyclic dependencies.
+This make the tests of some of the *gcvb* dependencies fail. My temporary
+workaround is to disable the test phase for the concerned packages (using the
+=(arguments '(#:tests? #f)= directive) in order to be able to finish the
+installation of all the dependencies.
+
+* Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+
+To install the package, use
+
+#+BEGIN_SRC shell
+guix install gcvb -L guix-hpc/
+#+END_SRC
+
+where the =-L= option allows you to specify the path to a local Guix channel
+repository. This is useful for testing new package definitions before actually
+pushing them into the channel.
+
+** Using a manifest file
+:PROPERTIES:
+:CUSTOM_ID: using-a-manifest-file
+:END:
+
+For those who do not want to work with another Guix channels, you can install
+*gcvb* from a single manifest file. Just take the *gcvb.scm* file and use the
+following command to install *gcvb*.
+
+#+BEGIN_SRC shell
+guix package -m gcvb.scm
+#+END_SRC
+
+#+INCLUDE: ../shared/setup.org

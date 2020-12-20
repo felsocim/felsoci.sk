@@ -1,0 +1,61 @@
+#+TITLE: Configuring *cups* printing service on Guix
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+Service configuration on [[http://guix.gnu.org/][GNU Guix]] is quiet different
+compared to mainstream Linux distribution. In this post, I address the process
+of configuring the *cups* printing service on Guix.
+#+END_SYNOPSIS
+
+* Activating *cups* as a service
+:PROPERTIES:
+:CUSTOM_ID: ativating-cups-as-a-service
+:END:
+
+The first step is to configure the system to use the *cups* package as a
+service. For this, you need to modify your system configuration file at
+~/etc/config.scm~. Find the line starting with =(use-service-modules= and
+include =cups= into the service modules list:
+
+#+BEGIN_SRC scheme
+(use-service-modules desktop networking ssh xorg cups)
+#+END_SRC
+
+Then, under the =(operating-system= entry, search for the line starting with
+=(services=. This entry should contain a list of services. Add
+=(service cups-service-type)= to the latter:
+
+#+BEGIN_SRC scheme
+(services
+    (append
+      (list (service gnome-desktop-service-type)
+            (service openssh-service-type)
+            (set-xorg-configuration
+              (xorg-configuration
+                (keyboard-layout keyboard-layout)))
+             ;; This is the line associated with the 'cups' package.
+            (service cups-service-type))
+      %desktop-services))
+#+END_SRC
+
+* Configuration
+:PROPERTIES:
+:CUSTOM_ID: configurations
+:END:
+
+The last step is to tell *cups* how to contact the printing server by providing
+it with the server's address and your user name. In your home directory, create
+a directory named ~.cups~. Finally, create a *client.conf* file inside the
+latter. This configuration file should look like follows.
+
+Note that, in this case I take the example of the printing server at Inria and a
+user identified by =jdoe=.
+
+#+BEGIN_EXAMPLE
+servername cups-bso.inria.fr
+User jdoe
+#+END_EXAMPLE
+
+Finally, restart your computer!
+
+#+INCLUDE: ../shared/setup.org

@@ -1,0 +1,164 @@
+#+TITLE: Installing proprietary firmware on Guix
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+[[http://guix.gnu.org/][GNU Guix]] is an open-source Linux distribution and the Linux kernel version it
+uses does not allow to load proprietary firmware by default. Although, it is
+possible. In this post, I explain how to get work proprietary firmware on Guix.
+#+END_SYNOPSIS
+
+To enable the support for proprietary firmware, it is necessary to manually
+modify the system configuration file ~/etc/config.scm~. The first step is to
+switch to a kernel version that allows loading of non-free firmware.
+
+* Alternative kernel
+:PROPERTIES:
+:CUSTOM_ID: alternative-kernel
+:END:
+
+You need to define a new package in the system configuration file for the
+alternative kernel. Here, I use the Linux kernel source from
+[[https://kernel.org][kernel.org]].
+
+Preprend the following lines to your ~/etc/system.scm~. Remember that, you must
+have superuser privileges to edit this file!
+
+#+BEGIN_SRC scheme
+(define-module (guix-non-free)
+  #:use-module (gnu)
+  #:use-module (gnu packages linux)
+  #:use-module (guix download)
+  #:use-module (guix git-download)
+  #:use-module (guix packages)
+  #:use-module (guix licenses)
+  #:use-module (guix build-system gnu))
+
+(define-public linux-non-free
+  (package
+   (inherit linux-libre)
+   (name "linux-non-free")
+   (version "5.7.5")
+   (source
+    (origin
+     (method url-fetch)
+     (uri "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.7.5.tar.xz")
+     (sha256
+      (base32
+       "008bpcvcdbwy3w829zc0s6ighn820nr51y24l6df5qfvah1zjdvc"))))
+   (synopsis "A non-free Linux kernel allowing particularly to use non-free
+firmware in GNU/Guix.")
+   (description "A non-free Linux kernel.")
+   (license gpl2)
+   (home-page "https://kernel.org")))
+#+END_SRC
+
+Note that, you can choose any version of the kernel. Do not forget to adapt the
+=version= and the =uri= fields consequently! Also, it is important to update the
+SHA-256 hash of the tarball. To compute the new hash, you can use the
+=guix download= command followed by the link to the tarball. For example:
+
+#+BEGIN_SRC shell
+guix download https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.1.2.tar.xz
+#+END_SRC
+
+* Non-free firmware
+:PROPERTIES:
+:CUSTOM_ID: non-free-firmware
+:END:
+
+Non-free firmware for Linux is available in the
+[[https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git][linux-firmware]]
+repository. Tarballs are available as well.
+
+Insert the following lines straight after the alternative kernel definition into
+your ~/etc/config.scm~.
+
+#+BEGIN_SRC scheme
+(define-public firmware-non-free
+  (package
+   (name "firmware-non-free")
+   (version "20200619")
+   (source
+    (origin
+     (method url-fetch)
+     (uri
+      (string-append
+       "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/"
+       "linux-firmware.git/snapshot/linux-firmware-" version ".tar.gz"))
+     (sha256
+      (base32
+       "1i8gnmsppq531mzmq9z72w2h4wyn6dvynzvbr6xsqp2iqw0sjsi5"))))
+   (build-system gnu-build-system)
+   (arguments
+    `(#:make-flags (list (string-append "DESTDIR=" (assoc-ref %outputs "out")))
+      #:phases
+      (modify-phases %standard-phases
+                     (delete 'configure)
+                     (delete 'build)
+                     (delete 'check)
+                     (delete 'strip)
+                     (delete 'validate-runpath))))
+   (home-page
+    (string-append
+     "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/"
+     "linux-firmware.git"))
+   (synopsis "Collection of non-free firmware for Linux.")
+   (description "Non-free firmware collection")
+   (license (non-copyleft "various"))))
+#+END_SRC
+
+Again, you can choose any version of the kernel. Do not forget to adapt the
+=version= field consequently and update the SHA256 hash (see
+[[#alternative-kernel][Alternative kernel]])!
+
+* Switching the kernel and loading the non-free firmware package
+:PROPERTIES:
+:CUSTOM_ID: switching-the-kernel-and-loading-the-non-free-firmware-package
+:END:
+
+The last step is to actually make the system load the alternative kernel and the
+non-free firmware package on starup.
+
+At some point in your ~/etc/config.scm~ file, you should have the following
+line.
+
+#+BEGIN_SRC scheme
+(use-modules (gnu))
+#+END_SRC
+
+You need to replace =gnu= by =guix-non-free= in that line.
+
+#+BEGIN_SRC scheme
+(use-modules (guix-non-free))
+#+END_SRC
+
+Then, insert =(kernel linux-nonfree)= below the line staring with
+=(operating-system=.
+
+#+BEGIN_SRC scheme
+(operating-system
+ (kernel linux-non-free)
+#+END_SRC
+
+Finally, find the line starting with =(firmware= and modify it in order to
+include the *firmware-non-free* package.
+
+#+BEGIN_SRC scheme
+(firmware
+ (append
+  (list firmware-non-free)
+  %base-firmware))
+#+END_SRC
+
+Now, you can save the file and apply the changes to your system configuration by
+invoking:
+
+#+BEGIN_SRC shell
+guix system reconfigure /etc/config.scm
+#+END_SRC
+
+Note that, if at the very end you get an error related to some symbolic link
+failure, reiterate the previous command using =sudo=. Then, restart your
+computer for the changes to take effect.
+
+#+INCLUDE: ../shared/setup.org
