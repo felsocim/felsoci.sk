@@ -1,11 +1,12 @@
 # Temporary files
 *.*~
 
-# Export outputs
+# Export and tangle outputs
 *.html
 !shared/*.html
 *.pdf
 *.tex
+*.el
 
 # List of blog posts
 blog/posts.org
