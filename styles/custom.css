@@ -1,43 +1,45 @@
 @font-face {
-  font-family: "Roboto";
-  src: url("fonts/roboto-regular.eot");
-  src: url("fonts/roboto-regular.eot?#iefix") format("embedded-opentype"),
-       url("fonts/roboto-regular.woff") format("woff");
+  font-family: "Archivo";
+  src: url("fonts/archivo-regular.eot");
+  src: url("fonts/archivo-regular.eot?#iefix") format("embedded-opentype"),
+       url("fonts/archivo-regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("fonts/roboto-italic.eot");
-  src: url("fonts/roboto-italic.eot?#iefix") format("embedded-opentype"),
-       url("fonts/roboto-italic.woff") format("woff");
+  font-family: "Archivo";
+  src: url("fonts/archivo-italic.eot");
+  src: url("fonts/archivo-italic.eot?#iefix") format("embedded-opentype"),
+       url("fonts/archivo-italic.woff") format("woff");
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("fonts/roboto-bold.eot");
-  src: url("fonts/roboto-bold.eot?#iefix") format("embedded-opentype"),
-       url("fonts/roboto-bold.woff") format("woff");
+  font-family: "Archivo";
+  src: url("fonts/archivo-semi-bold.eot");
+  src: url("fonts/archivo-semi-bold.eot?#iefix") format("embedded-opentype"),
+       url("fonts/archivo-semi-bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("fonts/roboto-bold-italic.eot");
-  src: url("fonts/roboto-bold-italic.eot?#iefix") format("embedded-opentype"),
-       url("fonts/roboto-bold-italic.woff") format("woff");
+  font-family: "Archivo";
+  src: url("fonts/archivo-semi-bold-italic.eot");
+  src: url("fonts/archivo-semi-bold-italic.eot?#iefix")
+       format("embedded-opentype"),
+       url("fonts/archivo-semi-bold-italic.woff") format("woff");
   font-weight: bold;
   font-style: italic;
 }
 
 body {
   color: #404040;
-  font-family: "Roboto", sans-serif;
-  font-size: 12pt;
+  font-family: "Archivo", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
   text-align: justify;
 }
 
