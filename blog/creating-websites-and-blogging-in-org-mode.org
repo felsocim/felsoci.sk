@@ -369,27 +369,26 @@ suffix depending on whether the page is a content page or a blog post.
 
 The wrapper =add-suffix-to-html-title-for-pages= calls the original function
 =add-suffix-to-html-title= when exporting content pages and adds the suffix
-‘ - Marek Felšöci's personal website’. Note that, the list of corresponding HTML
-files is acquired through the project component property =:publishing-directory=
-read from the =plist= argument (see
-[[#project-components][Project components]]).
+‘ - Marek Felšöci’. Note that, the list of corresponding HTML files is acquired
+through the project component property =:publishing-directory= read from the
+=plist= argument (see [[#project-components][Project components]]).
 
 #+BEGIN_SRC elisp
 (defun add-suffix-to-html-title-for-pages (plist)
   (add-suffix-to-html-title
-   " - Marek Felšöci's personal website"
+   " - Marek Felšöci"
    (directory-files
     (plist-get plist :publishing-directory) t "\\.html$")))
 #+END_SRC
 
 The wrapper =add-suffix-to-html-title-for-blog-posts= calls the original
 function =add-suffix-to-html-title= when exporting blog posts and adds the
-suffix ‘ - Marek Felšöci's blog’ to the titles of blog posts.
+suffix ‘ - Marek's blog’ to the titles of blog posts.
 
 #+BEGIN_SRC elisp
 (defun add-suffix-to-html-title-for-blog-posts (plist)
   (add-suffix-to-html-title
-   " - Marek Felšöci's blog"
+   " - Marek's blog"
    (directory-files
     (plist-get plist :publishing-directory) t "\\.html$")))
 #+END_SRC
@@ -421,12 +420,22 @@ Next, I override the default LaTeX publishing command to use =latexmk=.
 (setq org-latex-pdf-process (list "latexmk --shell-escape -f -pdf %f"))
 #+END_SRC
 
-Finally, I instrument the publishing function to include the header and the
+I also need to instrument the publishing function to include the header and the
 footer to every exported page.
 
 #+BEGIN_SRC elisp
 (setq org-html-preamble (org-file-contents "./shared/header.html"))
 (setq org-html-postamble (org-file-contents "./shared/footer.html"))
+#+END_SRC
+
+Finally, I add two extra lines to the HTML header in order to include my custom
+CSS style and configure the favicon.
+
+#+BEGIN_SRC elisp
+(setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
+href=\"../styles/custom.css\">
+<link rel=\"icon\" type=\"image/x-icon\"
+href=\"https://felsoci.sk/favicon.ico\"/>")
 #+END_SRC
 
 ** Project components
@@ -456,7 +465,7 @@ All of the configuration properties are pretty self-explanatory.
        (list "blog"
              :base-directory "./blog"
              :base-extension "org"
-             :publishing-directory "/var/www/html/blog"
+             :publishing-directory "./public/blog"
              :htmllized-source t
              :with-author t
              :with-creator t
@@ -483,14 +492,6 @@ the publishing function terminates. Here, I set
 
 #+BEGIN_SRC elisp
              :completion-function '(add-suffix-to-html-title-for-blog-posts)
-#+END_SRC
-
-Then, I add the following line to the HTML head of each document in order to
-include my custom CSS style.
-
-#+BEGIN_SRC elisp
-             :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
-href=\"../styles/custom.css\">"
 #+END_SRC
 
 Eventually, I configure the sitemap corresponding to the list of blog posts.
@@ -525,7 +526,7 @@ very close to the previous one
         (list "pages"
               :base-directory "."
               :base-extension "org"
-              :publishing-directory "/var/www/html"
+              :publishing-directory "./public"
               :publishing-function '(org-html-publish-to-html)
               :htmllized-source t
               :with-author t
@@ -534,8 +535,6 @@ very close to the previous one
               :headline-level 4
               :section-numbers nil
               :with-toc nil
-              :html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
-href=\"styles/custom.css\">"
               :html-head nil
               :html-head-include-default-style nil
               :html-head-include-scripts nil
@@ -567,7 +566,7 @@ documents on output.
         (list "cv"
               :base-directory "./cv"
               :base-extension "org"
-              :publishing-directory "/var/www/html/cv"
+              :publishing-directory "./public/cv"
               :publishing-function '(org-latex-publish-to-pdf))
 #+END_SRC
 
@@ -586,12 +585,12 @@ sub-folder (see [[#projects-structure][Project's structure]]).
               :base-directory "./styles"
               :base-extension ".*"
               :recursive t
-              :publishing-directory "/var/www/html/styles"
+              :publishing-directory "./public/styles"
               :publishing-function '(org-publish-attachment))
         (list "images"
               :base-directory "./images"
               :base-extension ".*"
-              :publishing-directory "/var/www/html/images"
+              :publishing-directory "./public/images"
               :publishing-function '(org-publish-attachment))
 #+END_SRC
 
