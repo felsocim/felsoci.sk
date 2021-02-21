@@ -135,6 +135,10 @@ a:hover {
   margin-left: auto;
 }
 
+#content h1:first-child {
+  margin-top: 0;
+}
+
 #postamble {
   margin: 0;
   font-size: 80%;
