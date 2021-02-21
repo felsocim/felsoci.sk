@@ -414,7 +414,8 @@ Also, I want to preserve the indentation in code blocks on export and tangle.
 (setq org-src-preserve-indentation t)
 #+END_SRC
 
-Next, I override the default LaTeX publishing command to use =latexmk=.
+Next, I override the default LaTeX publishing command to use =latexmk= in order
+to ensure the bibliography entries, if any, are published correctly.
 
 #+BEGIN_SRC elisp
 (setq org-latex-pdf-process (list "latexmk --shell-escape -f -pdf %f"))

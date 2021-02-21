@@ -1,33 +1,53 @@
 #+TITLE: Teaching
 
-After my first lecture last year, I came to like teaching and I continue to give
-lectures while working on my Ph.D. thesis.
+After my first lecture last year, I came to enjoy teaching and I continue to
+give lectures while working on my Ph.D. thesis.
 
-* Object oriented programming
+* University of Bordeaux
 :PROPERTIES:
-:CUSTOM_ID: teaching-oop
+:CUSTOM_ID: teaching-ub
 :END:
 
-This year, I give practical classes of object oriented programming in Java at
-the [[https://u-bordeaux.com][University of Bordeaux]].
+** Databases and web applications
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-bddw
+:END:
+
+Currently, I give theoretical and practical lectures of relational databases and
+web applications in the first year of Bachelor's degree in computer science.
+
+Unfortunately, there is no publicly available teaching material for this course.
+
+** Object oriented programming
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-oop
+:END:
+
+In autumn 2020, I was giving practical lectures of object oriented programming
+in Java in the third year of Bachelor's degree in computer science.
 
 All the information about the course and the teaching materials are available
 online in French at [[http://www.reveillere.fr/L3POO/]].
 
-* Introduction to C programming
+* Lycée Sainte-Famille Saintonge, Bordeaux
 :PROPERTIES:
-:CUSTOM_ID: taching-bts
+:CUSTOM_ID: teaching-bts
 :END:
 
-During the last year, I was teaching programming in C language at
-[[https://lyceesaintefamille.com/][Lycée Sainte-Famille Saintonge]] in Bordeaux
-to the students of /Brevet de technicien supérieur/ (BTS) senior technologist's
-certificate in Computer science.
+** Introduction to programming in C
+:PROPERTIES:
+:CUSTOM_ID: teaching-bts-c
+:END:
 
-Given that it was the first year of the curriculum in this institution, I was
+During both the autumn and the spring semesters of 2019/2020, I was teaching
+programming in C language to the students of /Brevet de technicien supérieur/
+(BTS) - senior technologist's certificate in computer science.
+
+Given that it was the first year of this curriculum in the institution, I was
 also brought to propose an education plan, prepare the courses as well as
 exercices and exams. The coronavirus crisis made my work even more difficult as
-most of the second semester's courses had to be done remotely.
+most of the second semester's courses had to be done remotely. It was a very
+valuable experience!
 
 The teaching materials, exercices, exam and project subjects are available
 online in French at [[https://mfelsoci.gitlabpages.inria.fr/lectures/]].

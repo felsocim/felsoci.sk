@@ -1,46 +1,24 @@
-@font-face {
-  font-family: "Archivo";
-  src: url("fonts/archivo-regular.eot");
-  src: url("fonts/archivo-regular.eot?#iefix") format("embedded-opentype"),
-       url("fonts/archivo-regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Archivo";
-  src: url("fonts/archivo-italic.eot");
-  src: url("fonts/archivo-italic.eot?#iefix") format("embedded-opentype"),
-       url("fonts/archivo-italic.woff") format("woff");
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Archivo";
-  src: url("fonts/archivo-semi-bold.eot");
-  src: url("fonts/archivo-semi-bold.eot?#iefix") format("embedded-opentype"),
-       url("fonts/archivo-semi-bold.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Archivo";
-  src: url("fonts/archivo-semi-bold-italic.eot");
-  src: url("fonts/archivo-semi-bold-italic.eot?#iefix")
-       format("embedded-opentype"),
-       url("fonts/archivo-semi-bold-italic.woff") format("woff");
-  font-weight: bold;
-  font-style: italic;
-}
-
 body {
   color: #404040;
-  font-family: "Archivo", sans-serif;
-  font-size: 14px;
+  font-family: "Verdana", "DejaVu Sans", sans-serif;
+  font-size: 10pt;
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
   text-align: justify;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+h1, h2, h3 {
+  border-bottom: 1px solid #CCCCCC;
+  font-family: "Arial", "DejaVu Sans", "Helvetica", sans-serif;
+}
+
+h4, h5, h6 {
+  font-family: "Arial", "DejaVu Sans", "Helvetica", sans-serif;
 }
 
 a {
@@ -52,41 +30,76 @@ a:hover {
   color: #404040;
 }
 
-#site-name {
-  color: #404040;
-  font-size: 240%;
-  text-decoration: none;
+#site-identification {
+  background: url("/images/header.png") top left repeat-x;
+  height: 46px;
 }
 
-#preamble-upper-separator  {
-  border: 3px solid #115589;
-  border-radius: 16px;
-  margin-bottom: 2px;
+#preamble-navigation {
+  background: #206091 url("/images/navigation.png") bottom repeat-x;
+  color: #FFFFFF;
+  margin: 0;
+  padding: 4px 15px 30px 55px;
 }
 
-#preamble-lower-separator {
-  border: 2px solid #404040;
-  border-radius: 16px;
-  margin-top: 0px;
+#preamble-navigation p {
+  margin: 0;
+}
+
+#preamble-navigation a {
+  color: #FFFFFF;
+}
+
+#preamble-navigation a:first-child {
+  font-weight: bold;
+}
+
+#preamble-navigation a:hover {
+  text-decoration: underline;
+}
+
+#me {
+  background: #E5E5E5;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #C2C6C6;
+  clear: both;
+  content: "";
+  display: table;
+  margin-bottom: 25px;
+  padding: 25px;
+  text-align: left;
+  width: calc(100% - 50px);
+}
+
+#me-info {
+  float: left;
+  width: calc(100% - 215px);
+}
+
+#me-photo {
+  margin-left: calc(100% - 200px);
+  text-align: right;
+  width: 200px; 
 }
 
 #current-position {
   font-size: 120%;
 }
 
+#current-position p:first-child {
+  margin-top: 0;
+}
+
 #postamble-separator {
   margin-bottom: 1.5em;
 }
 
-#preamble-navigation p {
-  font-size: 140%;
-  font-weight: bold;
-  margin: 0.7em 0;
-  word-spacing: 1em;
-}
-
 #postamble-navigation p {
   margin: 0.7em 0;
+}
+
+#postamble-navigation p a:first-child {
+  font-weight: bold;
 }
 
 #last-modification-date {
@@ -109,7 +122,13 @@ a:hover {
   border-bottom: 0;
 }
 
-#preamble, #content, #postamble {
+#preamble {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#content {
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
@@ -117,7 +136,10 @@ a:hover {
 }
 
 #postamble {
+  margin: 0;
   font-size: 80%;
+  padding: 0 15px;
+  text-align: center;
 }
 
 .src, .example {
@@ -146,23 +168,27 @@ code {
 }
 
 @media (min-width: 768px) {
-  #preamble, #content, #postamble {
+  #content {
     width: 750px;
   }
 }
 
 @media (min-width: 992px) {
-  #preamble, #content, #postamble {
+  #content {
     width: 970px;
   }
 }
 
-#cc {
-  float: right;
-}
+@media (max-width: 576px) {
+  #preamble-navigation {
+    padding: 4px 15px 30px 15px;
+  }
 
-@media (max-width: 768px) {
-  #cc {
+  #me-info {
+    width: 100%;
+  }
+
+  #me-photo {
     display: none;
   }
 }
