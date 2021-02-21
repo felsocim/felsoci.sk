@@ -312,15 +312,21 @@ Note that, =posts= is a nested list having the form:
 Therefore, I have to transform it into a simple list containing only the
 leading elements of the nested post lists. To achieve this, I apply a sequence
 filter on =posts=. Then, I strip the ‘unordered’ string from the beginning using
-=cdr=. Finally, I apply =car= as a filter on the lists of possibly nested posts
-which makes =seq-filter= return only the leading elements of the latter.
+=cdr= and I apply =car= as a filter on the lists of possibly nested posts which
+makes =seq-filter= return only the leading elements of the latter.
 
 #+BEGIN_SRC elisp
    (mapconcat
     (lambda (post)
       (format "%s\n" (car post)))
     (seq-filter #'car (cdr posts))
-    "\n@@html:<hr class=\"post-separator\">@@")))
+    "\n")
+#+END_SRC
+
+At the end, I include the common set-up Org file (see Section [[#setup-file]]).
+
+#+BEGIN_SRC elisp
+    "#+INCLUDE: ../shared/setup.org"))
 #+END_SRC
 
 ** Page titles
@@ -429,14 +435,32 @@ footer to every exported page.
 (setq org-html-postamble (org-file-contents "./shared/footer.html"))
 #+END_SRC
 
-Finally, I add two extra lines to the HTML header in order to include my custom
-CSS style and configure the favicon.
+In order to include my custom CSS style and configure the favicon, I add two
+extra lines to the HTML header. 
 
 #+BEGIN_SRC elisp
 (setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
 href=\"../styles/custom.css\">
 <link rel=\"icon\" type=\"image/x-icon\"
 href=\"https://felsoci.sk/favicon.ico\"/>")
+#+END_SRC
+
+Finally, I define a utility function allowing me to change the output directory
+through an environment variable, namely =ORG_OUTPUT_PATH=. This way, I can
+switch between my local Apache server for testing and the production server
+easily. If the variable is not set in the current environment, the output will
+be published into the ~public~ directory located in the root of the project.
+
+Note that, the optional =suffix= argument specifies the local path starting from
+the root of the output directory.
+
+#+BEGIN_SRC elisp
+(defun get-output-path (&optional suffix)
+  (let
+      ((custom (getenv "ORG_OUTPUT_PATH")))
+    (if custom
+        (concat custom "/" suffix)
+      (concat "./public/" suffix))))
 #+END_SRC
 
 ** Project components
@@ -466,7 +490,7 @@ All of the configuration properties are pretty self-explanatory.
        (list "blog"
              :base-directory "./blog"
              :base-extension "org"
-             :publishing-directory "./public/blog"
+             :publishing-directory (get-output-path "blog")
              :htmllized-source t
              :with-author t
              :with-creator t
@@ -527,7 +551,7 @@ very close to the previous one
         (list "pages"
               :base-directory "."
               :base-extension "org"
-              :publishing-directory "./public"
+              :publishing-directory (get-output-path)
               :publishing-function '(org-html-publish-to-html)
               :htmllized-source t
               :with-author t
@@ -567,7 +591,7 @@ documents on output.
         (list "cv"
               :base-directory "./cv"
               :base-extension "org"
-              :publishing-directory "./public/cv"
+              :publishing-directory (get-output-path "cv")
               :publishing-function '(org-latex-publish-to-pdf))
 #+END_SRC
 
@@ -586,12 +610,12 @@ sub-folder (see [[#projects-structure][Project's structure]]).
               :base-directory "./styles"
               :base-extension ".*"
               :recursive t
-              :publishing-directory "./public/styles"
+              :publishing-directory (get-output-path "styles")
               :publishing-function '(org-publish-attachment))
         (list "images"
               :base-directory "./images"
               :base-extension ".*"
-              :publishing-directory "./public/images"
+              :publishing-directory (get-output-path "images")
               :publishing-function '(org-publish-attachment))
 #+END_SRC
 
