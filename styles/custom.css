@@ -150,6 +150,7 @@ a:hover {
   border: 1px dashed #000000;
   border-radius: 8px;
   font-size: 12px;
+  overflow-x: scroll;
   padding: 10px;
 }
 
@@ -169,12 +170,6 @@ code {
   font-style: italic;
   font-weight: bold;
   text-align: center;
-}
-
-@media (min-width: 768px) {
-  #content {
-    width: 750px;
-  }
 }
 
 @media (min-width: 992px) {
