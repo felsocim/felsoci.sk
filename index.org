@@ -16,7 +16,7 @@
 Preparing a thesis in the domain of high-performance computing (HPC) on the
 subject [[https://mfelsoci.gitlabpages.inria.fr/thesis/][Fast solvers for high-frequency aeroacoustics]]
 
-- [[./images/pdf.gif]] [[./cv/cv-felsoci.pdf][Curriculum Vitæ]]
+- [[./images/pdf.png]] [[./cv/cv-felsoci.pdf][Curriculum Vitæ]]
 - [[./images/linkedin.png]] [[https://linkedin.com/in/felsocim][Professional profile]]
 
 |                        | E-mail                      |
@@ -53,9 +53,10 @@ design of fast solvers for coupled sparse and dense linear systems arising from
 numerical modelizations in high-frequency aeroacoustics.
 
 Marek Felšöci joined the
-[[https://afodib.labri.fr][Association de la formation doctorale d'informatique de Bordeaux (AFoDIB)]]
-in 2019 as secretary and has been elected a representative of the
+[[https://afodib.labri.fr][Association de la formation doctorale d'informatique de Bordeaux - AFoDIB]]
+(Ph.D. student society) in 2019 as secretary and has been elected Ph.D.
+student representative to the
 [[https://ed-mi.u-bordeaux.fr/L-Ecole-doctorale/Conseil-de-l-Ecole-doctorale][Conseil de l'École doctorale de mathématiques et d'informatique de l'Université de Bordeaux]]
-(Council of the Graduate research school) in 2021.
+(council of the doctoral school) in 2021.
 
 #+INCLUDE: ./shared/setup.org

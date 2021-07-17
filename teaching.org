@@ -1,6 +1,6 @@
 #+TITLE: Teaching
 
-After my first lecture last year, I came to enjoy teaching and I continue to
+After my first lecture in 2019, I came to enjoy teaching and I continue to
 give lectures while working on my Ph.D. thesis.
 
 * University of Bordeaux
@@ -8,17 +8,18 @@ give lectures while working on my Ph.D. thesis.
 :CUSTOM_ID: teaching-ub
 :END:
 
-** Databases and web applications
+** Databases and web applications (32h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub-bddw
 :END:
 
-Currently, I give theoretical and practical lectures of relational databases and
-web applications in the first year of Bachelor's degree in computer science.
+This year, I was giving theoretical and practical lectures of relational
+databases and web applications in the first year of Bachelor's degree in
+computer science.
 
 Unfortunately, there is no publicly available teaching material for this course.
 
-** Object oriented programming
+** Object oriented programming (32h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub-oop
 :END:
@@ -34,7 +35,7 @@ online in French at [[http://www.reveillere.fr/L3POO/]].
 :CUSTOM_ID: teaching-bts
 :END:
 
-** Introduction to programming in C
+** Introduction to programming in C (64h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-bts-c
 :END:

@@ -1,9 +1,10 @@
 #+TITLE: Research
 
-Currently, I devote most of the time to the preparation of my Ph.D. thesis set
-in the context of solving linear systems arising from aeroacoustic problem
-modelizations. Nevertheless, my very first research internship made me work in
-the domain of compilation and source code optimization.
+Currently I devote most of the time to the preparation of my Ph.D. thesis
+focused on solving linear systems arising from aeroacoustic problem
+modelizations. However, my previous research internships were related to the
+domain of compilation and source code optimization. In my free time, I continue
+to work also on this subject.
 
 * Solvers for coupled FEM/BEM linear systems
 :PROPERTIES:
@@ -67,3 +68,6 @@ found in my [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
 or on the [[http://xfor.gforge.inria.fr][official website]] dedicated to XFOR.
 
 #+INCLUDE: ./shared/setup.org
+- [[https://gitlab.inria.fr/xfor]]
+- [[https://gitlab.inria.fr/pclauss/xfor]]
+
