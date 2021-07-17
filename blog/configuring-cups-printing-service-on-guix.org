@@ -1,4 +1,4 @@
-#+TITLE: Configuring *cups* printing service on Guix
+#+TITLE: Configuring cups printing service on Guix
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
