@@ -1,0 +1,242 @@
+#+TITLE: Using AddressSanitizer (ASan) in a CMake project
+#+AUTHOR: Marek Felšöci
+
+#+BEGIN_SYNOPSIS
+[[https://github.com/google/sanitizers/wiki/AddressSanitizer][AddressSanitizer]]
+(ASan) is a memory error detector for the C and C++ languages. It has been
+included in compilers such as GCC and Clang for quite some time now. Although
+the official Wiki page provides a very straightforward guide on how to use ASan
+in a general case, I could not find a good example of ASan being used in a CMake
+project. This is what this post is about.
+#+END_SYNOPSIS
+
+* Example project
+:PROPERTIES:
+:CUSTOM_ID: example-project
+:END:
+
+Throughout this post I rely on a short example project ~ASanDemo~ coded in C. It
+implements two functions (see files ~asan-demo.h~ and ~asan-demo.c~) used in
+such a way as to trigger errors in ASan (see file ~main.c~).
+
+The project has the following file structure.
+
+#+BEGIN_EXAMPLE
+ASanDemo
+├── build
+├── include
+│   └── asan-demo.h
+├── src
+│   ├── asan-demo.c
+│   └── main.c
+└── CMakeLists.txt
+#+END_EXAMPLE
+
+* Implementation
+:PROPERTIES:
+:CUSTOM_ID: implementation
+:END:
+
+** C source code
+:PROPERTIES:
+:CUSTOM_ID: c-source-code
+:END:
+
+*** Header file
+:PROPERTIES:
+:CUSTOM_ID: c-source-code-header-file
+:header-args: :tangle ./attachments/ASan/include/asan-demo.h :mkdirp yes
+:END:
+
+The header file ~asan-demo.h~ defines two functions:
+
+1. ~multiply~, a simple 32-bit integer multiplication function to demonstrate an
+   integer overflow error,
+
+#+BEGIN_SRC C
+#ifndef __ASAN_DEMO_H
+#define __ASAN_DEMO_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int multiply(int, int);
+#+END_SRC
+
+2. ~leaker~, a function that allocates memory but does not free it before
+   returning.
+
+#+BEGIN_SRC C
+void leaker(void);
+
+#endif
+#+END_SRC
+
+*** Sources
+:PROPERTIES:
+:CUSTOM_ID: c-source-code-sources
+:header-args: :mkdirp yes
+:END:
+
+Then, the associated source file ~asan-demo.c~ implements these functions.
+
+#+BEGIN_SRC C :tangle ./attachments/ASan/src/asan-demo.c
+#include "asan-demo.h"
+
+int multiply(int a, int b) {
+  return a * b;
+}
+
+void leaker(void) {
+  void * buffer = malloc(256);
+}
+#+END_SRC
+
+Finally, from the main function in ~main.c~, I call both of the functions in
+such a way as to trigger errors in ASan.
+
+#+BEGIN_SRC C :tangle ./attachments/ASan/src/main.c
+#include "asan-demo.h"
+
+int main(void) {
+  // 32-bit integer overflow
+  int result = multiply(4000000, 4000000);
+  printf(
+    "4,000,000 x 4,000,000 -> %d (computed) vs. 16,000,000,000,000 "
+    "(expected)\n", result
+  );
+
+  // Memory leak
+  leaker();
+
+  return 0;  
+}
+#+END_SRC
+
+** CMake build configuration
+:PROPERTIES:
+:CUSTOM_ID: cmake-build-configuration
+:header-args: :tangle ./attachments/ASan/CMakeLists.txt :mkdirp yes
+:END:
+
+There comes the most interesting part of the post, the CMake build configuration
+of our small example project.
+
+I begin by defining the minimum CMake version required for the project.
+
+#+BEGIN_SRC cmake
+cmake_minimum_required(VERSION 3.1)
+#+END_SRC
+
+Then, I declare the project itself.
+
+#+BEGIN_SRC cmake
+project(asan-demo C)
+#+END_SRC
+
+The =HEADERS= and =SRC= variables shall hold the paths to all the header and
+source files respectively.
+
+#+BEGIN_SRC cmake
+set(HEADERS
+  "include/asan-demo.h"
+)
+set(SRC
+  "src/asan-demo.c"
+  "src/main.c"
+)
+#+END_SRC
+
+I instrument the compiler (GCC in this case) to produce an executable called
+~asan-demo~ from the sources listed above.
+
+#+BEGIN_SRC cmake
+add_executable(asan-demo ${SRC} ${HEADERS})
+#+END_SRC
+
+I also need to add ~include~ to the list of include folders of the project.
+
+#+BEGIN_SRC cmake
+target_include_directories(asan-demo PUBLIC "include")
+#+END_SRC
+
+Eventually, I enable ASan if the build type is set to =Debug=. I do not want to
+use ASan in the final release as it may degrade the application's performance.
+
+The *compilation* and *linking* options associated to ASan here are:
+
+- ~-fsanitize=undefined~ enabling the detection of undefined behavior such as
+  integer overflows,
+- ~-fsanitize=address~ enabling the detection of memory problems such as leaks.
+
+See the official
+[[https://github.com/google/sanitizers/wiki/AddressSanitizer][Wiki]] of ASan for
+additional information about the possibilities of the tool.
+
+#+BEGIN_SRC cmake
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+  set(
+    CMAKE_C_FLAGS
+    "${CMAKE_C_FLAGS} -Werror -fsanitize=undefined -fsanitize=address"
+  )
+  target_link_options(asan-demo
+    BEFORE PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address
+  )
+endif()
+#+END_SRC
+
+* Download, build and test
+:PROPERTIES:
+:CUSTOM_ID: download-build-and-test
+:END:
+
+You can download the source files of the example project either separately or
+all at once (including the folder structure) as a tarball via the links below.
+
+#+CALL: generate-files()
+
+- [[../attachments/ASanDemo.tar.xz][ASanDemo.tar.xz]]
+  - [[../attachments/ASan/include/asan-demo.h][asan-demo.h]]
+  - [[../attachments/ASan/src/asan-demo.c][asan-demo.c]]
+  - [[../attachments/ASan/src/main.c][main.c]]
+  - [[../attachments/ASan/CMakeLists.txt][CMakeLists.txt]]
+
+Ensure you have restored the file structure of the project as described in
+Section [[#example-project]], navigate to the ~build~ folder and run the
+following commands to configure, build and execute the project.
+
+#+BEGIN_SRC shell
+cmake -DCMAKE_BUILD_TYPE="Debug" ..
+make
+./asan-demo
+#+END_SRC
+
+To configure the project without ASan, change the build type to something else
+than ~Debug~, e.g. ~Release~.
+
+#+BEGIN_SRC shell
+cmake -DCMAKE_BUILD_TYPE="Release" ..
+#+END_SRC
+
+Note that, ~Release~ is also the default build type.
+
+#+BEGIN_SRC shell
+cmake ..
+#+END_SRC
+
+* Miscellaneous
+:PROPERTIES:
+:CUSTOM_ID: miscellaneous
+:END:
+
+As a side note, I use the ELisp code below to tangle (extract) the source code
+from this post, produce the output C and CMake source files and create the
+tarball containing the entire example project at the end.
+
+#+NAME: generate-files
+#+BEGIN_SRC elisp :tangle no :results output silent
+(require 'org)
+(org-babel-tangle-file "using-address-sanitizer-asan-in-a-cmake-project.org")
+(shell-command "tar -cvJf ./attachments/ASan.tar.xz ./attachments/ASan") 
+#+END_SRC
+
