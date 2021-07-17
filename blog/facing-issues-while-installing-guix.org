@@ -172,8 +172,8 @@ After a reboot the system should start normally.
 :END:
 
 As I have mentionned before, this manipulation makes other operating systems on
-your machine unbootable. For now, we did not investigate any restoration method
-as we use only one system. Although,
+your machine unbootable. For now, I did not investigate any restoration method
+as I use only one system. Although,
 [[https://wiki.debian.org/GrubEFIReinstall][this article]] may be helpful.
 
 #+INCLUDE: ../shared/setup.org
