@@ -161,4 +161,3 @@ Note that, if at the very end you get an error related to some symbolic link
 failure, reiterate the previous command using =sudo=. Then, restart your
 computer for the changes to take effect.
 
-#+INCLUDE: ../shared/setup.org

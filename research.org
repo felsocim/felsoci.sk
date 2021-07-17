@@ -1,4 +1,5 @@
 #+TITLE: Research
+#+AUTHOR: Marek Felšöci
 
 Currently I devote most of the time to the preparation of my Ph.D. thesis
 focused on solving linear systems arising from aeroacoustic problem
@@ -67,7 +68,7 @@ More information on the XFOR structure and its theoretical background can be
 found in my [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
 or on the [[http://xfor.gforge.inria.fr][official website]] dedicated to XFOR.
 
-#+INCLUDE: ./shared/setup.org
+Also, the XFOR software tools and documentation are available on GitLab:
 - [[https://gitlab.inria.fr/xfor]]
 - [[https://gitlab.inria.fr/pclauss/xfor]]
 

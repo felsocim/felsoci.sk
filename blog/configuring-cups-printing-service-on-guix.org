@@ -57,5 +57,3 @@ User jdoe
 #+END_EXAMPLE
 
 Finally, restart your computer!
-
-#+INCLUDE: ../shared/setup.org

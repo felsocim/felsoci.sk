@@ -1,4 +1,5 @@
 #+TITLE: About
+#+AUTHOR: Marek Felšöci
 
 I am call_age(birth-date="1996-04-23 00:00:00") years old Ph.D. candidate in
 computer science at
@@ -84,5 +85,3 @@ See the implementation in the code block below.
 ;; Print out the age.
 (print (get-age birth-date))
 #+END_SRC
-
-#+INCLUDE: ./shared/setup.org

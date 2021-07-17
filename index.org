@@ -1,4 +1,5 @@
 #+TITLE: Home
+#+AUTHOR: Marek Felšöci
 #+OPTIONS: title:nil
 
 #+BEGIN_EXPORT html
@@ -59,4 +60,3 @@ student representative to the
 [[https://ed-mi.u-bordeaux.fr/L-Ecole-doctorale/Conseil-de-l-Ecole-doctorale][Conseil de l'École doctorale de mathématiques et d'informatique de l'Université de Bordeaux]]
 (council of the doctoral school) in 2021.
 
-#+INCLUDE: ./shared/setup.org

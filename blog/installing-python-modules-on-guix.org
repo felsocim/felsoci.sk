@@ -213,4 +213,3 @@ following command to install *gcvb*.
 guix package -m gcvb.scm
 #+END_SRC
 
-#+INCLUDE: ../shared/setup.org

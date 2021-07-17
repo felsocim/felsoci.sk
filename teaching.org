@@ -1,4 +1,5 @@
 #+TITLE: Teaching
+#+AUTHOR: Marek Felšöci
 
 After my first lecture in 2019, I came to enjoy teaching and I continue to
 give lectures while working on my Ph.D. thesis.
@@ -53,4 +54,3 @@ valuable experience!
 The teaching materials, exercices, exam and project subjects are available
 online in French at [[https://mfelsoci.gitlabpages.inria.fr/lectures/]].
 
-#+INCLUDE: ./shared/setup.org

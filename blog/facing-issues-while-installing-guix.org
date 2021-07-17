@@ -176,4 +176,3 @@ your machine unbootable. For now, I did not investigate any restoration method
 as I use only one system. Although,
 [[https://wiki.debian.org/GrubEFIReinstall][this article]] may be helpful.
 
-#+INCLUDE: ../shared/setup.org

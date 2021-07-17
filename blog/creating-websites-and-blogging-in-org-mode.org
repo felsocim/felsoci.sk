@@ -32,6 +32,7 @@ The file structure of the project is described below.
 .
 ├── blog
 │   ├── creating-website-and-blogging-in-org-mode.org
+│   ├── attachments
 │   └── ...
 ├── cv
 │   └── cv-felsoci.org
@@ -39,14 +40,10 @@ The file structure of the project is described below.
 │   ├── marek.jpg
 │   └── ...
 ├── styles
-│   ├── fonts
-│   │   ├── roboto-bold.eot
-│   │   └── ...
 │   └── custom.css
 ├── shared
 │   ├── footer.html
-│   ├── header.html
-│   └── setup.org
+│   └── header.html
 ├── about.org
 ├── index.org
 ├── publish.el
@@ -55,13 +52,12 @@ The file structure of the project is described below.
 └── teaching.org
 #+END_EXAMPLE
 
-The ~blog~ folder holds the Org documents of the blog posts. ~cv~ contains a
+~blog~ folder holds the Org documents of the blog posts. The ~attachments~
+subfolder contains only static files to be published as is. ~cv~ contains a
 formal version of my CV published as a PDF document and accessible for download
 from the home page. ~images~ naturally contains all the image files featured on
-the site. The custom CSS sheet resides in ~styles~ so as the
-[[https://fonts.google.com/specimen/Roboto][Roboto]] font. ~shared~ holds the
-common static header and footer files and a common Org
-[[#setup-file][setup file]]. The Org documents corresponding to the content
+the site. The custom CSS sheet resides in ~styles~. ~shared~ holds the common
+static header and footer files. The Org documents corresponding to the content
 pages are stored in the root of the project's folder. Finally, the Emacs Lisp
 script ~publish.el~ controls the publishing of the site.
 
@@ -122,6 +118,46 @@ It begins by importing the Emacs packages required for:
   #+BEGIN_SRC elisp
 (require 'org-ref)
   #+END_SRC
+
+Then, I define a utility function =last-modified= allowing me to get the date of
+last modification of a file for the list of blog posts (see
+[[#formatting-items][Formatting items]]).
+
+At first, the function tries to find the date of the last Git commit the file
+was subject of as well as the last modification time of the file from the local
+filesystem. 
+
+#+BEGIN_SRC elisp
+(defun last-modified (file)
+  (let*
+      ((last-commit-date
+        (shell-command-to-string
+         (concat
+          "git log -1 --pretty=\"format:%cD\"" " " file)))
+       (last-modification-date
+        (file-attribute-modification-time
+         (file-attributes file))))
+#+END_SRC
+
+If there is no commit involving the file, its last modification time is
+returned. This way, I prevent the apparition of wrong dates after cloning the
+site's repository.
+
+#+BEGIN_SRC elisp
+    (if (string= last-commit-date "")
+        (format-time-string
+         "%d/%m/%Y"
+         (+
+          (*
+           (nth 0 last-modification-date) (expt 2 16))
+          (nth 1 last-modification-date)))
+      (substring
+       (shell-command-to-string
+        (concat
+         "date -d \""
+         last-commit-date
+         "\" +%d/%m/%Y")) 0 -1))))
+#+END_SRC
 
 ** Blog post synopsis
 :PROPERTIES:
@@ -212,9 +248,9 @@ sitemap =style= argument here.
 #+END_SRC
 
 Unfortunately, when the function is called by the Emacs export machinery, the
-absolute path provided in =entry= is incorrect. It lacks the parent directory
+absolute path provided in =entry= is incorrect. It lacks the parent folder
 ~blog~ because Emacs thinks it is running in the project's root although the
-current working directory when exporting blog posts is ~blog~ (see
+current working folder, when exporting blog posts, is ~blog~ (see
 [[#blog][Blog]]). Therefore, I have to re-include ~blog/~ into the path.
 
 For example, if the initial =entry= holds ~/home/marek/src/felsoci.sk/post.org~,
@@ -239,11 +275,7 @@ Published on %s by %s
 
 %s
 
-@@html:
-<form action=\"@@%s@@html:.html\" method=\"POST\">
-  <button type=\"submit\">Read more</button>
-</form>
-@@
+@@html:<a href=\"@@%s@@html:.html\"><button>Read more</button></a>@@
 "
 #+END_SRC
 
@@ -260,8 +292,11 @@ to format:
    #+END_SRC
 3. the formatted date of publishing
    #+BEGIN_SRC elisp
-            (format-time-string "%d/%m/%Y"
-                                (org-publish-find-date entry project))
+            (last-modified
+             (concat
+              (plist-get (cdr project) :base-directory)
+              "/"
+              entry))
    #+END_SRC
 4. the author's name extracted from the project property list =project=
    #+BEGIN_SRC elisp
@@ -320,13 +355,7 @@ makes =seq-filter= return only the leading elements of the latter.
     (lambda (post)
       (format "%s\n" (car post)))
     (seq-filter #'car (cdr posts))
-    "\n")
-#+END_SRC
-
-At the end, I include the common set-up Org file (see Section [[#setup-file]]).
-
-#+BEGIN_SRC elisp
-    "#+INCLUDE: ../shared/setup.org"))
+    "\n")))
 #+END_SRC
 
 ** Page titles
@@ -334,8 +363,8 @@ At the end, I include the common set-up Org file (see Section [[#setup-file]]).
 :CUSTOM_ID: page-titles
 :END:
 
-By default, the title of a published HTML page corresponds to the title of the
-original Org document. In addition to this title, I want to add a suffix, e. g.
+By default, the title of an output HTML page corresponds to the title of the
+original Org document. In addition to this title, I want to add a suffix, e.g.
 ‘Title - My site’.
 
 To achieve this, I define the function =add-suffix-to-html-title= taking as
@@ -374,7 +403,7 @@ Then, I define two wrappers for this function because I want to add a different
 suffix depending on whether the page is a content page or a blog post.
 
 The wrapper =add-suffix-to-html-title-for-pages= calls the original function
-=add-suffix-to-html-title= when exporting content pages and adds the suffix
+=add-suffix-to-html-title= after publishing content pages and adds the suffix
 ‘ - Marek Felšöci’. Note that, the list of corresponding HTML files is acquired
 through the project component property =:publishing-directory= read from the
 =plist= argument (see [[#project-components][Project components]]).
@@ -399,6 +428,76 @@ suffix ‘ - Marek's blog’ to the titles of blog posts.
     (plist-get plist :publishing-directory) t "\\.html$")))
 #+END_SRC
 
+These functions are called completion functions as they are triggered after
+publishing (see
+[[https://orgmode.org/manual/Sources-and-destinations.html][Sources and destinations]]
+in the Org Manual).
+
+** Last modification date
+:PROPERTIES:
+:CUSTOM_ID: last-modification-date
+:END:
+
+To include the last modification date to every page and blog post, I use an
+another completion function.
+
+It begins by acquiring the list of original Org files through the project
+component property =:base-directory= read from the =plist= argument (see
+[[#project-components][Project components]]).
+
+#+BEGIN_SRC elisp
+(defun add-last-modification-date (plist)
+  (let*
+      ((org-files
+        (directory-files
+         (plist-get plist :base-directory) t "\\.org$"))
+#+END_SRC
+
+I also need to get the path to the publishing directory through the component
+property =:publishing-directory=.
+
+#+BEGIN_SRC elisp
+       (output-directory
+        (plist-get plist :publishing-directory)))
+#+END_SRC
+
+The idea is to determine the last modification dates of the original Org
+documents using the function =last-modified= from
+[[#publishing-script][Publishing script]] and insert the dates to the published
+HTML documents straight before the footer (see
+[[#general-configuration][General configuration]]).
+
+To do this, I loop over each of the original Org documents to:
+
+- determine its last modification date,
+  #+BEGIN_SRC elisp
+    (while (setq org-file (pop org-files))
+      (setq last-modification-date
+            (last-modified org-file))
+  #+END_SRC
+
+- get the path to the corresponding output HTML document,
+  #+BEGIN_SRC elisp
+      (setq output-html-file
+            (concat
+             output-directory "/" (file-name-base org-file) ".html"))
+  #+END_SRC
+
+- open the HTML document, place the cursor before the opening =<div>= tag of the
+  footer, insert the last modification date and save the modification.
+  #+BEGIN_SRC elisp
+      (with-temp-buffer
+        (insert-file-contents output-html-file)
+        (goto-char (point-max))
+        (re-search-backward "<div id=\"postamble\"")
+        (insert
+         "<div class=\"content\"><p id=\"last-modification\">"
+         "Last update on "
+         last-modification-date
+         "</p></div>")
+        (write-region 1 (point-max) output-html-file)))))
+#+END_SRC
+
 ** General configuration
 :PROPERTIES:
 :CUSTOM_ID: general-configuration
@@ -414,21 +513,27 @@ and not only changed files. It makes sure everything gets published.
 (setq org-publish-use-timestamps-flag nil)
 #+END_SRC
 
-Also, I want to preserve the indentation in code blocks on export and tangle.
+I also disable the prompt before each code block evaluation.
+
+#+BEGIN_SRC elisp
+(setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+Then, I want to preserve the indentation in code blocks on export and tangle.
 
 #+BEGIN_SRC elisp
 (setq org-src-preserve-indentation t)
 #+END_SRC
 
-Next, I override the default LaTeX publishing command to use =latexmk= in order
-to ensure the bibliography entries, if any, are published correctly.
+In order to ensure the bibliography entries, if any, are published correctly I
+override the default LaTeX publishing command to use =latexmk=.
 
 #+BEGIN_SRC elisp
 (setq org-latex-pdf-process (list "latexmk --shell-escape -f -pdf %f"))
 #+END_SRC
 
-I also need to instrument the publishing function to include the header and the
-footer to every exported page.
+Moreover, I need to instrument the publishing function to include the header and
+the footer to every exported page.
 
 #+BEGIN_SRC elisp
 (setq org-html-preamble (org-file-contents "./shared/header.html"))
@@ -445,14 +550,14 @@ href=\"../styles/custom.css\">
 href=\"https://felsoci.sk/favicon.ico\"/>")
 #+END_SRC
 
-Finally, I define a utility function allowing me to change the output directory
+Finally, I define a utility function allowing me to change the output folder
 through an environment variable, namely =ORG_OUTPUT_PATH=. This way, I can
 switch between my local Apache server for testing and the production server
 easily. If the variable is not set in the current environment, the output will
-be published into the ~public~ directory located in the root of the project.
+be published into the ~public~ folder located in the root of the project.
 
 Note that, the optional =suffix= argument specifies the local path starting from
-the root of the output directory.
+the root of the output folder.
 
 #+BEGIN_SRC elisp
 (defun get-output-path (&optional suffix)
@@ -510,13 +615,14 @@ publish the Org documents composing this project component in the HTML format.
              :publishing-function '(org-html-publish-to-html)
 #+END_SRC
 
-The =:completion-function= property allows to define a function to execute once
-the publishing function terminates. Here, I set
-=add-suffix-to-html-title-for-blog-posts= as completion function (see
-[[#page-titles][Page titles]]).
+The =:completion-function= property allows me to define functions to execute
+after publishing. Here, I set =add-last-modification-date= and
+=add-suffix-to-html-title-for-blog-posts= as completion functions (see
+[[#last-modification-date][Last modification date]] and [[#page-titles][Page titles]]).
 
 #+BEGIN_SRC elisp
-             :completion-function '(add-suffix-to-html-title-for-blog-posts)
+             :completion-function '(add-last-modification-date
+                                    add-suffix-to-html-title-for-blog-posts)
 #+END_SRC
 
 Eventually, I configure the sitemap corresponding to the list of blog posts.
@@ -565,14 +671,16 @@ very close to the previous one
               :html-head-include-scripts nil
 #+END_SRC
 
-except for the title suffix function (see [[#page-titles][Page titles]]).
+except for the title suffix function =add-suffix-to-html-title-for-pages= (see
+[[#page-titles][Page titles]]).
 
 #+BEGIN_SRC elisp
-              :completion-function '(add-suffix-to-html-title-for-pages)
+              :completion-function '(add-last-modification-date
+                                     add-suffix-to-html-title-for-pages)
 #+END_SRC
 
-Furthermore, I must exclude the ~blog~ directory from the list of input
-documents to prevent duplicate export.
+Furthermore, I must exclude the ~blog~ folder from the list of input documents
+to prevent duplicate export.
 
 #+BEGIN_SRC elisp
               :exclude (regexp-opt '("blog")))
@@ -595,15 +703,15 @@ documents on output.
               :publishing-function '(org-latex-publish-to-pdf))
 #+END_SRC
 
-*** Styles and images
+*** Styles, images and other attachments
 :PROPERTIES:
-:CUSTOM_ID: styles-and-images
+:CUSTOM_ID: styles-images-and-other-attachments
 :END:
 
-In case of static files such as CSS styles and images which are published as is,
-I use the publishing function for attachments. In case of the =styles=
-directory, I enable recursive lookup in order to include also the =fonts=
-sub-folder (see [[#projects-structure][Project's structure]]).
+In case of static files such as CSS styles, images and other attachments which
+are published as is, I use the publishing function for attachments. In case of
+the ~styles~ folder, I enable recursive lookup in order to include also the
+~fonts~ sub-folder. Same for ~attachments~ (see [[#projects-structure][Project's structure]]).
 
 #+BEGIN_SRC elisp
         (list "styles"
@@ -617,6 +725,12 @@ sub-folder (see [[#projects-structure][Project's structure]]).
               :base-extension ".*"
               :publishing-directory (get-output-path "images")
               :publishing-function '(org-publish-attachment))
+        (list "attachments"
+              :base-directory "./blog/attachments"
+              :base-extension ".*"
+              :recursive t
+              :publishing-directory (get-output-path "blog/attachments")
+              :publishing-function '(org-publish-attachment))
 #+END_SRC
 
 I complete the list by adding the list of all the components of the project as
@@ -624,7 +738,7 @@ well as the name of the latter.
 
 #+BEGIN_SRC elisp
         (list "felsoci.sk"
-              :components '("blog" "pages" "styles" "images"))))
+              :components '("blog" "pages" "styles" "images" "attachments"))))
 #+END_SRC
 
 * Ready, steady, go!
@@ -639,7 +753,8 @@ Notice that, in this command line, I disable the confirmation before evaluating
 each code block for the sake of simplicity.
 
 #+BEGIN_SRC shell
-emacs --batch --no-init-file --eval '(setq org-confirm-babel-evaluate nil)' --load publish.el --funcall org-publish-all
+emacs --batch --no-init-file --eval '(setq org-confirm-babel-evaluate nil)' \
+      --load publish.el --funcall org-publish-all
 #+END_SRC
 
 Feel free to send me your feedback!
@@ -653,4 +768,3 @@ Many thanks to Dennis Ogbe who published a similar post on
 [[https://ogbe.net/blog/blogging_with_org.html][his website]]. It helped me a
 lot while building my own publishing configuration!
 
-#+INCLUDE: ../shared/setup.org
