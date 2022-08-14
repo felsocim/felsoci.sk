@@ -207,44 +207,61 @@ It begins by importing the Emacs packages providing:
 (require 'oc-csl) ;; for HTML
   #+END_SRC
 
-Then, I define a utility function =last-modified= allowing me to get the date of
-last modification of a file for the list of blog posts (see
-[[#formatting-items][Formatting items]]).
+Then, I define a utility function =file-dates= allowing me to get the dates of
+the first publication and of the last modification of an Org document.
 
-At first, the function tries to find the date of the last Git commit the file
-was subject of as well as the last modification time of the file from the local
-filesystem. 
+At first, the function tries to find the dates in the Git log.
 
 #+BEGIN_SRC elisp
-(defun last-modified (file)
+(defun file-dates (file)
   (let*
-      ((last-commit-date
+      ((first-commit-date
         (shell-command-to-string
          (concat
-          "git log -1 --pretty=\"format:%cD\"" " " file)))
-       (last-modification-date
+          "git log --reverse --pretty=\"format:%cD\""
+          " "
+          file
+          " 2> /dev/null | head -n 1")))
+       (last-commit-date
+        (shell-command-to-string
+         (concat
+          "git log --pretty=\"format:%cD\""
+          " "
+          file
+          " 2> /dev/null | head -n 1")))
+       (last-modification-date-raw
         (file-attribute-modification-time
-         (file-attributes file))))
-#+END_SRC
-
-If there is no commit involving the file, its last modification time is
-returned. This way, I prevent the apparition of wrong dates after cloning the
-site's repository.
-
-#+BEGIN_SRC elisp
-    (if (string= last-commit-date "")
+         (file-attributes file)))
+       (last-modification-date
         (format-time-string
          "%d/%m/%Y"
          (+
           (*
-           (nth 0 last-modification-date) (expt 2 16))
-          (nth 1 last-modification-date)))
-      (substring
-       (shell-command-to-string
-        (concat
-         "date -d \""
-         last-commit-date
-         "\" +%d/%m/%Y")) 0 -1))))
+           (nth 0 last-modification-date-raw) (expt 2 16))
+          (nth 1 last-modification-date-raw)))))
+#+END_SRC
+
+If there is no commit involving the file, I take the last modification timestamp
+recorded by the filesystem.
+
+#+BEGIN_SRC elisp
+    (list
+     (if (string= first-commit-date "")
+         last-modification-date
+       (substring
+        (shell-command-to-string
+         (concat
+          "date -d \""
+          first-commit-date
+          "\" +%d/%m/%Y")) 0 -1))
+     (if (string= last-commit-date "")
+         last-modification-date
+       (substring
+        (shell-command-to-string
+         (concat
+          "date -d \""
+          last-commit-date
+          "\" +%d/%m/%Y")) 0 -1)))))
 #+END_SRC
 
 ** Blog post synopsis
@@ -347,18 +364,30 @@ I need to transform it to ~/home/marek/src/felsoci.sk/blog/post.org~.
 #+BEGIN_SRC elisp
       ((fixed-entry
         (concat
-         (file-name-directory entry) "blog/" (file-name-nondirectory entry))))
+         (file-name-directory entry) "blog/" (file-name-nondirectory entry)))
 #+END_SRC
 
-Finally, return the Org string corresponding to the blog post (sitemap) entry
-formatted using the =format= function similar to =sprintf= in C.
+Also, before actually formatting the sitemap entry, I need to determine its
+first publication and last modification dates.
+
+#+BEGIN_SRC elisp
+       (entry-dates
+        (file-dates
+         (concat
+          (plist-get (cdr project) :base-directory)
+          "/"
+          entry))))
+#+END_SRC
+
+Finally, return the Org string corresponding to the sitemap entry formatted
+using the =format= function similar to =sprintf= in C.
 
 #+BEGIN_SRC elisp
     (format "
 @@html:<h2 class=\"post-title\">@@
 [[file:%s][%s]]
 @@html:</h2><span class=\"post-metadata\">@@
-Published on %s by %s
+Published on %s by %s%s
 @@html:</span>@@
 
 %s
@@ -370,36 +399,39 @@ Published on %s by %s
 All of the =%s= are replaced by the values of the arguments following the string
 to format:
 
-1. the path to the blog post Org document
+1. the path to the blog post Org document,
    #+BEGIN_SRC elisp
             entry
    #+END_SRC
-2. the title of the post found in the Org document under the =#+TITLE= directive
+2. the title of the post found in the Org document under the =#+TITLE=
+   directive,
    #+BEGIN_SRC elisp
             (org-publish-find-title entry project)
    #+END_SRC
-3. the formatted date of publishing
+3. the formatted date of publishing,
    #+BEGIN_SRC elisp
-            (last-modified
-             (concat
-              (plist-get (cdr project) :base-directory)
-              "/"
-              entry))
+            (nth 0 entry-dates)
    #+END_SRC
-4. the author's name extracted from the project property list =project=
+4. the author's name extracted from the project property list =project=,
    #+BEGIN_SRC elisp
             (substring
              (format "%s"
                      (org-publish-find-property entry :author project)) 1 -1)
    #+END_SRC
-5. the synopsis of the blog post retrieved using our custom parsing function
+5. the formatted date of last modification, if any,
+   #+BEGIN_SRC elisp
+            (if (string= (nth 0 entry-dates) (nth 1 entry-dates))
+                ""
+              (concat " (updated on " (nth 1 entry-dates) ")"))
+   #+END_SRC
+6. the synopsis of the blog post retrieved using our custom parsing function,
    =get-post-synopsis=
    #+BEGIN_SRC elisp
             (get-post-synopsis fixed-entry)
    #+END_SRC
-6. the path to the blog post file without extension because the link is not
+7. the path to the blog post file without extension because the link is not
    converted into a HTML link during the export as we do not use a standard
-   Org-formatted link such as =[[target][text]]= but a button
+   Org-formatted link such as =[[target][text]]= but a button.
    #+BEGIN_SRC elisp
             (file-name-sans-extension entry))))
    #+END_SRC
@@ -559,7 +591,7 @@ To do this, I loop over each of the original Org documents to:
   #+BEGIN_SRC elisp
     (while (setq org-file (pop org-files))
       (setq last-modification-date
-            (last-modified org-file))
+            (nth 1 (file-dates org-file)))
   #+END_SRC
 
 - get the path to the corresponding output HTML document,
