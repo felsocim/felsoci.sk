@@ -46,7 +46,9 @@ The file structure of the project is described below.
 │   ├── footer.html
 │   └── header.html
 ├── about.org
+├── channels.scm
 ├── index.org
+├── manifest.scm
 ├── publish.el
 ├── README.md
 ├── research.org
@@ -54,13 +56,71 @@ The file structure of the project is described below.
 #+END_EXAMPLE
 
 ~blog~ folder holds the Org documents of the blog posts. The ~attachments~
-subfolder contains only static files to be published as is. ~cv~ contains a
-formal version of my CV published as a PDF document and accessible for download
-from the home page. ~images~ naturally contains all the image files featured on
-the site. The custom CSS sheet resides in ~styles~. ~shared~ holds the common
-static header and footer files. The Org documents corresponding to the content
-pages are stored in the root of the project's folder. Finally, the Emacs Lisp
-script ~publish.el~ controls the publishing of the site.
+subfolder contains static attachments related to the blog posts. ~cv~ contains
+my complete resume in a single Org document published in PDF format and
+available for download from the home page. ~images~ naturally contains all the
+image files featured on the site. The custom CSS sheets reside in ~styles~ where
+~htmlize.css~ stylizes syntax highlighting in source code blocks and
+~custom.css~ defines the look and feel of all the other elements of the website.
+~shared~ holds the common static header and footer files as well as an Org setup
+file providing some common document configuration, e.g. for bibliography. The
+Org documents corresponding to the content pages are stored in the root of the
+project's folder. Finally, the Emacs Lisp script ~publish.el~ controls the
+publishing of the website.
+
+** Software environment
+:PROPERTIES:
+:CUSTOM_ID: software-environment
+:END:
+
+I use the GNU Guix [cite:@Guix] transactional package manager allowing for a
+self-contained, executable description of the whole software environment
+required for running the publishing Emacs Lisp script. The packages to include
+into the environment are listed in a manifest file [cite:@GuixManifests], here
+~manifest.scm~.
+
+#+HEADER: :tangle ../manifest.scm
+#+BEGIN_SRC scheme
+(specifications->manifest
+ (list "emacs"
+       "emacs-org"
+       "emacs-org-ref"
+       "emacs-citeproc-el"
+       "emacs-htmlize"
+       "git"
+       "python"
+       "python-pygments"
+       "texlive"
+       "bash"
+       "coreutils"
+       "tar"))
+#+END_SRC
+
+To ensure the same version of Guix and every single package in the environment
+every time I enter the latter, I use also a channel file [cite:@GuixChannels],
+here ~channel.scm~, which represents a list of the Git repositories providing
+package definitions, i.e. channels in Guix terminology, necessary to build the
+publishing environment together with the associated revision numbers.
+
+#+HEADER: :tangle ../channels.scm
+#+BEGIN_SRC scheme
+(list
+ (channel
+  (name 'guix)
+  (url "https://git.savannah.gnu.org/git/guix.git")
+  (branch "master")
+  (commit
+   "ca8c7a36dfbefd66841a2a6df4c9e44ba525c3e0")
+  (introduction
+   (make-channel-introduction
+    "9edb3f66fd807b096b48283debdcddccfea34bad"
+    (openpgp-fingerprint
+     "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+#+END_SRC
+
+Note that I use Guix also at work to improve the reproducibility of my numerical
+experiments. If you want to know more about this amazingly powerful tool, refer
+to the citations in this section.
 
 ** Header and footer
 :PROPERTIES:
@@ -759,16 +819,22 @@ well as the name of the latter.
 :CUSTOM_ID: ready-steady-go
 :END:
 
-At this point, I am ready to go. To launch the publishing, I use the following
-shell command.
+At this point, I am ready to go. To launch the publishing I need to:
 
-Notice that, in this command line, I disable the confirmation before evaluating
-each code block for the sake of simplicity.
+1. extract the source code from the Org document corresponding to this page,
+   #+BEGIN_SRC shell
+guix time-machine -C channels.scm -- shell --pure -m manifest.scm -- \
+     emacs --batch -l org --eval \
+'(org-babel-tangle-file "blog/creating-websites-and-blogging-in-org-mode.org")'
+   #+END_SRC
 
-#+BEGIN_SRC shell
-emacs --batch --no-init-file --eval '(setq org-confirm-babel-evaluate nil)' \
-      --load publish.el --funcall org-publish-all
-#+END_SRC
+2. call the publishing function on the ~publish.el~ file.
+   #+BEGIN_SRC shell
+guix time-machine -C channels.scm -- shell --pure -m manifest.scm -- \
+     emacs --batch --no-init-file \
+     --eval '(setq org-confirm-babel-evaluate nil)' --load publish.el \
+     --funcall org-publish-all
+   #+END_SRC
 
 Feel free to send me your feedback!
 
