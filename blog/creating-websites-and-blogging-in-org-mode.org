@@ -96,7 +96,7 @@ everywhere.
 The core of the project is the Elisp publishing script ~publish.el~ responsible
 for generating the final HTML source of the site.
 
-It begins by importing the Emacs packages required for:
+It begins by importing the Emacs packages providing:
 
 - Org mode support,
   #+BEGIN_SRC elisp
@@ -110,7 +110,7 @@ It begins by importing the Emacs packages required for:
   #+BEGIN_SRC elisp
 (require 'ox-publish)
   #+END_SRC
-- source code block export to HTML,
+- engine for exporting source code blocks to HTML,
   #+BEGIN_SRC elisp
 (require 'htmlize)
   #+END_SRC
@@ -236,8 +236,8 @@ formatting the sitemap (list of blog posts) and its items (blog posts).
 :CUSTOM_ID: formatting-items
 :END:
 
-The function =format-blog-item= changes the formatting of the sitemap item
-=entry= (blog post) belonging to =project= (see
+The function =format-blog-item= changes the formatting of the sitemap item (blog
+post) =entry= belonging to =project= (see
 [[#project-components][Project components]]). Note that, =entry= is the absolute
 path to the Org file of the blog post being processed. Also, I don't use the
 sitemap =style= argument here.
@@ -618,7 +618,8 @@ publish the Org documents composing this project component in the HTML format.
 The =:completion-function= property allows me to define functions to execute
 after publishing. Here, I set =add-last-modification-date= and
 =add-suffix-to-html-title-for-blog-posts= as completion functions (see
-[[#last-modification-date][Last modification date]] and [[#page-titles][Page titles]]).
+[[#last-modification-date][Last modification date]] and
+[[#page-titles][Page titles]]).
 
 #+BEGIN_SRC elisp
              :completion-function '(add-last-modification-date
@@ -711,7 +712,8 @@ documents on output.
 In case of static files such as CSS styles, images and other attachments which
 are published as is, I use the publishing function for attachments. In case of
 the ~styles~ folder, I enable recursive lookup in order to include also the
-~fonts~ sub-folder. Same for ~attachments~ (see [[#projects-structure][Project's structure]]).
+~fonts~ sub-folder. Same for ~attachments~ (see
+[[#projects-structure][Project's structure]]).
 
 #+BEGIN_SRC elisp
         (list "styles"
