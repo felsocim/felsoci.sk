@@ -1,6 +1,7 @@
 body {
   color: #404040;
-  font-family: "Verdana", "DejaVu Sans", sans-serif;
+  font-family: Verdana, "Bitstream Vera Sans", "DejaVu Sans", Geneva,
+    sans-serif;
   font-size: 10pt;
   line-height: 1.6;
   margin: 0;
@@ -14,11 +15,13 @@ h1, h2 {
 
 h1, h2, h3 {
   border-bottom: 1px solid #CCCCCC;
-  font-family: "Arial", "DejaVu Sans", "Helvetica", sans-serif;
+  font-family: Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans,
+    sans-serif;
 }
 
 h4, h5, h6 {
-  font-family: "Arial", "DejaVu Sans", "Helvetica", sans-serif;
+  font-family: Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans,
+    sans-serif;
 }
 
 a {
