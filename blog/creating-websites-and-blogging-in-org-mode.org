@@ -40,7 +40,8 @@ The file structure of the project is described below.
 │   ├── marek.jpg
 │   └── ...
 ├── styles
-│   └── custom.css
+│   ├── custom.css
+│   └── htmlize.css
 ├── shared
 │   ├── footer.html
 │   └── header.html
@@ -540,14 +541,24 @@ the footer to every exported page.
 (setq org-html-postamble (org-file-contents "./shared/footer.html"))
 #+END_SRC
 
-In order to include my custom CSS style and configure the favicon, I add two
-extra lines to the HTML header. 
+In order to include my custom CSS styles and configure the favicon, I add three
+extra lines to the HTML header.
 
 #+BEGIN_SRC elisp
 (setq org-html-head-extra "<link rel=\"stylesheet\" type=\"text/css\"
 href=\"../styles/custom.css\">
+<link rel=\"stylesheet\" type=\"text/css\"
+href=\"../styles/htmlize.css\">
 <link rel=\"icon\" type=\"image/x-icon\"
 href=\"https://felsoci.sk/favicon.ico\"/>")
+#+END_SRC
+
+For the HTML export backend to stylize code blocks using a CSS style sheet file
+instead of inline CSS rules, I have to parameter the
+=org-html-htmlize-output-type= variable.
+
+#+BEGIN_SRC elisp
+(setq org-html-htmlize-output-type 'css)
 #+END_SRC
 
 Finally, I define a utility function allowing me to change the output folder
