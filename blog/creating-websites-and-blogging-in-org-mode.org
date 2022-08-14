@@ -2,12 +2,11 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-I discovered the power of [[https://orgmode.org/][Org mode]] after joining Inria
-(see [[../index.org][Home]]) to work on my Ph.D. thesis which is also entirely
-written in Org mode. Indeed, one can easily export an Org mode document to an
-HTML page or a PDF document typeset in LaTeX. Recently, I committed myself to
-overhaul my personal website and decided to produce it using Org. So, in this
-post, I detail the whole process step by step.
+I discovered the power of Org mode when I started to work on my Ph.D. thesis
+which is being entirely written in Org mode too. Indeed, one can easily export
+an Org mode document to an HTML page or a PDF document typeset in LaTeX.
+Recently, I committed myself to overhaul my personal website and decided to
+produce it using Org. So, in this post, I detail the whole process step by step.
 #+END_SYNOPSIS
 
 * Project's structure
@@ -16,15 +15,14 @@ post, I detail the whole process step by step.
 :END:
 
 The idea here is to build a static HTML website generated from a collection of
-Org documents. On one hand, the site have a couple of content pages such as
-/Home/, /About/ and so on. On the other hand, it features a small blog as well.
+Org [cite:@OrgMode] documents. On one hand, the site have a couple of content
+pages such as /Home/, /About/ and so on. On the other hand, it features a small
+blog as well.
 
 When it comes to the style of the site, I am looking for simplicity. Although,
-there are some
-[[https://github.com/fniessen/org-html-themes][great Org HTML templates]], they
-are rather adapted for standalone HTML pages than for creating a complete
-website with navigation. So, I prefer to define a tiny custom CSS style sheet to
-make the assembly of the site as easy to maintain as possible.
+there are some great Org HTML templates [cite:@OrgTemplates], they are adapted
+rather for standalone pages than for a complete website with navigation. So, I
+prefer to define my own tiny CSS style sheet.
 
 The file structure of the project is described below.
 
@@ -33,6 +31,7 @@ The file structure of the project is described below.
 ├── blog
 │   ├── creating-website-and-blogging-in-org-mode.org
 │   ├── attachments
+│   ├── biblio-setup.org (symbolic link to '../shared/biblio-setup.org')
 │   └── ...
 ├── cv
 │   └── cv-felsoci.org
@@ -43,6 +42,7 @@ The file structure of the project is described below.
 │   ├── custom.css
 │   └── htmlize.css
 ├── shared
+│   ├── biblio-setup.org
 │   ├── footer.html
 │   └── header.html
 ├── about.org
@@ -136,17 +136,41 @@ legal information, the bottom navigation menu and a short information section.
 ** Setup file
 :PROPERTIES:
 :CUSTOM_ID: setup-file
+:header-args: :tangle ../shared/biblio-setup.org
 :END:
 
-In order to include the last modification time as well as the author's name to
-every page, I use a common Org file.
+I put global bibliography configuration into a dedicated Org file stored in the
+~shared~ folder. This file can then be included in Org documents featuring
+citations and a bibliography listing.
 
-Besides a few lines of HTML, it call the Elisp function =modification-time= to
-determine and include the last modifcation date and time on every page that
-includes the setup file using the =#+INCLUDE= directive.
+~biblio-setup.org~ is quiet short. I only need to provide the path to
+the file containing bibliography entries
 
-Finally, it uses the =#+AUTHOR= directive to configure the same author's name
-everywhere.
+#+BEGIN_SRC org
+#+BIBLIOGRAPHY: references.bib
+#+END_SRC
+
+and specify the export processor to use, i.e. =csl= [cite:@Csl] in this case.
+The second argument of =#+CITE_EXPORT= is the style file [cite:@CslStyles] to
+use when formatting citations and bibliography listings on export.
+Unfortunately, the absolute path must be given here.
+
+#+BEGIN_SRC org
+#+CITE_EXPORT: csl ~/src/felsoci.sk/styles/ieee-with-url.csl
+#+END_SRC
+
+Finally, to include a bibliography listing in an Org document I use the
+=#+PRINT_BIBLIOGRAPHY:= directive within an associated *References* section.
+
+#+BEGIN_EXAMPLE
+,* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:
+#+END_EXAMPLE
 
 * Publishing script
 :PROPERTIES:
@@ -177,7 +201,10 @@ It begins by importing the Emacs packages providing:
   #+END_SRC
 - bibliography support.
   #+BEGIN_SRC elisp
-(require 'org-ref)
+(require 'oc)
+(require 'oc-biblatex) ;; for LaTeX/PDF
+(require 'citeproc) ;; for HTML
+(require 'oc-csl) ;; for HTML
   #+END_SRC
 
 Then, I define a utility function =last-modified= allowing me to get the date of
@@ -490,9 +517,7 @@ suffix ‘ - Marek's blog’ to the titles of blog posts.
 #+END_SRC
 
 These functions are called completion functions as they are triggered after
-publishing (see
-[[https://orgmode.org/manual/Sources-and-destinations.html][Sources and destinations]]
-in the Org Manual).
+publishing [cite:@OrgSrcDest].
 
 ** Last modification date
 :PROPERTIES:
@@ -847,3 +872,10 @@ Many thanks to Dennis Ogbe who published a similar post on
 [[https://ogbe.net/blog/blogging_with_org.html][his website]]. It helped me a
 lot while building my own publishing configuration!
 
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:

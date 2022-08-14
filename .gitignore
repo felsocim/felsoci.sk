@@ -8,6 +8,7 @@
 *.tex
 *.el
 blog/attachments
+shared/biblio-setup.org
 
 # List of blog posts
 blog/posts.org
