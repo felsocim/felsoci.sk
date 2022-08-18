@@ -89,6 +89,7 @@ a:hover {
   font-size: 120%;
 }
 
+#me-info > p,
 #current-position p:first-child {
   margin-top: 0;
 }
