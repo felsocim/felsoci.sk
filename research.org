@@ -5,7 +5,7 @@ Currently I devote most of the time to the preparation of my Ph.D. thesis
 focused on solving linear systems arising from aeroacoustic problem
 modelizations. However, my previous research internships were related to the
 domain of compilation and source code optimization. In my free time, I continue
-to work also on this subject.
+to work on this subject.
 
 * Solvers for coupled FEM/BEM linear systems
 :PROPERTIES:
@@ -39,12 +39,146 @@ interactions between the surface and the volume meshes.
 To solve these linear systems, one must build on efficient solving methods and
 software using algorithms and data structures optimized in such a way as to take
 advantage of massively parallel hardware configurations and the characteristics
-of the input linear system as much as possible. The goal of my thesis is to
-come up with methods capable of solving as large FEM/BEM linear systems as
-possible as quickly as possible.
+of the input linear system as much as possible. The goal of my thesis is thus to
+develop and implement new algorithms for solving large FEM/BEM linear systems.
 
-The advancement and the results of my work are available online and in English
-at [[https://mfelsoci.gitlabpages.inria.fr/thesis/]].
+In order to ensure a better reproducibility of numerical experiments conducted
+within my thesis, the latter relies on the principles of literate programming
+[cite:@Knuth84] and uses GNU Guix [cite:@Guix] transactional package manager
+allowing for self-contained, executable descriptions of experimental software
+environments bit-for-bit reproducible across different computational platforms.
+
+** Publications
+:PROPERTIES:
+:CUSTOM_ID: research-publications
+:END:
+
+Items below are sorted by date of publication from the most to the least recent.
+Author names always appear in alphabetical order.
+
+- *Numerical Modelisation of Interaction between Plasma Thruster Plume and*
+  *Antennas on Small Satellites*
+  - T. Abboud, B. Chaigne, /M. Felšöci/, A. Piche and G. Sylvand
+  - [[https://waves2022.apps.math.cnrs.fr/][Waves 2022]] - International
+    Conference on Mathematical and Numerical Aspects of Wave Propagation, 2022
+- *Direct solution of larger coupled sparse/dense linear systems using low-rank*
+  *compression on single-node multi-core machines in an industrial context*
+  - E. Agullo, /M. Felšöci/ and G. Sylvand
+  - [[http://www.ipdps.org/ipdps2022/index.html][IPDPS 2022]] - IEEE
+    International Parallel and Distributed Processing Symposium, 2022,
+    pp. 25–35
+  - [[./images/html.png]]
+    [[https://doi.ieeecomputersociety.org/10.1109/IPDPS53621.2022.00012][Article]]
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/ipdps-2022.pdf][Slides]]
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03557692/document][Research
+    report]]
+- *Guix-HPC Activity Report 2020-2021*
+  - P.-A. Bouttier, L. Courtès, Y. Dupont, /M. Felšöci/, F. Gruber, K. Hinsen,
+    A. Isaac, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
+  - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
+    Technical Report, 2022
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03565692/document][Technical
+    report]]
+- *Study of the processor and memory power consumption of coupled sparse/dense*
+  *solvers*
+  - E. Agullo, /M. Felšöci/, A. Guermouche, H. Mathieu, G. Sylvand and B.
+    Tagliaro
+  - Inria Bordeaux Sud-Ouest, Research Report RR-9463, 2022
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03589695/document][Research
+    report]]
+- *Comparison of coupled solvers for FEM/BEM linear systems arising from*
+  *discretization of aeroacoustic problems*
+  - E. Agullo, /M. Felšöci/ and G. Sylvand
+  - [[https://2021.compas-conference.fr/][COMPAS 2021]] - Conférence francophone
+    d’informatique en Parallélisme, Architecture et Système, 2021
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03264472/document][Article]]
+  - [[./images/pdf.png]] [[./images/fr.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/compas-2021.pdf][Slides]]
+- *A comparison of selected solvers for coupled FEM/BEM linear systems arising*
+  *from discretization of aeroacoustic problems*
+  - E. Agullo, /M. Felšöci/ and G. Sylvand
+  - Inria Bordeaux Sud-Ouest, Research Report RR-9412, 2021
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03263603/document][Research
+    report]]
+- *A comparison of selected solvers for coupled FEM/BEM linear systems arising*
+  *from discretization of aeroacoustic problems: literate and reproducible*
+  *environment*
+  - E. Agullo, /M. Felšöci/ and G. Sylvand
+  - Inria Bordeaux Sud-Ouest, Technical Report RT-0513, 2021
+  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03263620/document][Technical
+    report]]
+
+** Talks
+:PROPERTIES:
+:CUSTOM_ID: research-talks
+:END:
+
+- *Solution of larger coupled sparse/dense linear systems in an industrial*
+  *aeroacoustic context*
+  - [[https://team.inria.fr/camus/][CAMUS team]] seminar @ ICube lab,
+    Illkirch-Graffenstaden, France, June 2022
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/camus/camus.pdf][Slides]]
+- *Guix and Org mode, a powerful association for building a reproducible*
+  *research study*
+  - Seminar and hands-on session @ Inria Grand-Est, Nancy, France, June 2022
+  - [[./images/pdf.png]]
+    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/slides/tuto-techno-guix-hpc.pdf][Slides]]
+  - [[./images/html.png]]
+    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/guidelines/][Hands-on
+    session]]
+- *Direct solution of larger coupled sparse/dense FEM/BEM linear systems using*
+  *low-rank compression*
+  - [[https://sparsedays.cerfacs.fr/][Sparse Days 2022]] @ St-Girons, France,
+    June 2022
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/sparse-days/sparse-days.pdf][Slides]]
+- *Reconciling high-performance computing with the use of third-party*
+  *libraries?*
+  - with E. Agullo
+  - [[https://team.inria.fr/datamove/][Datamove team]] seminar, held virtually,
+    May 2022
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/datamove/datamove.pdf][Slides]]
+- *An energy consumption study of coupled solvers for FEM/BEM linear systems:*
+  *preliminary results*
+  - [[https://www.irit.fr/solharis/solharis-plenary-meeting-09-10-02-2022/][SOLHARIS
+    plenary meeting]] @ Inria Bordeaux Sud-Ouest, Bordeaux, France, February
+    2022
+  - [[./images/pdf.png]]
+    [[https://www.irit.fr/solharis/wp-content/uploads/2022/02/022022_marek_felsoci.pdf][Slides]]
+- *Towards memory-aware multi-solve two-stage solver for coupled FEM/BEM*
+  *systems*
+  - [[https://www.irit.fr/solharis/solharis-plenary-meeting-02-07-2021/][SOLHARIS
+    plenary meeting]], held virtually, July 2021
+  - [[./images/pdf.png]]
+    [[https://www.irit.fr/solharis/wp-content/uploads/2021/07/072021_felsoci.pdf][Slides]]
+- *Coupled solvers for high-frequency aeroacoustics*
+  - Doctoral school days, held virtually, May 2021
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/poster-edmi-days.pdf][Poster]]
+- [[./images/fr.png]] *Guix et Org mode, deux amis du doctorant sur le chemin*
+  *vers une thèse reproductible*
+  - [[https://hpc.guix.info/events/2021/atelier-reproductibilit%C3%A9-environnements/][Atelier
+    reproductibilité des environnements logiciels]], held virtually, May 2021
+  - [[./images/pdf.png]]
+    [[https://hpc.guix.info/static/doc/atelier-reproductibilit%C3%A9-2021/marek-fel%C5%A1%C3%B6ci-org-guix.pdf][Slides]]
+  - [[./images/video.png]]
+    [[https://hpc.guix.info/static/videos/atelier-reproductibilit%C3%A9-2021/marek-fel%C5%A1%C3%B6ci.webm][Video
+    recording]]
+- *Coupled solvers for FEM/BEM linear systems arising from discretization of*
+  *aeroacoustic problems*
+  - [[https://team.inria.fr/hiepacs/][HiePACS team]] work group, held virtually,
+    April 2021
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/wg-04-2021.pdf][Slides]]
+- *A preliminary comparative study of solvers for coupled FEM/BEM linear*
+  *systems in a reproducible environment*
+  - [[https://www.irit.fr/solharis/solharis-plenary-meeting-07-08-12-2020/][SOLHARIS
+    plenary meeting]], held virtually, December 2020
+  - [[./images/pdf.png]]
+    [[https://www.irit.fr/solharis/wp-content/uploads/2020/12/122020-Felsoci.pdf][Slides]]
 
 * XFOR programming structure
 :PROPERTIES:
@@ -54,8 +188,9 @@ at [[https://mfelsoci.gitlabpages.inria.fr/thesis/]].
 Thanks to my research internships during my university studies, I had the
 occasion to discover and participate on the development of the XFOR programming
 structure and related software tools designed within the
-[[https://icps.icube.unistra.fr/][ICPS team at the ICube laboratory]] and I
-still continue working on it in my spare time.
+[[https://icps.icube.unistra.fr/][ICPS team]] at the
+[[https://icube.unistra.fr/en/][ICube lab]] and I still continue working on it
+in my spare time.
 
 XFOR allows to handle multiple for-loops at the same time. Thanks to a couple of
 parameters specific to the structure, the /grain/ and the /offset/, programmers
@@ -65,10 +200,13 @@ cache memory and take advantage of simultaneous instruction execution, namely
 instruction vectorization capabilities of the target processing unit(s).
 
 More information on the XFOR structure and its theoretical background can be
-found in my [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
-or on the [[http://xfor.gforge.inria.fr][official website]] dedicated to XFOR.
+found in my [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's
+thesis]].
 
-Also, the XFOR software tools and documentation are available on GitLab:
-- [[https://gitlab.inria.fr/xfor]]
-- [[https://gitlab.inria.fr/pclauss/xfor]]
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
 
+#+INCLUDE: ./shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:
