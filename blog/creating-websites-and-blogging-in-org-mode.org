@@ -34,7 +34,7 @@ The file structure of the project is described below.
 │   ├── biblio-setup.org (symbolic link to '../shared/biblio-setup.org')
 │   └── ...
 ├── cv
-│   └── cv-felsoci.org
+│   └── cv-felsoci.tex
 ├── images
 │   ├── marek.jpg
 │   └── ...
@@ -57,7 +57,7 @@ The file structure of the project is described below.
 
 ~blog~ folder holds the Org documents of the blog posts. The ~attachments~
 subfolder contains static attachments related to the blog posts. ~cv~ contains
-my complete resume in a single Org document published in PDF format and
+my complete resume in a single LaTeX document published in PDF format and
 available for download from the home page. ~images~ naturally contains all the
 image files featured on the site. The custom CSS sheets reside in ~styles~ where
 ~htmlize.css~ stylizes syntax highlighting in source code blocks and
@@ -206,6 +206,27 @@ It begins by importing the Emacs packages providing:
 (require 'citeproc) ;; for HTML
 (require 'oc-csl) ;; for HTML
   #+END_SRC
+
+To export my resume from LaTeX to PDF, I will need a custom publishing function
+because I am not exporting an Org but a TeX document.
+
+#+BEGIN_SRC elisp
+(defun latex-publish-to-pdf (plist filename pub-dir)
+  (let
+      ;; Keep the initial directory.
+      ((cwd default-directory))
+    ;; Navigate to the directory of the LaTeX file to publish.
+    (cd (file-name-directory filename))
+    ;; Call the interal publishing function.
+    (org-latex-compile filename)
+    ;; Publish the PDF file to the destination set in the project's alist.
+    (org-publish-attachment
+     plist
+     (concat (file-name-sans-extension filename) ".pdf")
+     pub-dir)
+    ;; Return to the initial directory.
+    (cd cwd)))
+#+END_SRC
 
 Then, I define a utility function =file-dates= allowing me to get the dates of
 the first publication and of the last modification of an Org document.
@@ -824,15 +845,15 @@ to prevent duplicate export.
 :END:
 
 The most important thing in the export configuration for the CV is the
-publishing function. Here, I use the function allowing me to publish PDF
-documents on output.
+publishing function. Here, I use my custom publishing function defined at the
+beginning of [[#publishing-script][Publishing script]].
 
 #+BEGIN_SRC elisp
         (list "cv"
               :base-directory "./cv"
-              :base-extension "org"
+              :base-extension "tex"
               :publishing-directory (get-output-path "cv")
-              :publishing-function '(org-latex-publish-to-pdf))
+              :publishing-function '(latex-publish-to-pdf))
 #+END_SRC
 
 *** Styles, images and other attachments
