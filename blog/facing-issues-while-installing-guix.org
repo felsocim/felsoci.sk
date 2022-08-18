@@ -2,10 +2,10 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-I have recently performed a clean installation of the
-[[http://guix.gnu.org/][GNU Guix]] Linux distribution on a new laptop computer.
-During the setup process, I have experienced some serious issues. In this post,
-I investigate their causes and propose methods for fixing them.
+I have recently performed a clean installation of the GNU Guix [cite:@Guix]
+Linux distribution on a new laptop computer.  During the setup process, I have
+experienced some serious issues. In this post, I investigate their causes and
+propose methods for fixing them.
 #+END_SYNOPSIS
 
 * Encryption
@@ -84,10 +84,8 @@ implementations make it look for a bootloader only in a fallback location
 referred to as *removable media path*. The latter is also present on the EFI
 partition. While some most popular systems, such as Windows or Ubuntu, install
 their bootloaders to both locations, Guix as well as many other Linux
-distributions does not do that by default. This cause a
-*No bootable devices found* error message since the first run. A detailed
-explanation of this problem can be found on
-[[https://mjg59.livejournal.com/138188.html][https://mjg59.livejournal.com/138188.html]].
+distributions does not do that by default. This cause a *No bootable devices*
+*found* error message since the first run [cite:@BootingEFI].
 
 The solution is to manually copy the bootloader configuration from the dedicated
 folder over to the fallback *removable media path* location. Be careful, because
@@ -173,6 +171,12 @@ After a reboot the system should start normally.
 
 As I have mentionned before, this manipulation makes other operating systems on
 your machine unbootable. For now, I did not investigate any restoration method
-as I use only one system. Although,
-[[https://wiki.debian.org/GrubEFIReinstall][this article]] may be helpful.
+as I use only one system. Although, [cite:@GrubEFIReinstall] may be helpful.
 
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:

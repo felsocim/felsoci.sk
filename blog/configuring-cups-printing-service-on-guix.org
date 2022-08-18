@@ -2,9 +2,9 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-Service configuration on [[http://guix.gnu.org/][GNU Guix]] is quiet different
-compared to mainstream Linux distribution. In this post, I address the process
-of configuring the *cups* printing service on Guix.
+Service configuration on GNU Guix [cite:@Guix] is quiet different compared to
+mainstream Linux distribution. In this post, I address the process of
+configuring the *cups* printing service on Guix.
 #+END_SYNOPSIS
 
 * Activating *cups* as a service
@@ -57,3 +57,11 @@ User jdoe
 #+END_EXAMPLE
 
 Finally, restart your computer!
+
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:

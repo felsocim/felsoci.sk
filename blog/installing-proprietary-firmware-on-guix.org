@@ -2,14 +2,20 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-[[http://guix.gnu.org/][GNU Guix]] is an open-source Linux distribution and the Linux kernel version it
-uses does not allow to load proprietary firmware by default. Although, it is
-possible. In this post, I explain how to get work proprietary firmware on Guix.
+GNU Guix [cite:@Guix] is an open-source Linux distribution and the Linux kernel
+version it uses does not allow to load proprietary firmware by default.
+Although, it is possible. In this post, I explain how to get work proprietary
+firmware on Guix.
 #+END_SYNOPSIS
 
 To enable the support for proprietary firmware, it is necessary to manually
 modify the system configuration file ~/etc/config.scm~. The first step is to
 switch to a kernel version that allows loading of non-free firmware.
+
+*Note that since I first wrote this article, an import effort has been made*
+*towards easier usage of non-free firmwre in Guix. Refer to the*
+*[[https://gitlab.com/nonguix/nonguix][nonguix]] project for details. I keep*
+*the original tutorial here for archives.*
 
 * Alternative kernel
 :PROPERTIES:
@@ -161,3 +167,10 @@ Note that, if at the very end you get an error related to some symbolic link
 failure, reiterate the previous command using =sudo=. Then, restart your
 computer for the changes to take effect.
 
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:

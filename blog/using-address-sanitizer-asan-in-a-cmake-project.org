@@ -2,12 +2,11 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-[[https://github.com/google/sanitizers/wiki/AddressSanitizer][AddressSanitizer]]
-(ASan) is a memory error detector for the C and C++ languages. It has been
-included in compilers such as GCC and Clang for quite some time now. Although
-the official Wiki page provides a very straightforward guide on how to use ASan
-in a general case, I could not find a good example of ASan being used in a CMake
-project. This is what this post is about.
+AddressSanitizer (ASan) [cite:@Asan] is a memory error detector for the C and
+C++ languages. It has been included in compilers such as GCC and Clang for quite
+some time now. Although the official Wiki page provides a very straightforward
+guide on how to use ASan in a general case, I could not find a good example of
+ASan being used in a CMake project. This is what this post is about.
 #+END_SYNOPSIS
 
 * Example project
@@ -169,9 +168,7 @@ The *compilation* and *linking* options associated to ASan here are:
   integer overflows,
 - ~-fsanitize=address~ enabling the detection of memory problems such as leaks.
 
-See the official
-[[https://github.com/google/sanitizers/wiki/AddressSanitizer][Wiki]] of ASan for
-additional information about the possibilities of the tool.
+See [cite:@Asan] for additional information about the possibilities of the tool.
 
 #+BEGIN_SRC cmake
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
@@ -195,7 +192,7 @@ all at once (including the folder structure) as a tarball via the links below.
 
 #+CALL: generate-files()
 
-- [[../attachments/ASanDemo.tar.xz][ASanDemo.tar.xz]]
+- [[../images/archive.png]] [[../attachments/ASanDemo.tar.xz][ASanDemo.tar.xz]]
   - [[../attachments/ASan/include/asan-demo.h][asan-demo.h]]
   - [[../attachments/ASan/src/asan-demo.c][asan-demo.c]]
   - [[../attachments/ASan/src/main.c][main.c]]
@@ -240,3 +237,10 @@ tarball containing the entire example project at the end.
 (shell-command "tar -cvJf ./attachments/ASan.tar.xz ./attachments/ASan") 
 #+END_SRC
 
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:

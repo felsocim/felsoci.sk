@@ -2,13 +2,12 @@
 #+AUTHOR: Marek Felšöci
 
 #+BEGIN_SYNOPSIS
-On [[http://guix.gnu.org/][GNU Guix]], software binaries are stored under
-~/gnu/store/~ which is a read-only file system. Therefore, when installing a
-Python module, such as [[https://github.com/jm-cc/gcvb][*gcvb*]], simply invoking
-=pip install= does not work as it can not access the Python directories in
-~/gnu/store/~ for writing. In this post, I tackle all the issues faced during
-the installation of the *gcvb* benchmarking module but, it may help you install
-other Python modules as well.
+On GNU Guix [cite:@Guix], software binaries are stored under ~/gnu/store/~ which
+is a read-only file system. Therefore, when installing a Python module, such as
+*gcvb* [cite:@GCVB], simply invoking =pip install= does not work as it can not
+access the Python directories in ~/gnu/store/~ for writing. In this post, I
+tackle all the issues faced during the installation of the *gcvb* benchmarking
+module but, it may help you install other Python modules as well.
 #+END_SYNOPSIS
 
 Rather unknown outside of a restrained group of users, the *gcvb* module is not
@@ -109,9 +108,7 @@ metrics of your computation with references that can be a file, depends of the
 
 My package definition is based on the definition of the *itsdangerous* Python
 package acquired using the =guix import= command as explained earlier. According
-to the section
-[[https://guix.gnu.org/manual/en/html_node/Python-Modules.html#Python-Modules][Python Modules]]
-of the official Guix documentation, I declare the *pyyaml* dependency as a
+to [cite:@GuixPythonModules], I declare the *pyyaml* dependency as a
 =propagated-input= and the *dash-bootstrap-components* as a =native-input=.
 
 * Including the package to a channel
@@ -213,3 +210,10 @@ following command to install *gcvb*.
 guix package -m gcvb.scm
 #+END_SRC
 
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:
