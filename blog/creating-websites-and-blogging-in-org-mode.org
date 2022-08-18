@@ -315,10 +315,13 @@ too.
 #+END_SRC
 
 At the end, the function returns the sub-string of the buffer corresponding to
-the area between the two markers.
+the area between the two markers. At the same time, I need to remove any
+citations from the sub-string in order to prevent the apparition of artifacts on
+export.
 
 #+BEGIN_SRC elisp
-      (buffer-substring beg end))))
+      (replace-regexp-in-string "[ ]\\[cite.*\\]" ""
+                                (buffer-substring beg end)))))
 #+END_SRC
 
 ** List of blog posts
