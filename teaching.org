@@ -1,24 +1,40 @@
 #+TITLE: Teaching
 #+AUTHOR: Marek Felšöci
 
-After my first lecture in 2019, I came to enjoy teaching and I continue to
-give lectures while working on my Ph.D. thesis.
+After my first lecture in 2019, I came to enjoy teaching and I continue to give
+lectures while working on my Ph.D. thesis. So far, I gave
+call_compute-teaching-hours() hours of lectures.
 
-* University of Bordeaux
+* Faculty of Computer science, University of Bordeaux
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub
 :END:
+
+** Compilation (48h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-cc
+:END:
+
+For the last year of my Ph.D. I was really happy to be assigned with the
+practical lectures in compilation. I was truly in my element!
+
+** Digital skills and communication methods (13h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-cnmc
+:END:
+
+I gave only several hours of practical lectures of beginner's digital skills to
+the 1^{st} year Bachelor's degree students. The idea of the course is to prepare
+the students to pass the national [[https://pix.fr/][PIX]] [[./images/fr.png]]
+certification at the end of semester.
 
 ** Databases and web applications (32h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub-bddw
 :END:
 
-This year, I was giving theoretical and practical lectures of relational
-databases and web applications in the first year of Bachelor's degree in
-computer science.
-
-Unfortunately, there is no publicly available teaching material for this course.
+In spring 2021, I was giving theoretical and practical lectures of relational
+databases and web applications in the 1^{st} year of Bachelor's degree.
 
 ** Object oriented programming (32h)
 :PROPERTIES:
@@ -26,10 +42,10 @@ Unfortunately, there is no publicly available teaching material for this course.
 :END:
 
 In autumn 2020, I was giving practical lectures of object oriented programming
-in Java in the third year of Bachelor's degree in computer science.
+in Java in the 3^{rd} year of Bachelor's degree.
 
-All the information about the course and the teaching materials are available
-online in French at [[http://www.reveillere.fr/L3POO/]].
+All the information about the course as well as the teaching materials are
+[[http://www.reveillere.fr/L3POO/][available online]] [[./images/fr.png]].
 
 * Lycée Sainte-Famille Saintonge, Bordeaux
 :PROPERTIES:
@@ -48,9 +64,41 @@ programming in C language to the students of /Brevet de technicien supérieur/
 Given that it was the first year of this curriculum in the institution, I was
 also brought to propose an education plan, prepare the courses as well as
 exercices and exams. The coronavirus crisis made my work even more difficult as
-most of the second semester's courses had to be done remotely. It was a very
-valuable experience!
+most of the lectures of the second semester had to be done remotely.
+Nevertheless, it was a very valuable experience!
 
-The teaching materials, exercices, exam and project subjects are available
-online in French at [[https://mfelsoci.gitlabpages.inria.fr/lectures/]].
+The teaching materials, exercices, exam and project assignments are
+[[https://mfelsoci.gitlabpages.inria.fr/lectures/][available online]]
+[[./images/fr.png]].
+
+* Addendum
+:PROPERTIES:
+:CUSTOM_ID: teaching-addendum
+:END:
+
+The total number of hours I tought so far appearing in the very first paragraph
+of this page is dynamically determined during the export of this page to HTML
+thanks to the code block below.
+
+#+NAME: compute-teaching-hours
+#+BEGIN_SRC elisp :results value raw
+;; Set up a counter of teaching hours.
+(setq teaching-hours 0)
+
+(defun count-teaching-hours-at-heading ()
+  ;; Extract the number of teaching hours from a headline using pattern
+  ;; matching.
+  (let ((heading (org-element-property :title (org-element-at-point))))
+    (and
+     (string-match "\(\\([0-9]+\\)h\)$" heading)
+     (setq teaching-hours
+           (+ teaching-hours (string-to-number (match-string 1 heading)))))))
+
+;; Call the extraction function on all the headings of level 2 in the current
+;; buffer.
+(org-map-entries #'count-teaching-hours-at-heading "LEVEL=2" nil)
+
+;; Print out the result.
+(print teaching-hours)
+#+END_SRC
 
