@@ -2,11 +2,11 @@
 #+AUTHOR: Marek Felšöci
 
 I am call_age(birth-date="1996-04-23 00:00:00") years old Ph.D. candidate in
-computer science at
-[[https://www.inria.fr/en][French National Institute for Research in Computer science and Automation (Inria)]]
-while being enrolled at [[https://u-bordeaux.com][University of Bordeaux]]. For
-couple of years, I have been passionate about parallel computing, program
-optimization and compilation. Thanks to my previous university studies at the
+computer science at [[https://www.inria.fr/en][French National Institute for
+Research in Computer science and Automation (Inria)]] while being enrolled at
+[[https://u-bordeaux.com][University of Bordeaux]]. For couple of years, I have
+been passionate about parallel computing, program optimization and
+compilation. Thanks to my previous university studies at the
 [[http://en.unistra.fr/][University of Strasbourg]], internships at
 [[https://icps.icube.unistra.fr/][ICube laboratory]] and my current Ph.D. topic
 (see [[./research.org][Research]] and [[./cv/cv-felsoci.pdf][Curriculum Vitæ]])
@@ -21,39 +21,39 @@ As you may have deduced from my name, I am not a native French. I come from
 Slovakia, but I have been in France since fall 2012. To be honest, being young
 teenager, I have never imagined leaving home country at the age of 16. I was
 doing well in school so I could enter the bilingual French-Slovak high school
-[[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium M. R. Štefánika]]
-in Košice. During the first year, I was having 20 hours of French lectures per
-week. I had no idea one can learn to speak a new language fluently after only 10
-months. At the end of that year, the best students of the class were offered an
-occasion to spend the next year in France. I was delighted to have this chance,
-but I must admit that, at first, I was not pretty sure about going abroad so
-early.
+[[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium
+M. R. Štefánika]] in Košice. During the first year, I was having 20 hours of
+French lectures per week. I had no idea one can learn to speak a new language
+fluently after only 10 months. At the end of that year, the best students of the
+class were offered an occasion to spend the next year in France. I was delighted
+to have this chance, but I must admit that, at first, I was not pretty sure
+about going abroad so early.
 
 That being said, I do not regret it, at least for now. Finally, I enjoyed the
-year at the
-[[https://lp2i-poitiers.fr/][Lycée Pilote Innovant International]] high school
-in Poitiers so much, that I requested to extend my stay for an another year.
-This way, I also managed to finish my high school two years in advance. Let me
-explain. The high school in Slovakia was supposed to last 5 years (standard is
-4, but the first year was dedicated essentially to French). Meanwhile, in
-France, high school lasts only 3 years and as I came to France for the second
-year, I was able to graduate in summer of 2014.
+year at the [[https://lp2i-poitiers.fr/][Lycée Pilote Innovant International]]
+high school in Poitiers so much, that I requested to extend my stay for an
+another year.  This way, I also managed to finish my high school two years in
+advance. Let me explain. The high school in Slovakia was supposed to last 5
+years (standard is 4, but the first year was dedicated essentially to
+French). Meanwhile, in France, high school lasts only 3 years and as I came to
+France for the second year, I was able to graduate in summer of 2014.
 
 Eventually, I continued my studies in Strasbourg where I have got my B.S. and
-M.S. degrees in computer science from the
-[[http://www.en.unistra.fr][University of Strasbourg]].
+M.S. degrees in computer science from the [[http://www.en.unistra.fr][University
+of Strasbourg]].
 
 * Addendum
 :PROPERTIES:
 :CUSTOM_ID: about-addendum
 :END:
 
-My current age in the first paragraph is dynamically determined during the
-export of this page to HTML thanks to the Emacs Lisp function =get-age= I wrote.
-See the implementation in the code block below.
+My current age in the first paragraph of the previous section is dynamically
+determined during the export of this page to HTML thanks to the custom Emacs
+Lisp function =get-age= you can find the implementation of in the code block
+below.
 
 #+NAME: age
-#+BEGIN_SRC emacs-lisp :var birth-date=""
+#+BEGIN_SRC emacs-lisp :var birth-date="" :results value raw
 (defun get-age (date-of-birth)
   ;; Compute current age based on DATE-OF-BIRTH.
   (let*
