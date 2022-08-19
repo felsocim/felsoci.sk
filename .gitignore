@@ -6,6 +6,7 @@
 !shared/*.html
 *.pdf
 *.el
+*.scm
 blog/attachments
 shared/biblio-setup.org
 
