@@ -64,3 +64,17 @@ Ph.D. student representative to the
 [[https://ed-mi.u-bordeaux.fr/L-Ecole-doctorale/Conseil-de-l-Ecole-doctorale][Conseil
 de l'École doctorale de mathématiques et d'informatique de l'Université de
 Bordeaux]] (council of the doctoral school).
+
+* News feed
+:PROPERTIES:
+:CUSTOM_ID: news
+:END:
+
+- *August 19, 2022*: Some time ago, I gave a talk and animated a 3-hour hands-on
+  session on joint usage of Guix and Org mode for producing reproducible
+  research studies.  If you want to discover these tools, feel free to try the
+  hands-on session.  The
+  [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/guidelines/][guidelines]]
+  are self-sufficient. Do not hesitate to contact me, if you have any questions!
+- *August 19, 2022*: The website had a major refresh (updated personal situation
+  and blog posts, added a news feed, ...)
