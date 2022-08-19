@@ -71,22 +71,22 @@ Author names always appear in alphabetical order.
     [[https://doi.ieeecomputersociety.org/10.1109/IPDPS53621.2022.00012][Article]]
   - [[./images/pdf.png]]
     [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/ipdps-2022.pdf][Slides]]
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03557692/document][Research
-    report]]
+  - [[./images/pdf.png]]
+    [[https://hal.inria.fr/hal-03557692/document][Research report]]
 - *Guix-HPC Activity Report 2020-2021*
   - P.-A. Bouttier, L. Courtès, Y. Dupont, /M. Felšöci/, F. Gruber, K. Hinsen,
     A. Isaac, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
   - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
     Technical Report, 2022
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03565692/document][Technical
-    report]]
+  - [[./images/pdf.png]]
+    [[https://hal.inria.fr/hal-03565692/document][Technical report]]
 - *Study of the processor and memory power consumption of coupled sparse/dense*
   *solvers*
   - E. Agullo, /M. Felšöci/, A. Guermouche, H. Mathieu, G. Sylvand and B.
     Tagliaro
   - Inria Bordeaux Sud-Ouest, Research Report RR-9463, 2022
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03589695/document][Research
-    report]]
+  - [[./images/pdf.png]]
+    [[https://hal.inria.fr/hal-03589695/document][Research report]]
 - *Comparison of coupled solvers for FEM/BEM linear systems arising from*
   *discretization of aeroacoustic problems*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
@@ -99,15 +99,15 @@ Author names always appear in alphabetical order.
   *from discretization of aeroacoustic problems*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - Inria Bordeaux Sud-Ouest, Research Report RR-9412, 2021
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03263603/document][Research
-    report]]
+  - [[./images/pdf.png]]
+    [[https://hal.inria.fr/hal-03263603/document][Research report]]
 - *A comparison of selected solvers for coupled FEM/BEM linear systems arising*
   *from discretization of aeroacoustic problems: literate and reproducible*
   *environment*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - Inria Bordeaux Sud-Ouest, Technical Report RT-0513, 2021
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03263620/document][Technical
-    report]]
+  - [[./images/pdf.png]]
+    [[https://hal.inria.fr/hal-03263620/document][Technical report]]
 
 ** Talks
 :PROPERTIES:
