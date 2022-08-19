@@ -50,7 +50,7 @@ environments bit-for-bit reproducible across different computational platforms.
 
 ** Publications
 :PROPERTIES:
-:CUSTOM_ID: research-publications
+:CUSTOM_ID: thesis-publications
 :END:
 
 Items below are sorted by date of publication from the most to the least recent.
@@ -111,7 +111,7 @@ Author names always appear in alphabetical order.
 
 ** Talks
 :PROPERTIES:
-:CUSTOM_ID: research-talks
+:CUSTOM_ID: thesis-talks
 :END:
 
 - *Solution of larger coupled sparse/dense linear systems in an industrial*
@@ -199,9 +199,30 @@ order of instructions within the loops in such a way as to improve the usage of
 cache memory and take advantage of simultaneous instruction execution, namely
 instruction vectorization capabilities of the target processing unit(s).
 
-More information on the XFOR structure and its theoretical background can be
-found in my [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's
-thesis]].
+** Publications
+:PROPERTIES:
+:CUSTOM_ID: xfor-publications
+:END:
+
+- *Integration of the XFOR programming structure into the Clang/LLVM compiler*
+  *and extension to parallel programming*
+  - /M. Felšöci/
+  - ICube lab, University of Strasbourg, Inria Nancy Grand-Est, Master's thesis,
+    2019
+  - [[./images/pdf.png]]
+    [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
+
+** Talks
+:PROPERTIES:
+:CUSTOM_ID: xfor-talks
+:END:
+
+- *XFOR loops, integration into the Clang/LLVM compiler and extenstion to*
+  *parallel programming*
+  - Software corner @ ICube lab, Illkirch-Graffenstaden, France, June 2019
+- *On the XFOR programming structure*
+  - Introduction to research for Bachelor's degree students @ Faculty of
+    Computer science, University of Strasbourg, France, April 2019
 
 * References
 :PROPERTIES:
