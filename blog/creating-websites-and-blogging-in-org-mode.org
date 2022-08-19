@@ -91,6 +91,7 @@ into the environment are listed in a manifest file [cite:@GuixManifests], here
        "python"
        "python-pygments"
        "texlive"
+       "biber"
        "bash"
        "coreutils"
        "tar"))
