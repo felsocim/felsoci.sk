@@ -65,6 +65,14 @@ Ph.D. student representative to the
 de l'École doctorale de mathématiques et d'informatique de l'Université de
 Bordeaux]] (council of the doctoral school).
 
+* Research interests and publications
+:PROPERTIES:
+:CUSTOM_ID: research-publications
+:END:
+
+For a more in-depth overview of my work and research interests as well as an
+exhaustive list of publications and talks, see [[./research.org][Research]].
+
 * News feed
 :PROPERTIES:
 :CUSTOM_ID: news
