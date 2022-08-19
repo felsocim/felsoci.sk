@@ -4,6 +4,7 @@
 # Export and tangle outputs
 *.html
 !shared/*.html
+*.bbl
 *.pdf
 *.el
 *.scm
