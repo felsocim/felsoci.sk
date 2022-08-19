@@ -38,6 +38,8 @@ The file structure of the project is described below.
 ├── images
 │   ├── marek.jpg
 │   └── ...
+├── public
+│   └── favicon.ico
 ├── styles
 │   ├── custom.css
 │   └── htmlize.css
@@ -59,14 +61,15 @@ The file structure of the project is described below.
 subfolder contains static attachments related to the blog posts. ~cv~ contains
 my complete resume in a single LaTeX document published in PDF format and
 available for download from the home page. ~images~ naturally contains all the
-image files featured on the site. The custom CSS sheets reside in ~styles~ where
-~htmlize.css~ stylizes syntax highlighting in source code blocks and
-~custom.css~ defines the look and feel of all the other elements of the website.
-~shared~ holds the common static header and footer files as well as an Org setup
-file providing some common document configuration, e.g. for bibliography. The
-Org documents corresponding to the content pages are stored in the root of the
-project's folder. Finally, the Emacs Lisp script ~publish.el~ controls the
-publishing of the website.
+image files featured on the site. ~public~ can be used to store the exported
+website (see more in [[#general-configuration][General configuration]]). The
+custom CSS sheets reside in ~styles~ where ~htmlize.css~ stylizes syntax
+highlighting in source code blocks and ~custom.css~ defines the look and feel of
+all the other elements of the website.  ~shared~ holds the common static header
+and footer files as well as an Org setup file providing some common document
+configuration, e.g. for bibliography. The Org documents corresponding to the
+content pages are stored in the root of the project's folder. Finally, the Emacs
+Lisp script ~publish.el~ controls the publishing of the website.
 
 ** Software environment
 :PROPERTIES:

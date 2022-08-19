@@ -2,6 +2,8 @@
 *.*~
 
 # Export and tangle outputs
+public/*
+!public/favicon.ico
 *.html
 !shared/*.html
 *.bbl
