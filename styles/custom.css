@@ -85,6 +85,13 @@ a:hover {
   width: 200px; 
 }
 
+.me-email {
+  border: 1px dashed #404040;
+  margin-right: 7px;
+  padding: 4px;
+  font-weight: bold;
+}
+
 #current-position {
   font-size: 120%;
 }

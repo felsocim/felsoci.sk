@@ -8,28 +8,44 @@
     <span id="current-position">
 #+END_EXPORT
 
-*Ph.D. candidate* in *Computer science*
+*Post-doctoral research fellow* in *Computer science*
 
 #+BEGIN_EXPORT html
     </span>
     <a href="https://www.inria.fr/en" target="_blank">
       <img src="/images/inria.png" alt="Inria"/>
     </a>
+    <a href="https://icube.unistra.fr/en" target="_blank">
+      <img src="/images/icube.png" alt="ICube"/>
+    </a>
 #+END_EXPORT
 
-Preparing a thesis in the domain of high-performance computing (HPC) on the
-subject [[./research.org::#research-thesis][Fast solvers for high-frequency
-aeroacoustics]] at French National Institute for Research in Computer science
-and Automation (Inria) in Bordeaux, France.
-
-- [[./images/pdf.png]] [[./cv/cv-felsoci.pdf][Curriculum Vitæ]]
-
-|          | E-mail                                                    |
-|----------+-----------------------------------------------------------|
-| Work     | [[mailto:marek.felsoci@inria.fr][marek.felsoci@inria.fr]] |
-| Personal | [[mailto:marek@felsoci.sk][marek@felsoci.sk]]             |
+Working on automatic source code parallelization through task insertion (see
+more in [[./research.org::#research-post-doc][Research]]) at French National
+Institute for Research in Computer science and Automation (Inria) in the
+[[https://www.inria.fr/en/camus][CAMUS team]] hosted by the
+[[https://icube.unistra.fr/en][ICube Laboratory]] in Illkirch-Graffenstaden,
+Strasbourg area, France.
 
 #+BEGIN_EXPORT html
+    <p>
+      <span class="me-email">
+        <a href="mailto:marek.felsoci@inria.fr">
+          marek.felsoci@inria.fr
+        </a>
+      </span>
+      <span class="me-email">
+        <a href="mailto:marek@felsoci.sk">
+          marek@felsoci.sk
+        </a>
+      </span>
+    </p>
+    <a href="/cv/cv-felsoci.pdf" target="_blank">
+      <button>
+        <img src="/images/pdf.png" alt="(pdf)" style="vertical-align: middle;"/>
+        Curriculum Vitæ
+      </button>
+    </a>
   </div>
   <div id="me-photo">
     <img src="/images/marek.jpg" alt="Marek Felšöci"/>
@@ -48,19 +64,25 @@ degree in computer science from the University of Strasbourg, France in 2019.
 
 From May 28 to August 24, 2018 as well as from January 21 to July 31, 2019 he
 was a research intern at ICube Laboratory in Illkirch-Graffenstaden, Strasbourg
-area, France where his work has been concerned with compiler development and
-polyhedral code optimization. At the present, he is preparing a Ph.D. degree in
-computer science at the French National Institute for Research in Computer
-science and Automation (Inria) in Talence, France while being enrolled at the
-University of Bordeaux, Bordeaux, France. His current research interest is the
-design of fast solvers for coupled sparse and dense linear systems arising from
-numerical modelizations in high-frequency aeroacoustics.
+area, France where his work was concerned with compiler development and
+polyhedral code optimization. From October 1, 2019 to January 31, 2023 he was
+preparing a Ph.D. degree in computer science in the CONCACE (formerly HiePACS)
+team at the French National Institute for Research in Computer science and
+Automation (Inria) in Talence, France while being enrolled at the University of
+Bordeaux, Bordeaux, France. His thesis was focused on the design of fast solvers
+for coupled sparse and dense linear systems arising from numerical modelizations
+in high-frequency aeroacoustics. At the present, he works as post-doctoral
+research fellow at the French National Institute for Research in Computer
+science and Automation (Inria), in the CAMUS team hosted by the ICube Laboratory
+in Illkirch-Graffenstaden, Strasbourg area, France. His current research
+interest resides in automatic parallelization of C/C++ source code through task
+insertion.
 
 Marek Felšöci joined the [[https://afodib.labri.fr][Association de la formation
 doctorale d'informatique de Bordeaux - AFoDIB]] (Ph.D. student society) in 2019
 and held the position of secretary until 2022 since when he has been a regular
-member of the society. During the academic year 2021/2022, he was elected
-Ph.D. student representative to the
+member of the society. During the academic years 2021/2022 and 2022/2023, he was
+elected Ph.D. student representative to the
 [[https://ed-mi.u-bordeaux.fr/L-Ecole-doctorale/Conseil-de-l-Ecole-doctorale][Conseil
 de l'École doctorale de mathématiques et d'informatique de l'Université de
 Bordeaux]] (council of the doctoral school).
