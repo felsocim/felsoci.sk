@@ -23,32 +23,26 @@
 Working on automatic source code parallelization through task insertion (see
 more in [[./research.org::#research-post-doc][Research]]) at French National
 Institute for Research in Computer science and Automation (Inria) in the
-[[https://www.inria.fr/en/camus][CAMUS team]] hosted by the
-[[https://icube.unistra.fr/en][ICube Laboratory]] in Illkirch-Graffenstaden,
+[[https://www.inria.fr/en/camus][Camus team]] detached at
+[[https://icube.unistra.fr/en][ICube]] (within the
+[[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
 Strasbourg area, France.
 
 #+BEGIN_EXPORT html
     <p>
-      <span class="me-email">
-        <a href="mailto:marek.felsoci@inria.fr">
-          marek.felsoci@inria.fr
-        </a>
-      </span>
-      <span class="me-email">
-        <a href="mailto:marek@felsoci.sk">
-          marek@felsoci.sk
-        </a>
-      </span>
+#+END_EXPORT
+
+#+ATTR_HTML: :class regular-header
+| *Email*  | [[mailto:marek.felsoci@inria.fr][marek.felsoci@inria.fr]] |
+
+#+BEGIN_EXPORT html
     </p>
     <a href="/cv/cv-felsoci.pdf" target="_blank">
-      <button>
-        <img src="/images/pdf.png" alt="(pdf)" style="vertical-align: middle;"/>
-        Curriculum Vitæ
-      </button>
+      <button>Curriculum Vitæ</button>
     </a>
   </div>
   <div id="me-photo">
-    <img src="/images/marek.jpg" alt="Marek Felšöci"/>
+    <img src="/images/marek.jpg" alt="Profile photo of Marek Felšöci"/>
   </div>
 </div>
 #+END_EXPORT
@@ -63,25 +57,31 @@ in computer science from the University of Strasbourg, France in 2017, the M.S.
 degree in computer science from the University of Strasbourg, France in 2019.
 
 From May 28 to August 24, 2018 as well as from January 21 to July 31, 2019 he
-was a research intern at ICube Laboratory in Illkirch-Graffenstaden, Strasbourg
-area, France where his work was concerned with compiler development and
-polyhedral code optimization. From October 1, 2019 to January 31, 2023 he was
-preparing a Ph.D. degree in computer science in the CONCACE (formerly HiePACS)
-team at the French National Institute for Research in Computer science and
-Automation (Inria) in Talence, France while being enrolled at the University of
-Bordeaux, Bordeaux, France. His thesis was focused on the design of fast solvers
-for coupled sparse and dense linear systems arising from numerical modelizations
-in high-frequency aeroacoustics. At the present, he works as post-doctoral
-research fellow at the French National Institute for Research in Computer
-science and Automation (Inria), in the CAMUS team hosted by the ICube Laboratory
-in Illkirch-Graffenstaden, Strasbourg area, France. His current research
-interest resides in automatic parallelization of C/C++ source code through task
-insertion.
+was a research intern in the [[https://icps.icube.unistra.fr/][ICPS team]] at
+the ICube laboratory in Illkirch-Graffenstaden, Strasbourg area, France where
+his work was concerned with compiler development and polyhedral code
+optimization (see [[./research.org::#research-xfor][Research]]). From October 1,
+2019 to January 31, 2023 he was preparing a Ph.D. thesis in computer science in
+the [[https://www.inria.fr/en/concace][Concace team]] at the French National
+Institute for Research in Computer science and Automation (Inria) in Talence,
+France. His thesis was focused on the design of fast solvers for coupled sparse
+and dense systems arising from numerical modelizations in high-frequency
+aeroacoustics (see [[./research.org::#research-thesis][Research]]). He defended
+his thesis [cite:@Thesis] on February 22, 2023 and was granted the Ph.D. degree
+in computer science from the University of Bordeaux, France. At the present, he
+works as post-doctoral research fellow at the French National Institute for
+Research in Computer science and Automation (Inria), in
+[[https://www.inria.fr/en/camus][Camus team]] detached at
+[[https://icube.unistra.fr/en][ICube]] (within the
+[[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
+Strasbourg area, France. His current research interest resides in automatic
+parallelization of C/C++ source code through task insertion (see
+[[./research.org::#research-post-doc][Research]]).
 
-Marek Felšöci joined the [[https://afodib.labri.fr][Association de la formation
-doctorale d'informatique de Bordeaux - AFoDIB]] (Ph.D. student society) in 2019
-and held the position of secretary until 2022 since when he has been a regular
-member of the society. During the academic years 2021/2022 and 2022/2023, he was
+Between 2019 and 2022, Marek Felšöci was a member of the
+[[https://afodib.labri.fr][Association de la formation doctorale d'informatique
+de Bordeaux - AFoDIB]] (Ph.D. student society). In 2019 and 2020, he held the
+position of secretary. During the academic years 2021/2022 and 2022/2023, he was
 elected Ph.D. student representative to the
 [[https://ed-mi.u-bordeaux.fr/L-Ecole-doctorale/Conseil-de-l-Ecole-doctorale][Conseil
 de l'École doctorale de mathématiques et d'informatique de l'Université de
@@ -95,16 +95,10 @@ Bordeaux]] (council of the doctoral school).
 For a more in-depth overview of my work and research interests as well as an
 exhaustive list of publications and talks, see [[./research.org][Research]].
 
-* News feed
+* References
 :PROPERTIES:
-:CUSTOM_ID: news
+:CUSTOM_ID: references
 :END:
 
-- *August 19, 2022*: Some time ago, I gave a talk and animated a 3-hour hands-on
-  session on joint usage of Guix and Org mode for producing reproducible
-  research studies.  If you want to discover these tools, feel free to try the
-  hands-on session.  The
-  [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/guidelines/][guidelines]]
-  are self-sufficient. Do not hesitate to contact me, if you have any questions!
-- *August 19, 2022*: The website had a major refresh (updated personal situation
-  and blog posts, added a news feed, ...)
+#+INCLUDE: ./shared/biblio-felsoci-setup.org
+#+PRINT_BIBLIOGRAPHY:
