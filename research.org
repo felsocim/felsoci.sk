@@ -51,8 +51,9 @@ To implement our approach, we rely on the OptiTrust source-to-source code
 transformation tool, to which we add the functionalities needed to analyze and
 transform the original program. We work closely with the authors and
 contributors of the [[https://github.com/charguer/optitrust][OptiTrust]]
-project, in particular Arthur Chargéraud ([[https://www.inria.fr/en/][Inria]])
-and Thomas Koehler ([[https://www.inria.fr/en/][Inria]]).
+project, in particular [[http://chargueraud.org/][Arthur Chargéraud]]
+([[https://www.inria.fr/en/][Inria]]) and Thomas Koehler
+([[https://www.inria.fr/en/][Inria]]).
 
 ** Running tutorials
 :PROPERTIES:
