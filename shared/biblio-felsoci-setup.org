@@ -1,3 +1,0 @@
-#+BIBLIOGRAPHY: ./cv/biblio-felsoci.bib
-
-#+CITE_EXPORT: csl ~/src/felsoci.sk/styles/ieee-with-url.csl

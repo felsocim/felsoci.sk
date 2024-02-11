@@ -100,5 +100,5 @@ exhaustive list of publications and talks, see [[./research.org][Research]].
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ./shared/biblio-felsoci-setup.org
+#+INCLUDE: ./shared/biblio-setup.org
 #+PRINT_BIBLIOGRAPHY:
