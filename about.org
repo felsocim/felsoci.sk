@@ -1,16 +1,18 @@
 #+TITLE: About
 #+AUTHOR: Marek Felšöci
 
-I am call_age(birth-date="1996-04-23 00:00:00") years old Ph.D. candidate in
-computer science at [[https://www.inria.fr/en][French National Institute for
-Research in Computer science and Automation (Inria)]] while being enrolled at
-[[https://u-bordeaux.com][University of Bordeaux]]. For couple of years, I have
-been passionate about parallel computing, program optimization and
-compilation. Thanks to my previous university studies at the
-[[http://en.unistra.fr/][University of Strasbourg]], internships at
-[[https://icps.icube.unistra.fr/][ICube laboratory]] and my current Ph.D. topic
-(see [[./research.org][Research]] and [[./cv/cv-felsoci.pdf][Curriculum Vitæ]])
-I can work on something I like and believe in.
+I am call_age(birth-date="1996-04-23 00:00:00") years old post-doctoral research
+fellow in computer science at [[https://www.inria.fr/en][French National
+Institute for Research in Computer science and Automation (Inria)]] in the
+[[https://www.inria.fr/en/camus][Camus team]] detached at
+[[https://icube.unistra.fr/en][ICube]] (within the
+[[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
+Strasbourg area, France. For couple of years, I have been passionate about
+parallel computing, program optimization and compilation. Thanks to my previous
+university studies at the [[http://en.unistra.fr/][University of Strasbourg]],
+internships at [[https://icps.icube.unistra.fr/][ICube laboratory]], my Ph.D.
+and post-doctoral research topics (see [[./research.org][Research]]) I can work
+on something I like and believe in.
 
 In my free time I like to work on extra projects, learn new foreign languages or
 read history and linguistics-related literature. And when I want to take a real
@@ -18,16 +20,16 @@ break, I prefer spending time with my friends and family, traveling, listening
 to music, biking or reading fantasy and mystery novels.
 
 As you may have deduced from my name, I am not a native French. I come from
-Slovakia, but I have been in France since fall 2012. To be honest, being young
-teenager, I have never imagined leaving home country at the age of 16. I was
-doing well in school so I could enter the bilingual French-Slovak high school
-[[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium
-M. R. Štefánika]] in Košice. During the first year, I was having 20 hours of
-French lectures per week. I had no idea one can learn to speak a new language
-fluently after only 10 months. At the end of that year, the best students of the
-class were offered an occasion to spend the next year in France. I was delighted
-to have this chance, but I must admit that, at first, I was not pretty sure
-about going abroad so early.
+Slovakia, but I have been in France since fall 2012. I have never imagined
+leaving home country at the age of 16. I was doing well in school so I could
+enter the bilingual French-Slovak high school
+[[http://www.gmrske.sk/sk/slovensko-francuzska-bilingvalna-sekcia][Gymnázium M.
+R. Štefánika]] in Košice. During the first year, I was having 20 hours of French
+lectures per week. I had no idea one can learn to speak a new language fluently
+after only 10 months. At the end of that year, the best students of the class
+were offered an occasion to spend the next year in France. I was delighted to
+have this chance, but I must admit that, at first, I was not pretty sure about
+going abroad so early.
 
 That being said, I do not regret it, at least for now. Finally, I enjoyed the
 year at the [[https://lp2i-poitiers.fr/][Lycée Pilote Innovant International]]
