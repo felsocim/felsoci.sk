@@ -1,109 +1,283 @@
 #+TITLE: Research
 #+AUTHOR: Marek Felšöci
 
-Currently I devote most of the time to the preparation of my Ph.D. thesis
-focused on solving linear systems arising from aeroacoustic problem
-modelizations. However, my previous research internships were related to the
-domain of compilation and source code optimization. In my free time, I continue
-to work on this subject.
+At present, I'm carrying out my research activities as part of my post-doctorate
+with the [[https://www.inria.fr/en/camus][Camus]]
+([[https://www.inria.fr/en/][Inria]]) and
+[[https://icps.icube.unistra.fr/][ICPS]]
+([[https://icube.unistra.fr/en][ICube]]) teams, where I am working on the
+automatic parallelization of C/C++ source code by task insertion (see
+[[#research-post-doc][Automatic parallelization through task insertion]]).
+However, to this day, most of my research activities have taken place as part of
+my doctoral thesis at the University of Bordeaux within the
+[[https://concace.gitlabpages.inria.fr/][Concace]] team. My thesis was focused
+on the development of methods for solving large coupled FEM/BEM sparse/dense
+linear systems arising from aeroacoustic problems (see
+[[#research-thesis][Solvers for coupled FEM/BEM linear systems]]). That being
+said, I took my first steps towards computer science research during my two
+internships within the Camus and the ICPS teams, focusing on a new programming
+structure, called XFOR, and the associated software tools (see
+[[#research-xfor][XFOR programming structure]]).
+
+* Automatic parallelization through task insertion
+:PROPERTIES:
+:CUSTOM_ID: research-post-doc
+:END:
+
+Today, multi-core processors can be found in most computers, from cell phones to
+high-performance computing clusters. Nevertheless, designing and writing
+parallel applications that make efficient use of these numerous computing
+resources often remains the prerogative of experts with the technical knowledge
+and time required to optimize their software. Numerous compilation studies have
+addressed this issue and proposed different approaches to automatic
+parallelization. These are traditionally oriented towards loop nest
+parallelization, based on the polyhedral model. We are interested in task-based
+parallel programming. In this model, the program is broken down into tasks
+comprising one or more instructions. Tasks are associated with dependency
+constraints to enable an execution engine to schedule and execute tasks in the
+right order, i.e. respecting any dependencies between tasks accessing the same
+data in memory. In this way, tasks that are independent of each other can be
+executed in parallel. The challenge in optimizing this approach is to find an
+efficient way of breaking down the initial program into tasks. In this context,
+we are working on a tool for the automatic parallelization of C/C++ source code,
+enabling us to analyze a sequential input program, find an efficient task-based
+parallelism model and insert tasks at the right places in the input program.
+Having implemented the preliminary analysis phases, notably the analysis of
+dependencies between different instructions in the input program, we are now
+exploring different strategies for automatically inserting tasks into the
+program.
+
+To implement our approach, we rely on the OptiTrust source-to-source code
+transformation tool, to which we add the functionalities needed to analyze and
+transform the original program. We work closely with the authors and
+contributors of the [[https://github.com/charguer/optitrust][OptiTrust]]
+project, in particular Arthur Chargéraud ([[https://www.inria.fr/en/][Inria]])
+and Thomas Koehler ([[https://www.inria.fr/en/][Inria]]).
+
+** Running tutorials
+:PROPERTIES:
+:CUSTOM_ID: post-doc-tutorials
+:END:
+
+- *Towards a reproducible research study*
+  - [[https://2023.compas-conference.fr/][ComPAS 2023]] conferece @ Annecy,
+    France, July 2023
+  - [[./images/html.png]]
+    [[https://tutoriel-guix-compas-2023.gitlabpages.inria.fr/tutorial/][Self-contained tutorial]]
+- *How to use Org mode and Guix to build a reproducible experimental study*
+  - [[https://hpc.guix.info/events/2023/workshop/][Workshop on Reproducible
+    Software Environments for Research and High-Performance]] @ Montpellier,
+    France, November 2023
+  - [[./images/pdf.png]]
+    [[https://tutorial-guix-hpc-workshop.gitlabpages.inria.fr/slides/slides.pdf][Slides]]
+
+** Participation on program committees
+:PROPERTIES:
+:CUSTOM_ID: post-doc-committees
+:END:
+
+- *Artifact evaluation committee*
+  - [[https://conf.researchr.org/home/cgo-2024][International Symposium on Code
+    Generation and Optimization (CGO) 2024]] @ Edinburgh, United Kingdom, March
+    2024
+  - [[./images/html.png]]
+    [[https://conf.researchr.org/committee/cgo-2024/cgo-2024-artifact-evaluation-artifact-evaluation-committee][Committee
+    members]]
+- *Peer-review*
+  - [[https://www.worldscientific.com/worldscinet/PPL][Parallel Processing
+    Letters (PPL)]] journal, January 2024
+- *Reproducibility committee* (upcoming)
+  - [[https://sc24.supercomputing.org][International Conference for High
+    Performance Computing, Networking, Storage, and Analysis (SC) 2024]] @
+    Atlanta, Georgia, United States, November 2024
+  - [[./images/html.png]]
+    [[https://sc24.supercomputing.org/planning-committee/][Committee members]]
 
 * Solvers for coupled FEM/BEM linear systems
 :PROPERTIES:
 :CUSTOM_ID: research-thesis
 :END:
 
-Numerical simulations are widely used in the aircraft industry. For example,
-while testing and validating prototypes, various problems of electromagnetic and
-aeroacoustic matter come into play. Within the industrial context of Airbus, we
-are particularly interested in the modelization of aeroacoustic phenomena such
-as the propagation of acoustic waves generated by an aircraft on landing and
-taxying.
+In the aeronautical industry, aeroacoustics is used to model the propagation of
+sound waves in the airflow enveloping an aircraft in flight. It is then possible
+to simulate the noise produced by an aircraft at ground level during take-off
+and landing, to ensure compliance with environmental standards and to enable the
+design of future aircraft models. Unlike most other complex physics simulations,
+the method consists in solving coupled linear sparse/dense systems. To produce a
+realistic result, the number of unknowns in the system can be extremely large,
+making its resolution a major challenge. My thesis [cite:@Thesis] focused on the
+design and evaluation of algorithms for solving large linear systems of this
+kind.
 
-This kind of physical models are typically expressed using Partial Differential
-Equations (PDE). The original models are likely to involve concepts that are not
-modelizable on computers such as equations of integral functions. Therefore,
-prior to computing the model numerically, an approximation of its original
-physical expression must be made over a limited domain using an appropriate
-discretization technique. For the problems my thesis is related to, a
-combination of the Finite Elements Method (FEM) and Boundary Elements Method
-(BEM) is applied.
+On the one hand, we proposed algorithms using the existing programming interface
+(API) of fully-featured and well-optimized sparse and dense direct solvers such
+as MUMPS [fn:mumps], HMAT [fn:hmat] and SPIDO [fn:spido]. Thanks to these
+algorithms, we were able to bypass the major shortcomings of a basic usage of
+these solvers and take full advantage of their advanced features such as
+numerical compression, out-of-core computation and distributed memory
+parallelism. In summary, compared with a state-of-the-art reference approach,
+the proposed algorithms allow for processing up to 7× larger coupled FEM/BEM
+systems on a single shared-memory multi-core machine, and more than 6.5× larger
+coupled FEM/BEM systems in a distributed-memory environment.
 
-Discretization allows to compute a system of linear equations approximating the
-original continuous model. Higher the frequency is, e. g. more the approximation
-is accurate, bigger the resulting linear system is. Such transformation
-ultimately leads to coupled FEM/BEM systems with coefficient matrices having a
-dense part corresponding to surface mesh discretization with BEM as well as
-sparse parts corresponding to volume mesh discretization using FEM and the
-interactions between the surface and the volume meshes.
+In the research report [cite:@RR20], we began by formalizing and benchmarking
+existing implementations at Airbus. Following the first new developments, I
+presented a preliminary study of the proposed algorithms [cite:@Compas21] at
+[[https://2021.compas-conference.fr/][ComPAS 2021]]. This national-level
+peer-reviewed conference is ideally suited for PhD students seeking detailed
+feedback on their preliminary work. The absence of conference proceedings is
+voluntary and allows future submission of the work to an international journal
+or conference, for example.
 
-To solve these linear systems, one must build on efficient solving methods and
-software using algorithms and data structures optimized in such a way as to take
-advantage of massively parallel hardware configurations and the characteristics
-of the input linear system as much as possible. The goal of my thesis is thus to
-develop and implement new algorithms for solving large FEM/BEM linear systems.
+Indeed, we subsequently published our final study of all the proposed
+shared-memory algorithms in [cite:@IPDPS22], which I presented at the
+[[https://www.ipdps.org/ipdps2022/2022-.html][IPDPS 2022]] international
+conference. This is one of the major events in the field, the reputation of
+which is, and rightly so, well recognized by existing rankings, and in which it
+is important to publish.
 
-In order to ensure a better reproducibility of numerical experiments conducted
-within my thesis, the latter relies on the principles of literate programming
-[cite:@Knuth84] and uses GNU Guix [cite:@Guix] transactional package manager
-allowing for self-contained, executable descriptions of experimental software
-environments bit-for-bit reproducible across different computational platforms.
+We also conducted a multi-metric study of the proposed algorithms, including
+energy consumption, memory usage and number of floating-point operations
+[cite:@SBACPAD22]. I presented this study at
+[[https://project.inria.fr/sbac2022/][SBAC-PAD 2022]]. Firstly, the study
+confirmed the interest in numerical compression and out-of-core computation.
+Next, profiles of processor and memory power consumption, memory usage and the
+number of floating-point operations gave us a better understanding of the
+application's behavior. Finally, the study revealed a major bottleneck in our
+implementation, as well as a potential load-balancing problem in the sparse
+direct solver.
+
+We then briefly presented our work in the short paper [cite:@Waves22] published
+at the Waves 2022 conference [fn:waves].
+
+Finally, the study of these algorithms carried out in a distributed memory
+environment and presented in the thesis is currently the subject of an article
+being prepared for publication.
+
+The methods developed have been implemented and included in Airbus proprietary
+software based on the MUMPS, SPIDO and HMAT solvers.
+
+On the other hand, we evaluated an alternative solver API reyling on a coupling
+of direct task-based solvers using the same runtime. A customized API allows us
+to improve composability and to simplify data exchange between solvers for a
+more efficient use of computational resources. While the introduction of such
+substantial changes in fully-featured community-driven solvers can only be
+considered in the long term due to the complexity of their source code (a few
+hundred thousand lines of code), we were able to implement a proof of concept of
+this approach in a reduced prototype. A preliminary comparative experimental
+study validated our implementation, confirming that it can achieve the targeted
+solution accuracy. In addition, we have illustrated the potential benefits of an
+asynchronous task execution and shown that even a proof-of-concept of this
+approach can compete with previously proposed methods as well as those in the
+state of the art.
+
+This work was the fruit of a collaboration with
+[[https://www.irit.fr/~Alfredo.Buttari/][Alfredo Buttari]]
+([[https://www.cnrs.fr/en][CNRS]], [[https://www.irit.fr/en/home/][IRIT]]). In
+May 2022, I spent a week in Toulouse with the aim of working on the
+incorporation of necessary changes in the sparse direct solver
+[[https://qr\_mumps.gitlab.io/][qr_mumps]] we have used and which is developed
+by Alfredo Buttari.
+
+I had the opportunity to submit an abstract [cite:@Compas23] and present this
+work at [[https://2023.compas-conference.fr/][ComPAS 2023]]. 
+
+In addition to the main contribution, we devoted a significant effort to the
+reproducibility of our work. To this end, we have explored the principles of
+literate programming and associated software tools to ensure reproducibility of
+experimental environments and the numerical experiments themselves running on
+different machines and spanning over extended periods of time. The thesis itself
+contains a chapter dedicated to this subject.
+
+Moreover, the technical report [cite:@RT20] published as a companion to the
+study [cite:@RR20] and describing its literate and reproducible environment
+represents our first complete work implementing the reproducibility principles
+studied. Subsequently, these community activity reports [cite:@Guix21;@Guix22]
+document our ongoing efforts. In this context, I also contributed to the
+GNU Guix package manager, helping to package new software and localize GNU Guix
+and its documentation into Slovak.
+
+[fn:mumps] sparse direct solver, [[https://mumps-solver.org/]]
+[fn:hmat] dense direct solver, [[https://theses.hal.science/tel-01244260/]]
+[fn:spido] proprietary dense direct solver developped internally at Airbus
+[fn:waves] International Conference on Mathematical and Numerical Aspects of
+Wave Propagation
+
 
 ** Publications
 :PROPERTIES:
 :CUSTOM_ID: thesis-publications
 :END:
 
-Items below are sorted by date of publication from the most to the least recent.
 Author names always appear in alphabetical order.
 
-- *Numerical Modelisation of Interaction between Plasma Thruster Plume and*
-  *Antennas on Small Satellites*
+- [cite:@Compas23] [[./images/fr.png]] *Vers un solveur direct à base de tâches*
+  *pour des systèmes linéaires FEM/BEM creux/denses*
+  - E. Agullo, /M. Felšöci/ and G. Sylvand
+  - [[https://2023.compas-conference.fr/][COMPAS 2023]] - Conférence francophone
+    d’informatique en Parallélisme, Architecture et Système, 2023
+  - [[./images/pdf.png]] [[https://inria.hal.science/hal-04178064][Abstract]]
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/compas-2023/compas-2023.pdf][Slides]]
+- [cite:@Waves22] *Numerical Modelisation of Interaction between Plasma*
+  *Thruster Plume and* *Antennas on Small Satellites*
   - T. Abboud, B. Chaigne, /M. Felšöci/, A. Piche and G. Sylvand
   - [[https://waves2022.apps.math.cnrs.fr/][Waves 2022]] - International
     Conference on Mathematical and Numerical Aspects of Wave Propagation, 2022
-- *Direct solution of larger coupled sparse/dense linear systems using low-rank*
-  *compression on single-node multi-core machines in an industrial context*
+- [cite:@IPDPS22] *Direct solution of larger coupled sparse/dense linear*
+  *systems using low-rank compression on single-node multi-core machines in an*
+  *industrial context*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - [[http://www.ipdps.org/ipdps2022/index.html][IPDPS 2022]] - IEEE
     International Parallel and Distributed Processing Symposium, 2022,
     pp. 25–35
   - [[./images/html.png]]
     [[https://doi.ieeecomputersociety.org/10.1109/IPDPS53621.2022.00012][Article]]
+  - [[./images/html.png]]
+    [[https://inria.hal.science/hal-03774145][Article and slides (open archive)]]
+- [cite:@Guix22] *Guix-HPC Activity Report 2021-2022*
+  - C. Acary-Robert, L. Courtès, Y. Dupont, /M. Felšöci/, K. Hinsen, O.
+    Lünsdorf, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
+  - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
+    Technical Report, 2023
   - [[./images/pdf.png]]
-    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/ipdps-2022.pdf][Slides]]
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03557692/document][Research report]]
-- *Guix-HPC Activity Report 2020-2021*
+    [[https://hal.inria.fr/hal-03565692/document][Technical report]]
+- [cite:@Guix21] *Guix-HPC Activity Report 2020-2021*
   - P.-A. Bouttier, L. Courtès, Y. Dupont, /M. Felšöci/, F. Gruber, K. Hinsen,
     A. Isaac, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
   - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
     Technical Report, 2022
   - [[./images/pdf.png]]
     [[https://hal.inria.fr/hal-03565692/document][Technical report]]
-- *Study of the processor and memory power consumption of coupled sparse/dense*
-  *solvers*
+- [cite:@SBACPAD22] *Study of the processor and memory power and energy*
+  *consumption of coupled sparse/dense solvers*
   - E. Agullo, /M. Felšöci/, A. Guermouche, H. Mathieu, G. Sylvand and B.
     Tagliaro
-  - Inria Bordeaux Sud-Ouest, Research Report RR-9463, 2022
+  - [[https://project.inria.fr/sbac2022/][SBAC-PAD 2022]] - IEEE International
+    Symposium on Computer Architecture and High Performance Computing, 2022, pp.
+    211-220
+  - [[./images/html.png]] [[https://ieeexplore.ieee.org/document/9980931][Article]]
   - [[./images/pdf.png]]
     [[https://hal.inria.fr/hal-03589695/document][Research report]]
-- *Comparison of coupled solvers for FEM/BEM linear systems arising from*
-  *discretization of aeroacoustic problems*
+  - [[./images/pdf.png]]
+    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/sbac-pad/sbac-pad.pdf][Slides]]
+- [cite:@Compas21] *Comparison of coupled solvers for FEM/BEM linear systems*
+  *arising from discretization of aeroacoustic problems*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - [[https://2021.compas-conference.fr/][COMPAS 2021]] - Conférence francophone
     d’informatique en Parallélisme, Architecture et Système, 2021
   - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03264472/document][Article]]
   - [[./images/pdf.png]] [[./images/fr.png]]
     [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/compas-2021.pdf][Slides]]
-- *A comparison of selected solvers for coupled FEM/BEM linear systems arising*
-  *from discretization of aeroacoustic problems*
+- [cite:@RR20] *A comparison of selected solvers for coupled FEM/BEM linear*
+  *systems arising from discretization of aeroacoustic problems*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - Inria Bordeaux Sud-Ouest, Research Report RR-9412, 2021
   - [[./images/pdf.png]]
     [[https://hal.inria.fr/hal-03263603/document][Research report]]
-- *A comparison of selected solvers for coupled FEM/BEM linear systems arising*
-  *from discretization of aeroacoustic problems: literate and reproducible*
-  *environment*
+- [cite:@RT20] *A comparison of selected solvers for coupled FEM/BEM linear*
+  *systems arising from discretization of aeroacoustic problems: literate and*
+  *reproducible environment*
   - E. Agullo, /M. Felšöci/ and G. Sylvand
   - Inria Bordeaux Sud-Ouest, Technical Report RT-0513, 2021
   - [[./images/pdf.png]]
@@ -120,14 +294,6 @@ Author names always appear in alphabetical order.
     Illkirch-Graffenstaden, France, June 2022
   - [[./images/pdf.png]]
     [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/camus/camus.pdf][Slides]]
-- *Guix and Org mode, a powerful association for building a reproducible*
-  *research study*
-  - Seminar and hands-on session @ Inria Grand-Est, Nancy, France, June 2022
-  - [[./images/pdf.png]]
-    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/slides/tuto-techno-guix-hpc.pdf][Slides]]
-  - [[./images/html.png]]
-    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/guidelines/][Hands-on
-    session]]
 - *Direct solution of larger coupled sparse/dense FEM/BEM linear systems using*
   *low-rank compression*
   - [[https://sparsedays.cerfacs.fr/][Sparse Days 2022]] @ St-Girons, France,
@@ -180,24 +346,59 @@ Author names always appear in alphabetical order.
   - [[./images/pdf.png]]
     [[https://www.irit.fr/solharis/wp-content/uploads/2020/12/122020-Felsoci.pdf][Slides]]
 
+** Running tutorials
+:PROPERTIES:
+:CUSTOM_ID: thesis-tutorials
+:END:
+
+- *Guix and Org mode, a powerful association for building a reproducible*
+  *research study*
+  - Seminar and hands-on session @ Inria Grand-Est, Nancy, France, June 2022
+  - [[./images/pdf.png]]
+    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/slides/tuto-techno-guix-hpc.pdf][Slides]]
+  - [[./images/html.png]]
+    [[https://tuto-techno-guix-hpc.gitlabpages.inria.fr/guidelines/][Hands-on
+    session]]
+
 * XFOR programming structure
 :PROPERTIES:
 :CUSTOM_ID: research-xfor
 :END:
 
-Thanks to my research internships during my university studies, I had the
-occasion to discover and participate on the development of the XFOR programming
-structure and related software tools designed within the
-[[https://icps.icube.unistra.fr/][ICPS team]] at the
-[[https://icube.unistra.fr/en/][ICube lab]] and I still continue working on it
-in my spare time.
+The work I carried out within my Master's thesis was related to the field of
+program optimization, and in particular for-loops, using the polyhedral model.
+More specifically, I worked on the XFOR programming structure [cite:@XFOR]. Its
+syntax is very similar to that of standard for-loops in the C language. However,
+it allows several for-loops to be grouped together and managed at the same time.
+Thanks to its two specific parameters, /grain/ and /offset/, the programmer can
+change the way these loops are executed in a simpler, more intuitive way.
 
-XFOR allows to handle multiple for-loops at the same time. Thanks to a couple of
-parameters specific to the structure, the /grain/ and the /offset/, programmers
-can act on the way the handled loops are executed. The goal is to adjust the
-order of instructions within the loops in such a way as to improve the usage of
-cache memory and take advantage of simultaneous instruction execution, namely
-instruction vectorization capabilities of the target processing unit(s).
+The goal is to adjust the order of execution of instructions within managed
+loops, so as to highlight the possibilities offered by modern computer
+architectures. The idea is to optimize the use of cache memory and to exploit
+the parallelization capabilities of processors. A program rewritten using XFOR
+can be up to 6× faster compared to its original version.
+
+One of the main tools dedicated to this structure is the "Iterate, But Better!"
+(IBB) compiler, which translates XFOR loops into equivalent for-loops. This way,
+the translated program can be compiled by any C compiler. The need to compile an
+XFOR program twice was one of the reasons for integrating the XFOR structure
+into a production compiler such as Clang/LLVM. This would allow direct
+compilation of XFOR programs and could help to promote the structure within the
+programming community.
+
+As part of my internship, I extended the lexical and syntax analyzers of the
+Clang/LLVM compiler, so that it could recognize and correctly translate XFOR
+loops. I also implemented the transformation of XFOR loops into the intermediate
+representation used by the compiler (aka. LLVM IR) to produce executable files.
+By the end of the internship, the extended Clang/LLVM
+(\url{https://gitlab.inria.fr/xfor/xfor-clang}) was able to compile programs
+with both simple and nested XFOR loops.
+
+To make XFOR programs even more powerful, I then focused on strategies for
+parallelizing XFOR loops using threads in order to allow for exploring of a more
+coarse-grained parallelism. In particular, I studied the use of the OpenMP
+parallelization library in XFOR programs.
 
 ** Publications
 :PROPERTIES:
@@ -207,8 +408,8 @@ instruction vectorization capabilities of the target processing unit(s).
 - *Integration of the XFOR programming structure into the Clang/LLVM compiler*
   *and extension to parallel programming*
   - /M. Felšöci/
-  - ICube lab, University of Strasbourg, Inria Nancy Grand-Est, Master's thesis,
-    2019
+  - ICube UMR 7357, University of Strasbourg, Inria Nancy Grand-Est, Master's
+    thesis, 2019
   - [[./images/pdf.png]]
     [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
 
@@ -219,7 +420,8 @@ instruction vectorization capabilities of the target processing unit(s).
 
 - *XFOR loops, integration into the Clang/LLVM compiler and extenstion to*
   *parallel programming*
-  - Software corner @ ICube lab, Illkirch-Graffenstaden, France, June 2019
+  - Software corner @ ICube UMR 7357, Illkirch-Graffenstaden, France, June 2019
+  - [[./images/pdf.png]] [[/others/software-corner.pdf][Slides]]
 - *On the XFOR programming structure*
   - Introduction to research for Bachelor's degree students @ Faculty of
     Computer science, University of Strasbourg, France, April 2019
