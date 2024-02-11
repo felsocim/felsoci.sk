@@ -211,77 +211,8 @@ Wave Propagation
 
 Author names always appear in alphabetical order.
 
-- [cite:@Compas23] [[./images/fr.png]] *Vers un solveur direct à base de tâches*
-  *pour des systèmes linéaires FEM/BEM creux/denses*
-  - E. Agullo, /M. Felšöci/ and G. Sylvand
-  - [[https://2023.compas-conference.fr/][COMPAS 2023]] - Conférence francophone
-    d’informatique en Parallélisme, Architecture et Système, 2023
-  - [[./images/pdf.png]] [[https://inria.hal.science/hal-04178064][Abstract]]
-  - [[./images/pdf.png]]
-    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/compas-2023/compas-2023.pdf][Slides]]
-- [cite:@Waves22] *Numerical Modelisation of Interaction between Plasma*
-  *Thruster Plume and* *Antennas on Small Satellites*
-  - T. Abboud, B. Chaigne, /M. Felšöci/, A. Piche and G. Sylvand
-  - [[https://waves2022.apps.math.cnrs.fr/][Waves 2022]] - International
-    Conference on Mathematical and Numerical Aspects of Wave Propagation, 2022
-- [cite:@IPDPS22] *Direct solution of larger coupled sparse/dense linear*
-  *systems using low-rank compression on single-node multi-core machines in an*
-  *industrial context*
-  - E. Agullo, /M. Felšöci/ and G. Sylvand
-  - [[http://www.ipdps.org/ipdps2022/index.html][IPDPS 2022]] - IEEE
-    International Parallel and Distributed Processing Symposium, 2022,
-    pp. 25–35
-  - [[./images/html.png]]
-    [[https://doi.ieeecomputersociety.org/10.1109/IPDPS53621.2022.00012][Article]]
-  - [[./images/html.png]]
-    [[https://inria.hal.science/hal-03774145][Article and slides (open archive)]]
-- [cite:@Guix22] *Guix-HPC Activity Report 2021-2022*
-  - C. Acary-Robert, L. Courtès, Y. Dupont, /M. Felšöci/, K. Hinsen, O.
-    Lünsdorf, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
-  - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
-    Technical Report, 2023
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03565692/document][Technical report]]
-- [cite:@Guix21] *Guix-HPC Activity Report 2020-2021*
-  - P.-A. Bouttier, L. Courtès, Y. Dupont, /M. Felšöci/, F. Gruber, K. Hinsen,
-    A. Isaac, P. Prins, P. Swartvagher, S. Tournier and R. Wurmus
-  - Inria Bordeaux - Sud-Ouest , Université Grenoble - Alpes , Université Paris,
-    Technical Report, 2022
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03565692/document][Technical report]]
-- [cite:@SBACPAD22] *Study of the processor and memory power and energy*
-  *consumption of coupled sparse/dense solvers*
-  - E. Agullo, /M. Felšöci/, A. Guermouche, H. Mathieu, G. Sylvand and B.
-    Tagliaro
-  - [[https://project.inria.fr/sbac2022/][SBAC-PAD 2022]] - IEEE International
-    Symposium on Computer Architecture and High Performance Computing, 2022, pp.
-    211-220
-  - [[./images/html.png]] [[https://ieeexplore.ieee.org/document/9980931][Article]]
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03589695/document][Research report]]
-  - [[./images/pdf.png]]
-    [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/sbac-pad/sbac-pad.pdf][Slides]]
-- [cite:@Compas21] *Comparison of coupled solvers for FEM/BEM linear systems*
-  *arising from discretization of aeroacoustic problems*
-  - E. Agullo, /M. Felšöci/ and G. Sylvand
-  - [[https://2021.compas-conference.fr/][COMPAS 2021]] - Conférence francophone
-    d’informatique en Parallélisme, Architecture et Système, 2021
-  - [[./images/pdf.png]] [[https://hal.inria.fr/hal-03264472/document][Article]]
-  - [[./images/pdf.png]] [[./images/fr.png]]
-    [[https://thesis-mfelsoci.gitlabpages.inria.fr/thesis/slides/compas-2021.pdf][Slides]]
-- [cite:@RR20] *A comparison of selected solvers for coupled FEM/BEM linear*
-  *systems arising from discretization of aeroacoustic problems*
-  - E. Agullo, /M. Felšöci/ and G. Sylvand
-  - Inria Bordeaux Sud-Ouest, Research Report RR-9412, 2021
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03263603/document][Research report]]
-- [cite:@RT20] *A comparison of selected solvers for coupled FEM/BEM linear*
-  *systems arising from discretization of aeroacoustic problems: literate and*
-  *reproducible environment*
-  - E. Agullo, /M. Felšöci/ and G. Sylvand
-  - Inria Bordeaux Sud-Ouest, Technical Report RT-0513, 2021
-  - [[./images/pdf.png]]
-    [[https://hal.inria.fr/hal-03263620/document][Technical report]]
+#+INCLUDE: ./shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY: :keyword "OrgMe" :notkeyword "Xfor"
 
 ** Talks
 :PROPERTIES:
@@ -365,13 +296,14 @@ Author names always appear in alphabetical order.
 :CUSTOM_ID: research-xfor
 :END:
 
-The work I carried out within my Master's thesis was related to the field of
-program optimization, and in particular for-loops, using the polyhedral model.
-More specifically, I worked on the XFOR programming structure [cite:@XFOR]. Its
-syntax is very similar to that of standard for-loops in the C language. However,
-it allows several for-loops to be grouped together and managed at the same time.
-Thanks to its two specific parameters, /grain/ and /offset/, the programmer can
-change the way these loops are executed in a simpler, more intuitive way.
+The work I carried out within my Master's thesis [cite:@MastersThesis] was
+related to the field of program optimization, and in particular for-loops, using
+the polyhedral model. More specifically, I worked on the XFOR programming
+structure [cite:@XFOR]. Its syntax is very similar to that of standard for-loops
+in the C language. However, it allows several for-loops to be grouped together
+and managed at the same time. Thanks to its two specific parameters, /grain/ and
+/offset/, the programmer can change the way these loops are executed in a
+simpler, more intuitive way.
 
 The goal is to adjust the order of execution of instructions within managed
 loops, so as to highlight the possibilities offered by modern computer
@@ -405,13 +337,7 @@ parallelization library in XFOR programs.
 :CUSTOM_ID: xfor-publications
 :END:
 
-- *Integration of the XFOR programming structure into the Clang/LLVM compiler*
-  *and extension to parallel programming*
-  - /M. Felšöci/
-  - ICube UMR 7357, University of Strasbourg, Inria Nancy Grand-Est, Master's
-    thesis, 2019
-  - [[./images/pdf.png]]
-    [[https://felsoci.pages.unistra.fr/MastersThesis/][Master's thesis]]
+#+PRINT_BIBLIOGRAPHY: :keyword "OrgMe" :keyword "Xfor"
 
 ** Talks
 :PROPERTIES:
@@ -431,5 +357,4 @@ parallelization library in XFOR programs.
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ./shared/biblio-setup.org
-#+PRINT_BIBLIOGRAPHY:
+#+PRINT_BIBLIOGRAPHY: :notkeyword "OrgMe"
