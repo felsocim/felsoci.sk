@@ -1,65 +1,97 @@
 #+TITLE: Teaching
 #+AUTHOR: Marek Felšöci
 
-After my first lecture in 2019, I came to enjoy teaching and I continue to give
-lectures while working on my Ph.D. thesis. So far, I gave
+After my first lecture in 2019, teaching has quickly bacome a passion for me and
+I continue to give lectures whenever I can. So far, I gave
 call_compute-teaching-hours() hours of lectures.
+
+* Faculty of Computer science, University of Strasbourg
+:PROPERTIES:
+:CUSTOM_ID: teaching-unistra
+:END:
+
+During the first semester of the 2023/2024 academic year, I was teaching in the
+first year of a Master's degree in computer science.
+
+** Compilation (72h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-unistra-cc
+:END:
+
+This time, all my teaching was done in compilation. More precisely, I gave 48
+hours of tutorials [fn:td] and 24 hours of labs [fn:tp]. As part of my
+activities, I also took part in the preparation of the exam subjects and the
+project.
+
+[fn:td] referred to as /travaux dirigés/ in French
+[fn:tp] referred to as /travaux pratiques/ in French
+
 
 * Faculty of Computer science, University of Bordeaux
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub
 :END:
 
-** Compilation (48h)
-:PROPERTIES:
-:CUSTOM_ID: teaching-ub-cc
-:END:
-
-For the last year of my Ph.D. I was really happy to be assigned with the
-practical lectures in compilation. I was truly in my element!
-
-** Digital skills and communication methods (13h)
-:PROPERTIES:
-:CUSTOM_ID: teaching-ub-cnmc
-:END:
-
-I gave only several hours of practical lectures of beginner's digital skills to
-the 1^{st} year Bachelor's degree students. The idea of the course is to prepare
-the students to pass the national [[https://pix.fr/][PIX]] [[./images/fr.png]]
-certification at the end of semester.
-
-** Databases and web applications (32h)
-:PROPERTIES:
-:CUSTOM_ID: teaching-ub-bddw
-:END:
-
-In spring 2021, I was giving theoretical and practical lectures of relational
-databases and web applications in the 1^{st} year of Bachelor's degree.
+In 2020/2021 and 2021/2022, I was teaching various subjects in both the first
+and the third year of Bachelor's degree.
 
 ** Object oriented programming (32h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-ub-oop
 :END:
 
-In autumn 2020, I was giving practical lectures of object oriented programming
-in Java in the 3^{rd} year of Bachelor's degree.
+In autumn 2020, I ensured 32 hours of labs [fn:tp] of object oriented
+programming in Java in the third year of Bachelor's degree.
 
 All the information about the course as well as the teaching materials are
-[[http://www.reveillere.fr/L3POO/][available online]] [[./images/fr.png]].
+[[http://www.reveillere.fr/POO/][available online]] [[./images/fr.png]].
+
+** Databases and web applications (36h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-bddw
+:END:
+
+In spring 2021, I was assigned with 20 hours of integrated lectures [fn:il] and
+16 hours of labs [fn:tp] of relational databases and web applications in the
+first year of Bachelor's degree.
+
+[fn:il] referred to as /cours intégrés/ in French; combine both lecture time and
+exercices, unlike lectures in auditoriums called /cours magitraux/ in French
+
+
+** Digital skills and communication methods (13.33h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-cnmc
+:END:
+
+In the autumn semester of 2021/2022, I gave around 13 hours of labs [fn:tp] of
+beginner's digital skills to the first year Bachelor's degree students. The
+idea of the course is to prepare the students to pass the national
+[[https://pix.fr/][PIX]] [[./images/fr.png]] certification at the end of
+semester.
+
+** Compilation (48h)
+:PROPERTIES:
+:CUSTOM_ID: teaching-ub-cc
+:END:
+
+Then, in spring, I was really happy to be assigned with the tutorial
+sessions [fn:td] and the labs [fn:tp] of compilation, 24 hours of each. I was
+truly in my element!
 
 * Lycée Sainte-Famille Saintonge, Bordeaux
 :PROPERTIES:
 :CUSTOM_ID: teaching-bts
 :END:
 
-** Introduction to programming in C (64h)
+** Introduction to programming in C (54h)
 :PROPERTIES:
 :CUSTOM_ID: teaching-bts-c
 :END:
 
-During both the autumn and the spring semesters of 2019/2020, I was teaching
-programming in C language to the students of /Brevet de technicien supérieur/
-(BTS) - senior technologist's certificate in computer science.
+In 2019/2020, I taught programming in C language to the students of senior
+technologist's certificate in computer science [fn:bts]. The sessions combined
+lectures with practice in the spirit of an integrated lecture [fn:il].
 
 Given that it was the first year of this curriculum in the institution, I was
 also brought to propose an education plan, prepare the courses as well as
@@ -70,6 +102,9 @@ Nevertheless, it was a very valuable experience!
 The teaching materials, exercices, exam and project assignments are
 [[https://mfelsoci.gitlabpages.inria.fr/lectures/][available online]]
 [[./images/fr.png]].
+
+[fn:bts] referred to as /Brevet de technicien supérieur/ or BTS in French
+
 
 * Addendum
 :PROPERTIES:
@@ -90,7 +125,7 @@ thanks to the code block below.
   ;; matching.
   (let ((heading (org-element-property :title (org-element-at-point))))
     (and
-     (string-match "\(\\([0-9]+\\)h\)$" heading)
+     (string-match "\(\\([0-9]+\\(\.[0-9]+\\)?\\)h\)$" heading)
      (setq teaching-hours
            (+ teaching-hours (string-to-number (match-string 1 heading)))))))
 
