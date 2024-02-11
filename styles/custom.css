@@ -190,8 +190,12 @@ code {
   text-align: center;
 }
 
-.regular-header th {
-  font-weight: normal;
+.footdef > sup {
+  float: left;
+}
+
+.footpara {
+  margin-left: 5px;
 }
 
 @media (min-width: 992px) {
