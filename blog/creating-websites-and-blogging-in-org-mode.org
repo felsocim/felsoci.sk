@@ -112,7 +112,7 @@ build the publishing environment together with the associated revision numbers.
   (url "https://git.savannah.gnu.org/git/guix.git")
   (branch "master")
   (commit
-   "ca8c7a36dfbefd66841a2a6df4c9e44ba525c3e0")
+   "abeffc82379c4f9bd2e6226ea27453b22cb4e0c8")
   (introduction
    (make-channel-introduction
     "9edb3f66fd807b096b48283debdcddccfea34bad"
