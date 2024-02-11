@@ -674,6 +674,19 @@ instead of inline CSS rules, I have to parameter the
 (setq org-html-htmlize-output-type 'css)
 #+END_SRC
 
+Also, I do not like the colon in the title of the footnote sections. So, I
+replace the original footnote export template as suggested
+[[https://www.leonrische.me/pages/org_html_export.html][here]].
+
+#+BEGIN_SRC elisp
+(setq org-html-footnotes-section "<div id=\"footnotes\">
+<h2 class=\"footnotes\">%s</h2>
+<div id=\"text-footnotes\">
+%s
+</div>
+</div>")
+#+END_SRC
+
 Finally, I define a utility function allowing me to change the output folder
 through an environment variable, namely =ORG_OUTPUT_PATH=. This way, I can
 switch between my local Apache server for testing and the production server
