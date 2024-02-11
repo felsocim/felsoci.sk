@@ -76,17 +76,25 @@ a:hover {
 
 #me-info {
   float: left;
-  width: calc(100% - 215px);
+  width: calc(100% - 161px);
 }
 
 #me-photo {
-  margin-left: calc(100% - 200px);
+  margin-left: calc(100% - 146px);
   text-align: right;
-  width: 200px; 
+  width: 146px; 
 }
 
 #current-position {
   font-size: 120%;
+}
+
+.contact-left {
+  padding: 3px 3px 3px 5px;
+}
+
+.contact-right {
+  padding: 3px 5px 3px 3px;
 }
 
 #me-info > p,
@@ -172,6 +180,10 @@ code {
   font-style: italic;
   font-weight: bold;
   text-align: center;
+}
+
+.icon {
+  vertical-align: sub;
 }
 
 .org-center {

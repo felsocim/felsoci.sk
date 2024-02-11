@@ -22,34 +22,45 @@
 
 Working on automatic source code parallelization through task insertion (see
 more in [[./research.org::#research-post-doc][Research]]) at French National
-Institute for Research in Computer science and Automation (Inria) in the
+Institute for Research in Computer science and Automation
+([[https://www.inria.fr/en/][Inria]]) in the
 [[https://www.inria.fr/en/camus][Camus team]] detached at
 [[https://icube.unistra.fr/en][ICube]] (within the
 [[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
 Strasbourg area, France.
 
 #+BEGIN_EXPORT html
-    <p>
-#+END_EXPORT
-
-#+ATTR_HTML: :class regular-header
-| *Email*  | [[mailto:marek.felsoci@inria.fr][marek.felsoci@inria.fr]] |
-
-#+BEGIN_EXPORT html
-    </p>
-    <a href="/cv/cv-felsoci.pdf" target="_blank">
-      <button>Curriculum Vitæ</button>
-    </a>
+    <table border="2" rules="rows" cellspacing="2">
+      <tbody>
+        <tr>
+          <td class="contact-left">
+            <img class="icon" src="/images/work.png" alt="Address"/>
+          </td>
+          <td class="contact-right">
+            ICube UMR 7357, Office B236 <br>
+            300 boulevard Sébastien Brant, CS 10413, F-67412 Illkirch
+          </td>
+        </tr>
+        <tr>
+          <td class="contact-left">
+            <img class="icon" src="/images/e-mail.png" alt="E-mail"/>
+          </td>
+          <td class="contact-right">
+            <a href="mailto:marek.felsoci@inria.fr">marek.felsoci@inria.fr</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div id="me-photo">
-    <img src="/images/marek.jpg" alt="Profile photo of Marek Felšöci"/>
+    <img src="/images/marek.gif" alt="Profile photo of Marek Felšöci"/>
   </div>
 </div>
 #+END_EXPORT
 
-* Biography
+* Short biography
 :PROPERTIES:
-:CUSTOM_ID: biography
+:CUSTOM_ID: short-biography
 :END:
 
 Marek Felšöci was born in Košice, Slovakia in 1996. He received the B.S. degree
@@ -63,14 +74,15 @@ his work was concerned with compiler development and polyhedral code
 optimization (see [[./research.org::#research-xfor][Research]]). From October 1,
 2019 to January 31, 2023 he was preparing a Ph.D. thesis in computer science in
 the [[https://www.inria.fr/en/concace][Concace team]] at the French National
-Institute for Research in Computer science and Automation (Inria) in Talence,
-France. His thesis was focused on the design of fast solvers for coupled sparse
-and dense systems arising from numerical modelizations in high-frequency
-aeroacoustics (see [[./research.org::#research-thesis][Research]]). He defended
-his thesis [cite:@Thesis] on February 22, 2023 and was granted the Ph.D. degree
-in computer science from the University of Bordeaux, France. At the present, he
-works as post-doctoral research fellow at the French National Institute for
-Research in Computer science and Automation (Inria), in
+Institute for Research in Computer science and Automation
+([[https://www.inria.fr/en/][Inria]]) in Talence, France. His thesis was focused
+on the design of fast solvers for coupled sparse and dense systems arising from
+numerical modelizations in high-frequency aeroacoustics (see
+[[./research.org::#research-thesis][Research]]). He defended his thesis
+[cite:@Thesis] on February 22, 2023 and was granted the Ph.D. degree in computer
+science from the University of Bordeaux, France. At the present, he works as
+post-doctoral research fellow at the French National Institute for Research in
+Computer science and Automation ([[https://www.inria.fr/en/][Inria]]), in
 [[https://www.inria.fr/en/camus][Camus team]] detached at
 [[https://icube.unistra.fr/en][ICube]] (within the
 [[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
@@ -87,6 +99,8 @@ elected Ph.D. student representative to the
 de l'École doctorale de mathématiques et d'informatique de l'Université de
 Bordeaux]] (council of the doctoral school).
 
+Check out the [[./about.org][About]] page for more details.
+
 * Research interests and publications
 :PROPERTIES:
 :CUSTOM_ID: research-publications
@@ -94,6 +108,27 @@ Bordeaux]] (council of the doctoral school).
 
 For a more in-depth overview of my work and research interests as well as an
 exhaustive list of publications and talks, see [[./research.org][Research]].
+
+* Teaching activities
+:PROPERTIES:
+:CUSTOM_ID: teaching-activities
+:END:
+
+Teaching represents a true passion for me since my very first experience. Find
+the description of all of my past and current teaching activities on the
+[[./teaching.org][Teaching]] page.
+
+* Blogging
+:PROPERTIES:
+:CUSTOM_ID: blogging
+:END:
+
+Finally, this personal page features a [[./blog/posts.org][Blog]] too. I would
+describe it as a humble composition of some of my adventures involving various
+tools and the concepts I work with and which, I hope, someone might find useful.
+
+Do not hesitate to contact me if you have any comments, suggestions or you would
+simply like to exchange on one of the subjects!
 
 * References
 :PROPERTIES:
