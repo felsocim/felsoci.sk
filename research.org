@@ -323,9 +323,9 @@ As part of my internship, I extended the lexical and syntax analyzers of the
 Clang/LLVM compiler, so that it could recognize and correctly translate XFOR
 loops. I also implemented the transformation of XFOR loops into the intermediate
 representation used by the compiler (aka. LLVM IR) to produce executable files.
-By the end of the internship, the extended Clang/LLVM
-(\url{https://gitlab.inria.fr/xfor/xfor-clang}) was able to compile programs
-with both simple and nested XFOR loops.
+By the end of the internship, the extended
+[[https://gitlab.inria.fr/xfor/xfor-clang][Clang/LLVM]] was able to compile
+programs with both simple and nested XFOR loops.
 
 To make XFOR programs even more powerful, I then focused on strategies for
 parallelizing XFOR loops using threads in order to allow for exploring of a more
