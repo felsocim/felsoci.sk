@@ -1,0 +1,426 @@
+#+TITLE: Café Guix - Présentation des commandes
+#+TITLE: =guix time-machine= et =guix describe=
+#+AUTHOR: Marek Felšöci
+#+LANG: fr
+
+#+BEGIN_SYNOPSIS
+À l'occasion de ce Café Guix, nous découvrirons les commandes =guix
+time-machine= et =guix describe= à travers d'un cas d'utilisation typique -- la
+reproduction dans le temps d'un environnement logiciel créé avec Guix
+[cite:@Guix]. Après une brève mise en situation, nous rappelerons quelques
+autres commandes et notions associées à Guix que nous évoquerons au cours de la
+session. Nous expliquerons ensuite comment nous pouvons nous servir des
+commandes =guix time-machine= et =guix describe= dans le cadre du cas
+d'utilisation abordé. Nous poursuivrons avec quelques suggestions de bonnes
+pratiques à adopter avant de conclure avec un exemple complet d'utilisation de
+ces commandes.
+#+END_SYNOPSIS
+
+* Mise en situation
+:PROPERTIES:
+:CUSTOM_ID: mise-en-situation
+:END:
+
+Au printemps 2022, j'étais encore en pleine préparation de ma thèse de doctorat
+dans le domaine du calcul haute-performance. Dans ce cadre-là, je menais une
+étude expérimentale impliquant le logiciel d'algèbre linéaire MUMPS. Bien
+entendu, j'utilisais Guix [cite:@Guix] pour gérer mon environnement logiciel
+expérimental composé du logiciel MUMPS, puis de R et de sa bibliothèque ggplot2
+pour la collecte et le post-traitement des données expériementales. À l'époque,
+pour entrer dans mon environnement expériemental et d'y exécuter la commande
+=mumps-test=, par exemple, il me suffisait de me servir de la commande =guix
+shell= comme suit.
+
+#+begin_src shell
+guix shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+Ajourd'hui, je voudrais reprendre mon étude expérimentale de l'époque dans le
+cadre d'un travail plus récent et re-exécuter une partie des tests de
+performance dans le but d'illustrer l'effet de nouveaux développements dans
+MUMPS.
+
+** Comment puis-je retrouver mon environnement expérimental ?
+
+Je peux réutiliser la même ligne de commande =guix shell=, non ?
+
+** Rien d'autre ? La commande =guix shell= me donnera-t-elle le même résultat ?
+
+Plus d'un an après, Guix a évolué, les paquets ont été mis à jour. Par exemple,
+rien que la version de MUMPS est passée de 5.1.2 à 5.5.0.
+
+En d'autres termes, l'environnement obtenu avec cette ligne de commande =guix
+shell= aujourd'hui ne sera pas tout à fait le même que celui obtenu au
+printemps 2022.
+
+** Que me faudrait-il pour retrouver l'environnement de l'époque ?
+
+Une machine à voyger dans le temps, bien sûr, ainsi qu'un repère temporel
+précis.
+
+C'est là que les commandes =guix time-machine= et =guix describe= vont entrer en
+jeu !
+
+* =guix time-machine= et =guix describe=
+:PROPERTIES:
+:CUSTOM_ID: coeur
+:END:
+
+Dans Guix, les paquets logiciels, y compris Guix lui-même, sont mis à
+disposition à travers de ce que l'on appelle les canaux. Au fil du temps,
+l'offre de paquets dans ces canaux évolue. Les versions changent, de nouveaux
+paquets ou de nouvelles fonctionnalités de Guix apparaissent, d'autres
+disparaissent. Les canaux sont en fait des dépôts git. Ainsi, pour mettre à jour
+notre installation de Guix et son offre des paquets, il faut télécharger les
+derniers changements, autrement dit les derniers /commits/, des canaux utilisés.
+Du point de vue de l'utilisateur, ceci se fait à l'aide de la commande =guix
+pull=.
+
+Maintenant, lorsque l'on fait appel à la commande =guix shell=, par exemple,
+pour créer un environnement logiciel donné, celle-ci va consulter les paquets
+disponibles dans notre installation de Guix actuelle et prendre les dernières
+versions de ceux-ci. Dans notre exemple, la ligne de commande
+
+#+begin_src shell
+guix shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+effectuée au printemps 2022 a donné lieu à un environnement avec MUMPS 5.2.1. La
+même ligne de commande effectuée avec une installation de Guix datant du 22 mai
+2024 donne lieu à un environnement avec MUMPS 5.5.0. Dans une ligne de commande
+=guix shell= il est possible de spécifier la version souhaitée d'un paquet,
+comme MUMPS 5.2.1, comme suit.
+
+#+begin_src shell
+guix shell --container mumps@5.2.1 r r-ggplot2 -- mumps-tests
+#+end_src
+
+Cependant, rien ne garantit que le canal définissant le paquet =mumps= fournit
+toujours la version 5.2.1 de celui-ci de nos jours. Ce qui n'est pas le cas.
+
+Il nous faudrait donc pourvoir remonter le temps et exécuter la commande =guix
+shell= en considérant la révision du canal =guix= utilisée au printemps 2022.
+Comme il s'agit d'un dépôt git, il nous suffit de retrouver l'état du canal
+=guix= de l'époque, une sorte de =git checkout <bon-commit>=. Dans Guix, c'est
+le rôle de la commande =guix time-machine=.
+
+#+begin_src shell
+guix time-machine --no-channel-files --commit=<bon-commit> -- shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+Nous pouvons remarquer que la machine à remonter le temps de Guix ne raisonne
+pas en termes de dates et heures, mais en termes de commits, tout comme un dépôt
+git classique. Lors de la construction d'un environnement logiciel avec Guix, il
+est donc très important de garder la trace des commits des canaux utilisés lors
+de sa création afin de pouvoir retrouver le même environnement plus tard ou sur
+une autre machine avec Guix.
+
+** Comment obtenir les informations sur mon installation Guix actuelle ?
+:PROPERTIES:
+:CUSTOM_ID: guix-describe
+:END:
+
+La réponse à cette question est la commande =guix describe=. En voici un exemple
+de sortie.
+
+#+begin_example
+Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
+  guix-hpc dd9eadb
+    zdroj repozitára: https://gitlab.inria.fr/guix-hpc/guix-hpc.git
+    vetva: master
+    úprava: dd9eadb6bd5b73912812594251cb7135327f84c0
+  guix-science-nonfree 417f86b
+    zdroj repozitára: https://github.com/guix-science/guix-science-nonfree.git
+    vetva: master
+    úprava: 417f86b4819bb45df671c3276216e57d2a427156
+  guix-past 921f845
+    zdroj repozitára: https://gitlab.inria.fr/guix-hpc/guix-past
+    vetva: master
+    úprava: 921f845dc0dec9f052dcda479a15e787f9fd5b0a
+  guix-science f85279b
+    zdroj repozitára: https://github.com/guix-science/guix-science.git
+    vetva: master
+    úprava: f85279b8aeac3cc3e6e2aec866841c722c5663fe
+  guix 413ef75
+    zdroj repozitára: https://git.savannah.gnu.org/git/guix.git
+    vetva: master
+    úprava: 413ef75f89ac337f7ac3331a862c7c8cdc88aa64
+#+end_example
+
+Si l'on traduit, mon installation Guix actuelle date du 22 mai 2024 et elle est
+constituée de 5 canaux au total dont le canal officiel de Guix listé en dernier
+lieu. Pour chacun des canaux utilisés, nous retrouvons ici l'adresse du dépôt
+git associé, la branche et le numéro de commit utilisés.
+
+Si je reviens à mon exemple, pour mon environnement logiciel du printemps 2022,
+j'avais utilisé uniquement le canal =guix= avec le commit
+=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c=.
+
+** Et ce voyage dans le temps ?
+
+Enfin de compte, si nous rassemblons tous les éléments, pour retrouver
+aujourd'hui mon environnement logiciel de l'époque et re-exécuter mes tests de
+performances, je vais remonter le temps à l'aide de =guix time-machine= en lui
+fournissant un repère temporel exact, sous la forme d'un commit, obtenu grâce à
+=guix describe= au printemps 2024.
+
+#+begin_src shell
+guix time-machine --no-channel-files --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+* Discussion
+
+** Résumé
+
+Nous venons de voir qu'est-ce que les commandes =guix describe= et =guix
+time-machine= nous permttent de faire à travers d'un cas d'utilisation pratique.
+
+=guix time-machine=, en principe utilisée de pair avec une autre commande de
+Guix telle que =guix shell=, nous autorise à exécuter cette dernière dans une
+version antérieure de Guix. Il est à noter qu'ici « une version antérieure »
+veut dire antérieure à la dernière version de Guix disponible dans le canal
+officiel de Guix, et non pas une version antérieure à notre propre installation
+de Guix. En d'autres termes, si l'installation locale de Guix n'est pas à jour,
+la commande =guix time-machine= peut aussi nous amener dans le futur qui nous
+est encore inconnu localement.
+
+La machine à voyager dans le temps de Guix n'utilise pas des dates et heures
+comme repères temporels mais plutôt les numéros de commits des canaux
+constituant une version de Guix. C'est avec la commande =guix describe= que nous
+pouvons nous informer sur les canaux actuellement utilisés par notre
+installation Guix afin de garder la trace d'un repère temporel pour plus tard
+comme dans le cas d'utilisation présenté ci-dessus.
+
+** D'autres cas d'utilisation
+
+En plus du cas où nous aurions envie de reprendre un ancien travail plus tard,
+le tandem =guix time-machine=, =guix describe= et =guix shell= peut nous servir
+dans d'autres situations.
+
+Dans le cadre d'un projet à long terme, il est probable que notre environnement
+logiciel évolue régulièrement. Nous ajoutons de nouvelles fonctionnalités dans
+notre logiciel ou nous voulons profiter des derniers développements dans une
+bibliothèque que nous utilisons. Dans ce contexte, il peut s'avérer très utile
+de garder la trace des générations de Guix utilisées pour créer notre
+environnement et de pouvoir revenir en arrière, par exemple en cas de problème
+avec un environnement plus récent ou à des fins de comparaison entre deux
+versions de notre environnement dans le but de voir quelle est l'influence de la
+mise à jour sur la performance, par exemple.
+
+Similairement au cas d'utilisation évoqué ci-dessus, même si l'environnement
+logiciel de notre projet na pas vocation à évoluer, nous pouvons avoir envie de
+nous assurer que nous utilisons toujours le même environnement pour travailler
+sur le projet afin d'éviter d'éventuels dysfonctionnements ou problèmes de
+compatibilité éventuellement liés à une mise à jour.
+
+Jusqu'ici, nous avons vu l'utilisation de =guix time-machine= exclusivement en
+combinaison avec la commande =guix shell=. Bien que ce soit probablement
+l'association la plus courante, la commande =guix time-machine= peut être
+également utilisée avec les autres commandes de Guix.
+
+*** Pensez-vous à d'autres cas d'utilisation possibles ?
+
+* Utilisation plus avancée
+
+Pour la suite de cette session, nous allons rester dans l'optique de
+l'utilisation de =guix time-machine= en couple avec =guix shell=. Nous avons vu
+l'utilisation de =guix time-machine= sous la forme suivante.
+
+#+begin_src shell
+guix time-machine --no-channel-files --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+L'option =--commit= dit à la commande d'utiliser le canal officiel de Guix avec
+le commit en paramètre, =ee92b0fb7dfd8b55ea63254a59a1605fb870a44c= dans ce cas
+précis. Puis, l'option =--no-channel-files= dit à Guix de ne pas charger le
+fichier de canaux du système ou celui de l'utilisateur courant, en somme,
+considérer uniquement le canal officiel de Guix.
+
+Cependant, il se peut qu'on ait envie d'utiliser, en plus du canal officiel de
+Guix, un autre canal fournissant d'autres paquets logiciels. Par exemple, dans
+la section [[#guix-describe]], nous avons vu une sortie de la commande =guix
+describe= montrant l'utilisation de plusieurs canaux.
+
+#+begin_example
+Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
+  guix-hpc dd9eadb
+    zdroj repozitára: https://gitlab.inria.fr/guix-hpc/guix-hpc.git
+    vetva: master
+    úprava: dd9eadb6bd5b73912812594251cb7135327f84c0
+  guix-science-nonfree 417f86b
+    zdroj repozitára: https://github.com/guix-science/guix-science-nonfree.git
+    vetva: master
+    úprava: 417f86b4819bb45df671c3276216e57d2a427156
+  guix-past 921f845
+    zdroj repozitára: https://gitlab.inria.fr/guix-hpc/guix-past
+    vetva: master
+    úprava: 921f845dc0dec9f052dcda479a15e787f9fd5b0a
+  guix-science f85279b
+    zdroj repozitára: https://github.com/guix-science/guix-science.git
+    vetva: master
+    úprava: f85279b8aeac3cc3e6e2aec866841c722c5663fe
+  guix 413ef75
+    zdroj repozitára: https://git.savannah.gnu.org/git/guix.git
+    vetva: master
+    úprava: 413ef75f89ac337f7ac3331a862c7c8cdc88aa64
+#+end_example
+
+** Comment faire pour dire à =guix time-machine= d'utiliser plusieurs canaux ?
+
+Au lieu d'utiliser l'option =--commit= de =guix time-machine=, nous pouvons lui
+passer la liste et les spécifications (numéros de commits, ...) de canaux dans
+un fichier Scheme en utilisant l'option =--channels= ou =-C=. Voici donc à quoi
+ressemble un tel fichier décrivant la liste des canaux ci-dessus.
+
+#+begin_src scheme
+(list
+ (channel
+  (name 'guix-hpc)
+  (url "https://gitlab.inria.fr/guix-hpc/guix-hpc.git")
+  (branch "master")
+  (commit "dd9eadb6bd5b73912812594251cb7135327f84c0"))
+ (channel
+  (name 'guix-science-nonfree)
+  (url "https://github.com/guix-science/guix-science-nonfree.git")
+  (branch "master")
+  (commit "417f86b4819bb45df671c3276216e57d2a427156"))
+ (channel
+  (name 'guix-past)
+  (url "https://gitlab.inria.fr/guix-hpc/guix-past")
+  (branch "master")
+  (commit "921f845dc0dec9f052dcda479a15e787f9fd5b0a")
+  (introduction
+   (make-channel-introduction
+    "0c119db2ea86a389769f4d2b9c6f5c41c027e336"
+    (openpgp-fingerprint
+     "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))
+ (channel
+  (name 'guix-science)
+  (url "https://github.com/guix-science/guix-science.git")
+  (branch "master")
+  (commit "f85279b8aeac3cc3e6e2aec866841c722c5663fe"))
+ (channel
+  (name 'guix)
+  (url "https://git.savannah.gnu.org/git/guix.git")
+  (branch "master")
+  (commit "413ef75f89ac337f7ac3331a862c7c8cdc88aa64")
+  (introduction
+   (make-channel-introduction
+    "9edb3f66fd807b096b48283debdcddccfea34bad"
+    (openpgp-fingerprint
+     "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+#+end_src
+
+Pas de panique ! Nous n'aurons pas à écrire ce fichier à la main à partir de
+zéro. Afin de produire ce fichier pour notre génération de Guix actuelle, nous
+pouvons utiliser, encore une fois, la commande =guix describe= et son option
+=-f= ainsi.
+
+#+begin_src shell
+guix describe -f channels
+#+end_src
+
+La ligne de commande ci-dessus produira automatiquemet la sortie de =guix
+describe= dans le format Scheme. Nous pouvons simplement rediriger cette sortie
+dans un fichier Scheme, puis l'utiliser avec =guix time-machine= comme suit.
+
+#+begin_src shell
+guix describe -f channels > channels.scm
+guix time-machine --channels=channels.scm -- ...
+#+end_src
+
+** Petit extra
+
+Nous retrouvons le même soucis dans le cadre de l'utilisation de la commande
+=guix shell=. Lorsque celle-ci est utilisée pour créer des environnements
+simples tels que celui dans notre exemple,
+
+#+begin_src shell
+guix shell --container mumps r r-ggplot2 -- mumps-tests
+#+end_src
+
+il est facile de retenir et retrouver notre ligne de commande. Cependant, nous
+allons souvent être confronté à des envionnements plus complexes tel que
+
+#+begin_src shell
+guix shell --pure --with-input=pastix-5=pastix-5-mkl \
+     --with-input=mumps-scotch-openmpi=mumps-mkl-scotch-openmpi \
+     --with-input=openblas=mkl --with-input=slurm=slurm@19 \
+     --with-git-url=gcvb=$HOME/src/gcvb \
+     --with-commit=gcvb=40d88ba241db4c71ac3e1fe8024fba4d906f45b1 \
+     --preserve=^SLURM bash coreutils inetutils findutils grep sed \
+     bc openssh python python-psutil gcvb slurm@19 openmpi scab
+#+end_src
+
+Sans entrer dans les détails, il est clair que nous pourrions mieux nous en
+sortir si nous pouvions transformer cette ligne de commande en un fichier Scheme
+comme dans le cas de l'utilisation de plusieurs canaux avec la commande =guix
+time-machine=. Eh bien, c'est possible, il suffit de rajouter à la commande
+ci-dessus l'option =--export-manifest= pour obtenir la sortie suivante.
+
+#+begin_src scheme
+(define transform1
+  (options->transformation
+    '((with-input . "pastix-5=pastix-5-mkl")
+      (with-input . "mumps-scotch-openmpi=mumps-mkl-scotch-openmpi ")
+      (with-input . "openblas=mkl")
+      (with-input . "slurm=slurm@19")
+      (with-git-url . "gcvb=/home/marek/src/gcvb")
+      (with-commit . "gcvb=40d88ba241db4c71ac3e1fe8024fba4d906f45b1"))))
+
+(packages->manifest
+  (list (transform1 (specification->package "scab"))
+        (transform1 (specification->package "gcvb"))
+        (transform1 (specification->package "openmpi"))
+        (transform1 (specification->package "slurm@19"))
+        (transform1 (specification->package "gcvb"))
+        (transform1 (specification->package "python-psutil"))
+        (transform1 (specification->package "python"))
+        (transform1 (specification->package "openssh"))
+        (transform1 (specification->package "bc"))
+        (transform1 (specification->package "sed"))
+        (transform1 (specification->package "grep"))
+        (transform1 (specification->package "findutils"))
+        (transform1 (specification->package "inetutils"))
+        (transform1 (specification->package "coreutils"))
+        (transform1 (specification->package "bash"))))
+#+end_src
+
+La sortie que nous pouvons rédiriger dans un fichier Scheme appelé manifest,
+puis le réutiliser avec la commande =guix shell= et son option =--manifest= ou
+=-m= comme suit.
+
+#+begin_src shell
+guix shell ... --export-manifest > manifest.scm
+guix shell --pure --preserve=^SLURM --manifest=manifest.scm -- ...
+#+end_src
+
+** Vers un environnement logiciel reproductible
+
+Toujours dans l'optique d'un projet où l'environnement logiciel est géré par
+Guix, nous avons besoin de deux ingrédients pour pouvoir le rendre reproductible
+dans le temps et d'une machine à l'autre :
+
+1. descriptif du contenu de notre environnement (ligne de commande =guix shell=
+   ou le fichier manifest),
+2. descriptif de la génération de Guix utilisée pour le créer (liste des canaux
+   et de leurs commits)
+
+En pratique, nous pouvons garder deux fichiers supplémentaire dans le dépôt de
+notre projet, un fichier =channels.scm= et un fichier =manifest.scm=.
+
+Voyons cela sur des exemples pratiques.
+
+* Démos
+
+** Slides
+
+** OptiTrust (config plus avancée)
+
+* References
+:PROPERTIES:
+:CUSTOM_ID: references
+:END:
+
+#+INCLUDE: ../shared/biblio-setup.org
+#+PRINT_BIBLIOGRAPHY:
