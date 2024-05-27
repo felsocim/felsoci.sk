@@ -1,19 +1,18 @@
-#+TITLE: Café Guix - Présentation des commandes
-#+TITLE: =guix time-machine= et =guix describe=
+#+TITLE: Café Guix, commandes =guix time-machine= et =guix describe=
 #+AUTHOR: Marek Felšöci
 #+LANG: fr
 
 #+BEGIN_SYNOPSIS
-À l'occasion de ce Café Guix, nous découvrirons les commandes =guix
-time-machine= et =guix describe= à travers d'un cas d'utilisation typique -- la
-reproduction dans le temps d'un environnement logiciel créé avec Guix
-[cite:@Guix]. Après une brève mise en situation, nous rappelerons quelques
-autres commandes et notions associées à Guix que nous évoquerons au cours de la
-session. Nous expliquerons ensuite comment nous pouvons nous servir des
-commandes =guix time-machine= et =guix describe= dans le cadre du cas
-d'utilisation abordé. Nous poursuivrons avec quelques suggestions de bonnes
-pratiques à adopter avant de conclure avec un exemple complet d'utilisation de
-ces commandes.
+À l'occasion de ce [[https://hpc.guix.info/events/2024/caf%C3%A9-guix/][Café
+Guix]], nous découvrirons les commandes =guix time-machine= et =guix describe= à
+travers d'un cas d'utilisation pratique -- la reproduction d'un environnement
+logiciel créé avec la commande =guix shell=. Après une brève mise en situation,
+nous rappelerons quelques autres commandes et notions associées à Guix puis nous
+expliquerons comment nous pouvons nous servir de =guix time-machine= et =guix
+describe= dans le cadre du cas pratique abordé. Nous poursuivrons avec d'autres
+exemples d'application de ces commandes et présenterons une utilisation plus
+avancée de celles-ci. Enfin, nous verrons quelques suggestions de bonnes
+pratiques d'utilisation au moyen d'une petite démonstration.
 #+END_SYNOPSIS
 
 * Mise en situation
@@ -21,107 +20,178 @@ ces commandes.
 :CUSTOM_ID: mise-en-situation
 :END:
 
-Au printemps 2022, j'étais encore en pleine préparation de ma thèse de doctorat
-dans le domaine du calcul haute-performance. Dans ce cadre-là, je menais une
-étude expérimentale impliquant le logiciel d'algèbre linéaire MUMPS. Bien
-entendu, j'utilisais Guix [cite:@Guix] pour gérer mon environnement logiciel
-expérimental composé du logiciel MUMPS, puis de R et de sa bibliothèque ggplot2
-pour la collecte et le post-traitement des données expériementales. À l'époque,
-pour entrer dans mon environnement expériemental et d'y exécuter la commande
-=mumps-test=, par exemple, il me suffisait de me servir de la commande =guix
-shell= comme suit.
+Nous sommes au printemps 2022. Je suis en pleine préparation de ma thèse de
+doctorat dans le domaine du calcul haute-performance. Dans ce cadre-là, je
+travaille sur une application d'algèbre linéaire basée sur la bibliothèque MUMPS
+[cite:@MUMPS1;@MUMPS2]. Bien entendu, j'utilise Guix [cite:@Guix] pour gérer mon
+environnement logiciel composé de la chaîne de compilation du compilateur GCC
+(paquet =gcc-toolchain=), de la bibliothèque MUMPS (paquet =mumps=) et d'un
+shell de base (paquets =bash= et =coreutils=). Pour entrer dans mon
+environnement logiciel et d'y ouvrir un shell, il me suffit de me servir de la
+commande =guix shell= comme suit.
 
 #+begin_src shell
-guix shell --container mumps r r-ggplot2 -- mumps-tests
+guix shell --container gcc-toolchain mumps bash coreutils -- bash
 #+end_src
 
-Ajourd'hui, je voudrais reprendre mon étude expérimentale de l'époque dans le
-cadre d'un travail plus récent et re-exécuter une partie des tests de
-performance dans le but d'illustrer l'effet de nouveaux développements dans
-MUMPS.
+Revenons en 2024. Ajourd'hui, je voudrais reprendre mon projet. J'exécute donc
+la même ligne de commande =guix shell= afin de retrouver mon environnement
+logiciel d'origine.
 
-** Comment puis-je retrouver mon environnement expérimental ?
+** Obtiendrai-je exactement le même environnement ?
 
-Je peux réutiliser la même ligne de commande =guix shell=, non ?
-
-** Rien d'autre ? La commande =guix shell= me donnera-t-elle le même résultat ?
-
-Plus d'un an après, Guix a évolué, les paquets ont été mis à jour. Par exemple,
-rien que la version de MUMPS est passée de 5.1.2 à 5.5.0.
+Deux années se sont écoulées depuis. Guix a évolué, les paquets ont été mis à
+jour. Dans ce cas, par exemple, la chaîne de compilation est passée de la
+version 11.2.0 à la 13.2.0 et la bibliothèque MUMPS est passée de 5.2.1 à
+5.5.1.
 
 En d'autres termes, l'environnement obtenu avec cette ligne de commande =guix
 shell= aujourd'hui ne sera pas tout à fait le même que celui obtenu au
 printemps 2022.
 
-** Que me faudrait-il pour retrouver l'environnement de l'époque ?
+Même s'il est possible de spécifier les versions des paquets demandés dans un
+environnement logiciel créé avec =guix shell=,
 
-Une machine à voyger dans le temps, bien sûr, ainsi qu'un repère temporel
-précis.
+#+begin_src shell
+guix shell --container gcc-toolchain@11.2.0 mumps@5.2.1 bash coreutils -- bash
+#+end_src
 
-C'est là que les commandes =guix time-machine= et =guix describe= vont entrer en
-jeu !
+nous ne sommes pas sûr de retrouver exactement le même environnement. D'un côté,
+pour la plupart des paquets, y compris pour =mumps=, les versions anciennes
+disparaissent avec l'arrivée de nouvelles versions. De l'autre côté, même si
+tous les paquets demandés étaient encore disponibles en version de l'époque, il
+faudrait qu'il en soit de même pour toutes leurs dépendances...
+
+** Dans un monde idéal, que me faudrait-il pour retrouver mon environnement ?
+
+Rien qu'une machine à voyger dans le temps afin de pouvoir exécuter ma ligne de
+commande =guix shell= comme si nous étions de retour au printemps 2022.
+
+Pas de problème, Guix a ce qu'il me faut ! C'est là que les commandes =guix
+time-machine= et =guix describe= vont entrer en jeu.
+
+* Quelques rappels
+:PROPERTIES:
+:CUSTOM_ID: rappels
+:END:
+
+Dans Guix, les paquets logiciels sont mis à disposition à travers de ce que l'on
+appelle les canaux [cite:@GuixChannelsFr]. Guix lui-même ainsi que 28 026 autres
+paquets (au 27 mai 2024) sont disponibles depuis le canal officiel de Guix.
+Cependant, il existe de nombreux autres canaux dans la nature. Au fil du temps,
+l'offre de paquets dans ces canaux évolue. Les versions changent, de nouveaux
+paquets ou de nouvelles fonctionnalités de Guix apparaissent, d'autres
+disparaissent.
+
+Sous le capot, les canaux sont en fait des dépôts git ce qui permet de retracer
+tout changement effectué à l'aide de son numéro de révision, autrement dit de
+son /commit/.
+
+#+CAPTION: Les derniers /commits/ dans le dépôt du canal officiel de Guix sur
+#+CAPTION: [[https://git.savannah.gnu.org/cgit/guix.git/]].
+[[../images/guix-repo.png]]
+
+Lorsqu'un utilisateur souhaite mettre à jour son installation locale de Guix, il
+peut le faire à l'aide de la commande =guix pull= [cite:@GuixPullFr]. Cette
+dernière va télécharger les derniers changements, autrement dit les derniers
+/commits/, des canaux utilisés. Dans la terminologie de Guix, cette action
+aboutit à la création d'une nouvelle génération de Guix pour l'utilisateur en
+question. Nous aurons encore l'occasion de revenir vers ce concept un peu plus
+tard.
+
+Revenons maintenant à la commande =guix shell= [cite:@GuixShellFr]. Lorsque nous
+faison appel à cette dernière pour créer un environnement logiciel, celle-ci va
+consulter les paquets disponibles dans notre génération de Guix actuelle et
+prendre leurs versions par défaut. La plupart du temps, la version par défaut
+est également la version la plus récente disponible dans le canal concerné. Dans
+notre exemple de la section [[#mise-en-situation]], la ligne de commande
+
+#+begin_src shell
+guix shell --container gcc-toolchain mumps bash coreutils -- bash
+#+end_src
+
+effectuée au printemps 2022 a donné lieu à la sortie suivante.
+
+#+begin_example
+/*
+ *
+ *  This file is part of MUMPS 5.2.1, released
+ *  on Fri Jun 14 14:46:05 UTC 2019
+ *
+gcc (GCC) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#+end_example
+
+À l'époque, nous avons donc obtenu un environnement avec le compilateur GCC en
+version 11.2.0 et la bibliothèque MUMPS en version 5.2.1. La même ligne de
+commande effectuée avec une génération de Guix datant du 22 mai 2024 crée un
+environnement avec GCC 13.2.0 et MUMPS 5.5.0.
+
+#+begin_example
+/*
+ *
+ *  This file is part of MUMPS 5.5.1, released
+ *  on Tue Jul 12 13:17:24 UTC 2022
+ *
+gcc (GCC) 13.2.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#+end_example
+
+En effet, au printemps 2022, ma génération de Guix a été basée sur la révision
+=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c= du canal officiel de Guix. Ma
+génération de Guix actuelle est basée sur la révision
+=413ef75f89ac337f7ac3331a862c7c8cdc88aa64=.
+
+#+CAPTION: Extrait du graphe de révisions (commits) du dépôt git du canal
+#+CAPTION: officiel de Guix.
+#+ATTR_HTML: :width 80%
+[[../images/guix-repo-timeline.png]]
 
 * =guix time-machine= et =guix describe=
 :PROPERTIES:
 :CUSTOM_ID: coeur
 :END:
 
-Dans Guix, les paquets logiciels, y compris Guix lui-même, sont mis à
-disposition à travers de ce que l'on appelle les canaux. Au fil du temps,
-l'offre de paquets dans ces canaux évolue. Les versions changent, de nouveaux
-paquets ou de nouvelles fonctionnalités de Guix apparaissent, d'autres
-disparaissent. Les canaux sont en fait des dépôts git. Ainsi, pour mettre à jour
-notre installation de Guix et son offre des paquets, il faut télécharger les
-derniers changements, autrement dit les derniers /commits/, des canaux utilisés.
-Du point de vue de l'utilisateur, ceci se fait à l'aide de la commande =guix
-pull=.
+Pour que ma ligne de commande =guix shell= donne aujourd'hui lieu à exactement
+le même environnement logiciel qu'au printemps 2022, il nous faudrait pourvoir
+remonter le temps et exécuter la commande =guix shell= en utilisant la
+génération de Guix de l'époque, c'est-à-dire celle basée sur la révision
+=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c= du canal officiel de Guix.
 
-Maintenant, lorsque l'on fait appel à la commande =guix shell=, par exemple,
-pour créer un environnement logiciel donné, celle-ci va consulter les paquets
-disponibles dans notre installation de Guix actuelle et prendre les dernières
-versions de ceux-ci. Dans notre exemple, la ligne de commande
+Étant donné que les canaux sont des dépôt git, nous pouvons revenir en arrière,
+en d'autres termes, faire une sorte de =git checkout <bon-commit>= sur le canal
+officiel de Guix. C'est ce que nous permet de faire la commande =guix
+time-machine=.
 
 #+begin_src shell
-guix shell --container mumps r r-ggplot2 -- mumps-tests
+guix time-machine --no-channel-files \
+     --commit=<bon-commit> -- <commande guix>
 #+end_src
 
-effectuée au printemps 2022 a donné lieu à un environnement avec MUMPS 5.2.1. La
-même ligne de commande effectuée avec une installation de Guix datant du 22 mai
-2024 donne lieu à un environnement avec MUMPS 5.5.0. Dans une ligne de commande
-=guix shell= il est possible de spécifier la version souhaitée d'un paquet,
-comme MUMPS 5.2.1, comme suit.
-
-#+begin_src shell
-guix shell --container mumps@5.2.1 r r-ggplot2 -- mumps-tests
-#+end_src
-
-Cependant, rien ne garantit que le canal définissant le paquet =mumps= fournit
-toujours la version 5.2.1 de celui-ci de nos jours. Ce qui n'est pas le cas.
-
-Il nous faudrait donc pourvoir remonter le temps et exécuter la commande =guix
-shell= en considérant la révision du canal =guix= utilisée au printemps 2022.
-Comme il s'agit d'un dépôt git, il nous suffit de retrouver l'état du canal
-=guix= de l'époque, une sorte de =git checkout <bon-commit>=. Dans Guix, c'est
-le rôle de la commande =guix time-machine=.
-
-#+begin_src shell
-guix time-machine --no-channel-files --commit=<bon-commit> -- shell --container mumps r r-ggplot2 -- mumps-tests
-#+end_src
-
-Nous pouvons remarquer que la machine à remonter le temps de Guix ne raisonne
-pas en termes de dates et heures, mais en termes de commits, tout comme un dépôt
-git classique. Lors de la construction d'un environnement logiciel avec Guix, il
-est donc très important de garder la trace des commits des canaux utilisés lors
-de sa création afin de pouvoir retrouver le même environnement plus tard ou sur
-une autre machine avec Guix.
+Nous remarquerons que la machine à voyager dans le temps de Guix ne raisonne pas
+en termes de dates et heures, mais en termes de /commits/, tout comme un dépôt
+git. Lors de la construction d'un environnement logiciel avec Guix, il est donc
+très important de garder la trace des /commits/ des canaux utilisés lors de sa
+création afin de pouvoir retrouver le même environnement plus tard ou sur une
+autre machine équipée de Guix.
 
 ** Comment obtenir les informations sur mon installation Guix actuelle ?
 :PROPERTIES:
 :CUSTOM_ID: guix-describe
 :END:
 
-La réponse à cette question est la commande =guix describe=. En voici un exemple
-de sortie.
+La réponse à cette question est la commande =guix describe=. Cette dernière
+permet d'afficher les informations telles que les liens et les numéros de
+/commit/ des les canaux qui ont été utilisés pour créer la dernière génération
+de Guix dans notre profil utilisateur avec la commande =guix pull= (voir
+[[#rappels]]).
+
+À titre d'exemple, voici la sortie de la commande =guix describe= sur ma machine
+personnelle.
 
 #+begin_example
 Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
@@ -147,51 +217,62 @@ Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
     úprava: 413ef75f89ac337f7ac3331a862c7c8cdc88aa64
 #+end_example
 
-Si l'on traduit, mon installation Guix actuelle date du 22 mai 2024 et elle est
+Si je traduis, ma génération de Guix actuelle date du 22 mai 2024 et elle est
 constituée de 5 canaux au total dont le canal officiel de Guix listé en dernier
 lieu. Pour chacun des canaux utilisés, nous retrouvons ici l'adresse du dépôt
 git associé, la branche et le numéro de commit utilisés.
 
-Si je reviens à mon exemple, pour mon environnement logiciel du printemps 2022,
-j'avais utilisé uniquement le canal =guix= avec le commit
+Encore une fois, en référence à l'exemple de la section [[#mise-en-situation]],
+ma génération de Guix actuelle est basée sur la révision
+=413ef75f89ac337f7ac3331a862c7c8cdc88aa64= du canal officiel de Guix alors qu'au
+printemps 2022, elle était basée sur la révision
 =ee92b0fb7dfd8b55ea63254a59a1605fb870a44c=.
 
 ** Et ce voyage dans le temps ?
+:PROPERTIES:
+:CUSTOM_ID: guix-time-machine
+:END:
 
-Enfin de compte, si nous rassemblons tous les éléments, pour retrouver
-aujourd'hui mon environnement logiciel de l'époque et re-exécuter mes tests de
-performances, je vais remonter le temps à l'aide de =guix time-machine= en lui
-fournissant un repère temporel exact, sous la forme d'un commit, obtenu grâce à
-=guix describe= au printemps 2024.
+Enfin de compte, si nous rassemblons tous les éléments de cette secion, pour
+retrouver aujourd'hui mon environnement logiciel de l'époque, je vais remonter
+le temps à l'aide de =guix time-machine= en lui fournissant un repère temporel
+exact, sous la forme d'un /commit/, obtenu grâce à =guix describe= au printemps
+2022, au moment de la construction initiale de mon environnement.
 
 #+begin_src shell
-guix time-machine --no-channel-files --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- shell --container mumps r r-ggplot2 -- mumps-tests
+guix time-machine --no-channel-files \
+     --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- \
+     shell --container gcc-toolchain mumps bash coreutils -- bash
 #+end_src
 
 * Discussion
-
-** Résumé
+:PROPERTIES:
+:CUSTOM_ID: discussion
+:END:
 
 Nous venons de voir qu'est-ce que les commandes =guix describe= et =guix
-time-machine= nous permttent de faire à travers d'un cas d'utilisation pratique.
+time-machine= nous permttent de faire à travers un cas d'utilisation pratique.
 
 =guix time-machine=, en principe utilisée de pair avec une autre commande de
 Guix telle que =guix shell=, nous autorise à exécuter cette dernière dans une
-version antérieure de Guix. Il est à noter qu'ici « une version antérieure »
-veut dire antérieure à la dernière version de Guix disponible dans le canal
-officiel de Guix, et non pas une version antérieure à notre propre installation
-de Guix. En d'autres termes, si l'installation locale de Guix n'est pas à jour,
-la commande =guix time-machine= peut aussi nous amener dans le futur qui nous
-est encore inconnu localement.
+version antérieure de Guix. Il est à noter qu'ici le terme « antérieure » est
+relatif à la dernière version de Guix disponible dans le canal officiel de Guix,
+et non pas à la dernière génération de Guix dans notre profil utilisateur (voir
+[[#rappels]]). Autrement dit, si notre génération de Guix n'est pas basée sur le
+dernier /commit/ du canal officiel de Guix, la commande =guix time-machine= peut
+aussi nous amener dans le futur qui nous est encore inconnu localement.
 
-La machine à voyager dans le temps de Guix n'utilise pas des dates et heures
-comme repères temporels mais plutôt les numéros de commits des canaux
-constituant une version de Guix. C'est avec la commande =guix describe= que nous
-pouvons nous informer sur les canaux actuellement utilisés par notre
-installation Guix afin de garder la trace d'un repère temporel pour plus tard
-comme dans le cas d'utilisation présenté ci-dessus.
+La machine à voyager dans le temps de Guix n'utilise pas de dates et heures
+comme repères temporels mais plutôt les numéros de /commits/ des canaux utilisés
+pour créer une génération de Guix donnée. C'est avec la commande =guix describe=
+que nous pouvons nous informer sur les canaux actuellement utilisés par notre
+génération de Guix afin de garder la trace d'un repère temporel pour plus tard
+comme dans notre cas d'utilisation pratique.
 
 ** D'autres cas d'utilisation
+:PROPERTIES:
+:CUSTOM_ID: autres-cas-utilisation
+:END:
 
 En plus du cas où nous aurions envie de reprendre un ancien travail plus tard,
 le tandem =guix time-machine=, =guix describe= et =guix shell= peut nous servir
@@ -201,45 +282,50 @@ Dans le cadre d'un projet à long terme, il est probable que notre environnement
 logiciel évolue régulièrement. Nous ajoutons de nouvelles fonctionnalités dans
 notre logiciel ou nous voulons profiter des derniers développements dans une
 bibliothèque que nous utilisons. Dans ce contexte, il peut s'avérer très utile
-de garder la trace des générations de Guix utilisées pour créer notre
-environnement et de pouvoir revenir en arrière, par exemple en cas de problème
-avec un environnement plus récent ou à des fins de comparaison entre deux
-versions de notre environnement dans le but de voir quelle est l'influence de la
-mise à jour sur la performance, par exemple.
+de garder la trace des générations de Guix utilisées lors de la création de
+notre environnement et de pouvoir revenir en arrière, par exemple en cas de
+problème avec un environnement plus récent ou à des fins de comparaison entre
+deux versions de notre environnement.
 
-Similairement au cas d'utilisation évoqué ci-dessus, même si l'environnement
-logiciel de notre projet na pas vocation à évoluer, nous pouvons avoir envie de
-nous assurer que nous utilisons toujours le même environnement pour travailler
-sur le projet afin d'éviter d'éventuels dysfonctionnements ou problèmes de
-compatibilité éventuellement liés à une mise à jour.
+Similairement au cas d'utilisation évoqué dans la section
+[[#mise-en-situation]], même si l'environnement logiciel de notre projet na pas
+vocation à évoluer, nous pouvons avoir envie de nous assurer que nous utilisons
+toujours le même environnement pour travailler sur le projet afin d'éviter
+d'éventuels dysfonctionnements ou problèmes de compatibilité liés à une mise à
+jour.
 
 Jusqu'ici, nous avons vu l'utilisation de =guix time-machine= exclusivement en
-combinaison avec la commande =guix shell=. Bien que ce soit probablement
-l'association la plus courante, la commande =guix time-machine= peut être
+combinaison avec la commande =guix shell=. Bien que ce soit probablement une
+association des plus courantes, la commande =guix time-machine= peut être
 également utilisée avec les autres commandes de Guix.
 
 *** Pensez-vous à d'autres cas d'utilisation possibles ?
 
 * Utilisation plus avancée
+:PROPERTIES:
+:CUSTOM_ID: fichiers-scheme
+:END:
 
 Pour la suite de cette session, nous allons rester dans l'optique de
 l'utilisation de =guix time-machine= en couple avec =guix shell=. Nous avons vu
-l'utilisation de =guix time-machine= sous la forme suivante.
+la mise en pratique de =guix time-machine= sous la forme suivante.
 
 #+begin_src shell
-guix time-machine --no-channel-files --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- shell --container mumps r r-ggplot2 -- mumps-tests
+guix time-machine --no-channel-files \
+     --commit=ee92b0fb7dfd8b55ea63254a59a1605fb870a44c -- \
+     shell --container gcc-toolchain mumps bash coreutils -- bash
 #+end_src
 
 L'option =--commit= dit à la commande d'utiliser le canal officiel de Guix avec
-le commit en paramètre, =ee92b0fb7dfd8b55ea63254a59a1605fb870a44c= dans ce cas
+le /commit/ en paramètre, =ee92b0fb7dfd8b55ea63254a59a1605fb870a44c= dans ce cas
 précis. Puis, l'option =--no-channel-files= dit à Guix de ne pas charger le
-fichier de canaux du système ou celui de l'utilisateur courant, en somme,
-considérer uniquement le canal officiel de Guix.
+fichier de canaux du système ou celui du profil utilisateur courant. En somme,
+nous considérons uniquement le canal officiel de Guix.
 
-Cependant, il se peut qu'on ait envie d'utiliser, en plus du canal officiel de
-Guix, un autre canal fournissant d'autres paquets logiciels. Par exemple, dans
-la section [[#guix-describe]], nous avons vu une sortie de la commande =guix
-describe= montrant l'utilisation de plusieurs canaux.
+Cependant, il se peut qu'on ait envie d'utiliser, en plus du canal officiel, un
+autre canal fournissant d'autres paquets logiciels. Par exemple, dans la section
+[[#guix-describe]], nous avons vu une sortie de la commande =guix describe=
+montrant l'utilisation de plusieurs canaux.
 
 #+begin_example
 Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
@@ -266,11 +352,14 @@ Pokolenie 1	22. máj 2024 02:30:17	(súčasné)
 #+end_example
 
 ** Comment faire pour dire à =guix time-machine= d'utiliser plusieurs canaux ?
+:PROPERTIES:
+:CUSTOM_ID: fichier-canaux
+:END:
 
 Au lieu d'utiliser l'option =--commit= de =guix time-machine=, nous pouvons lui
-passer la liste et les spécifications (numéros de commits, ...) de canaux dans
-un fichier Scheme en utilisant l'option =--channels= ou =-C=. Voici donc à quoi
-ressemble un tel fichier décrivant la liste des canaux ci-dessus.
+passer la liste et les spécifications (numéros de /commits/, ...) de canaux dans
+un fichier en langage Scheme en utilisant l'option =--channels= ou =-C=. Voici
+donc à quoi ressemble un tel fichier décrivant la liste des canaux ci-dessus.
 
 #+begin_src scheme
 (list
@@ -313,8 +402,7 @@ ressemble un tel fichier décrivant la liste des canaux ci-dessus.
 
 Pas de panique ! Nous n'aurons pas à écrire ce fichier à la main à partir de
 zéro. Afin de produire ce fichier pour notre génération de Guix actuelle, nous
-pouvons utiliser, encore une fois, la commande =guix describe= et son option
-=-f= ainsi.
+pouvons utiliser la commande =guix describe= avec son option =-f= ainsi.
 
 #+begin_src shell
 guix describe -f channels
@@ -326,21 +414,24 @@ dans un fichier Scheme, puis l'utiliser avec =guix time-machine= comme suit.
 
 #+begin_src shell
 guix describe -f channels > channels.scm
-guix time-machine --channels=channels.scm -- ...
+guix time-machine --channels=channels.scm -- shell --container hello -- hello
 #+end_src
 
 ** Petit extra
+:PROPERTIES:
+:CUSTOM_ID: manifest
+:END:
 
-Nous retrouvons le même soucis dans le cadre de l'utilisation de la commande
-=guix shell=. Lorsque celle-ci est utilisée pour créer des environnements
-simples tels que celui dans notre exemple,
+Nous retrouvons une situation similaire dans le cadre de l'utilisation de la
+commande =guix shell=. Lorsque de la création d'environnements simples tels que
 
 #+begin_src shell
-guix shell --container mumps r r-ggplot2 -- mumps-tests
+guix shell --container gcc-toolchain mumps bash coreutils -- bash
 #+end_src
 
-il est facile de retenir et retrouver notre ligne de commande. Cependant, nous
-allons souvent être confronté à des envionnements plus complexes tel que
+il est relativement facile de retenir et de retrouver notre ligne de commande
+=guix shell=. Cependant, nous pouvons être amenés à créer des envionnements
+plus complexes comme, par exemple,
 
 #+begin_src shell
 guix shell --pure --with-input=pastix-5=pastix-5-mkl \
@@ -355,7 +446,7 @@ guix shell --pure --with-input=pastix-5=pastix-5-mkl \
 Sans entrer dans les détails, il est clair que nous pourrions mieux nous en
 sortir si nous pouvions transformer cette ligne de commande en un fichier Scheme
 comme dans le cas de l'utilisation de plusieurs canaux avec la commande =guix
-time-machine=. Eh bien, c'est possible, il suffit de rajouter à la commande
+time-machine=. Eh bien, c'est possible ! Il suffit de rajouter à la commande
 ci-dessus l'option =--export-manifest= pour obtenir la sortie suivante.
 
 #+begin_src scheme
@@ -395,29 +486,49 @@ guix shell ... --export-manifest > manifest.scm
 guix shell --pure --preserve=^SLURM --manifest=manifest.scm -- ...
 #+end_src
 
+Essayons donc d'en faire autant dans le cadre de notre [[#mise-en-situation]].
+
+#+begin_src shell
+guix shell --container gcc-toolchain mumps bash coreutils \
+     --export-manifest > manifest.scm
+guix shell --container --manifest=manifest.scm -- bash
+#+end_src
+
 ** Vers un environnement logiciel reproductible
+:PROPERTIES:
+:CUSTOM_ID: canaux-et-manifest
+:END:
 
-Toujours dans l'optique d'un projet où l'environnement logiciel est géré par
-Guix, nous avons besoin de deux ingrédients pour pouvoir le rendre reproductible
-dans le temps et d'une machine à l'autre :
+En résumé, pour assurer la reproductibilité de notre environnement logiciel géré
+avec Guix, nous avons besoin de deux ingrédients :
 
-1. descriptif du contenu de notre environnement (ligne de commande =guix shell=
-   ou le fichier manifest),
-2. descriptif de la génération de Guix utilisée pour le créer (liste des canaux
-   et de leurs commits)
+1. descriptif du contenu de notre environnement -- ligne de commande =guix
+   shell= ou le fichier manifest (voir [[#manifest]]),
+2. descriptif de la génération de Guix utilisée pour le créer -- le /commit/ du
+   canal oficiel de Guix ou une liste des canaux et de leurs /commits/ dans un
+   fichier Scheme (voir [[#fichier-canaux]])
 
-En pratique, nous pouvons garder deux fichiers supplémentaire dans le dépôt de
-notre projet, un fichier =channels.scm= et un fichier =manifest.scm=.
+En pratique, dans un projet sous contrôle de version (hébergé dans un dépôt
+git), nous pouvons garder deux fichiers supplémentaire, un fichier
+=channels.scm= et un fichier =manifest.scm=.
 
-Voyons cela sur des exemples pratiques.
+Voyons ça en pratique !
 
-* Démos
+* Démonstrations
+:PROPERTIES:
+:CUSTOM_ID: demos
+:END:
 
-** Slides
+Observez les dépôts git [[https://gitlab.inria.fr/mfelsoci/rllr][Vers une étude
+expérimentale reproductible]] (A) et
+[[https://github.com/charguer/optitrust][OptiTrust]] (B).
 
-** OptiTrust (config plus avancée)
+Le dépôt A contient une présentation rédigée en Org mode et le dépôt B un
+logiciel complexe de compilation. Dans les deux dépôts, il y a un dossier
+=.guix= qui contient, entre autres, un fichier =channels.scm= et un fichier
+=manifest.scm=.
 
-* References
+* Réferences
 :PROPERTIES:
 :CUSTOM_ID: references
 :END:
