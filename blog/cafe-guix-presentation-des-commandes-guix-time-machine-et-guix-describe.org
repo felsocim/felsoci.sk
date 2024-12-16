@@ -15,6 +15,17 @@ avancée de celles-ci. Enfin, nous verrons quelques suggestions de bonnes
 pratiques d'utilisation au moyen d'une petite démonstration.
 #+END_SYNOPSIS
 
+* Café Guix
+:PROPERTIES:
+:CUSTOM_ID: cafe-guix
+:END:
+
+Le Café Guix est un évènement mensuel et informel d'échange autour du
+gestionnaire d'environnement logiciel GNU Guix [cite:@Guix]. Retrouvez plus
+d'informations, le programme des rencontres ainsi que les enregistrements et
+supports des sessions passées sur
+[[https://hpc.guix.info/events/2024/caf%C3%A9-guix/][cette page]].
+
 * Mise en situation
 :PROPERTIES:
 :CUSTOM_ID: mise-en-situation
@@ -23,12 +34,12 @@ pratiques d'utilisation au moyen d'une petite démonstration.
 Nous sommes au printemps 2022. Je suis en pleine préparation de ma thèse de
 doctorat dans le domaine du calcul haute-performance. Dans ce cadre-là, je
 travaille sur une application d'algèbre linéaire basée sur la bibliothèque MUMPS
-[cite:@MUMPS1;@MUMPS2]. Bien entendu, j'utilise Guix [cite:@Guix] pour gérer mon
+[cite:@MUMPS1;@MUMPS2]. Bien entendu, j'utilise Guix pour gérer mon
 environnement logiciel composé de la chaîne de compilation du compilateur GCC
 (paquet =gcc-toolchain=), de la bibliothèque MUMPS (paquet =mumps=) et d'un
 shell de base (paquets =bash= et =coreutils=). Pour entrer dans mon
 environnement logiciel et d'y ouvrir un shell, il me suffit de me servir de la
-commande =guix shell= comme suit.
+commande =guix shell= [cite:@GuixShellFr] comme suit.
 
 #+begin_src shell
 guix shell --container gcc-toolchain mumps bash coreutils -- bash
@@ -68,7 +79,8 @@ Rien qu'une machine à voyger dans le temps afin de pouvoir exécuter ma ligne d
 commande =guix shell= comme si nous étions de retour au printemps 2022.
 
 Pas de problème, Guix a ce qu'il me faut ! C'est là que les commandes =guix
-time-machine= et =guix describe= vont entrer en jeu.
+time-machine= [cite:@GuixTimeMachineFr] et =guix describe=
+[cite:@GuixDescribeFr] vont entrer en jeu.
 
 * Quelques rappels
 :PROPERTIES:
@@ -99,12 +111,12 @@ aboutit à la création d'une nouvelle génération de Guix pour l'utilisateur e
 question. Nous aurons encore l'occasion de revenir vers ce concept un peu plus
 tard.
 
-Revenons maintenant à la commande =guix shell= [cite:@GuixShellFr]. Lorsque nous
-faison appel à cette dernière pour créer un environnement logiciel, celle-ci va
-consulter les paquets disponibles dans notre génération de Guix actuelle et
-prendre leurs versions par défaut. La plupart du temps, la version par défaut
-est également la version la plus récente disponible dans le canal concerné. Dans
-notre exemple de la section [[#mise-en-situation]], la ligne de commande
+Revenons maintenant à la commande =guix shell=. Lorsque nous faison appel à
+cette dernière pour créer un environnement logiciel, celle-ci va consulter les
+paquets disponibles dans notre génération de Guix actuelle et prendre leurs
+versions par défaut. La plupart du temps, la version par défaut est également la
+version la plus récente disponible dans le canal concerné. Dans notre exemple de
+la section [[#mise-en-situation]], la ligne de commande
 
 #+begin_src shell
 guix shell --container gcc-toolchain mumps bash coreutils -- bash
