@@ -1,23 +1,58 @@
 #+TITLE: Research
 #+AUTHOR: Marek Felšöci
 
-At present, I'm carrying out my research activities as part of my post-doctorate
-with the [[https://www.inria.fr/en/camus][Camus]]
-([[https://www.inria.fr/en/][Inria]]) and
-[[https://icps.icube.unistra.fr/][ICPS]]
-([[https://icube.unistra.fr/en][ICube]]) teams, where I am working on the
-automatic parallelization of C/C++ source code by task insertion (see
-[[#research-post-doc][Automatic parallelization through task insertion]]).
-However, to this day, most of my research activities have taken place as part of
-my doctoral thesis at the University of Bordeaux within the
-[[https://concace.gitlabpages.inria.fr/][Concace]] team. My thesis was focused
-on the development of methods for solving large coupled FEM/BEM sparse/dense
-linear systems arising from aeroacoustic problems (see
-[[#research-thesis][Solvers for coupled FEM/BEM linear systems]]). That being
-said, I took my first steps towards computer science research during my two
-internships within the Camus and the ICPS teams, focusing on a new programming
-structure, called XFOR, and the associated software tools (see
-[[#research-xfor][XFOR programming structure]]).
+At present, I'm carrying out my research activities as part of my second
+post-doctoral fellowship within the [[https://www-pequan.lip6.fr/][PEQUAN]] team
+of ([[https://www.lip6.fr/?LANG=en][LiP6]],
+[[https://www.sorbonne-universite.fr/en][Sorbonne Université]]), where I am
+working on the transition to mixed precision computation within a numerical
+processing block of a distributed acousting sensing device (see
+[[#research-post-doc-2][Mixed precision computation in a distributed acousting
+sensing block]]). The subject of my first post-doctorate with the
+[[https://www.inria.fr/en/camus][Camus]] ([[https://www.inria.fr/en/][Inria]])
+and [[https://icps.icube.unistra.fr/][ICPS]]
+([[https://icube.unistra.fr/en][ICube]]) teams was automatic parallelization of
+C source code by task insertion (see [[#research-post-doc][Automatic
+parallelization through task insertion]]). My doctoral thesis at the University
+of Bordeaux within the [[https://concace.gitlabpages.inria.fr/][Concace]] team
+was focused on the development of methods for solving large coupled FEM/BEM
+sparse/dense linear systems arising from aeroacoustic problems (see
+[[#research-thesis][Solvers for coupled FEM/BEM linear systems]]). Finally, I
+took my first steps towards computer science research during my two internships
+within the Camus and the ICPS teams, focusing on a new programming structure,
+called XFOR, and the associated software tools (see [[#research-xfor][XFOR
+programming structure]]).
+
+* Mixed precision computation in a distributed acousting sensing block
+:PROPERTIES:
+:CUSTOM_ID: research-post-doc-2
+:END:
+
+More details coming soon.
+
+** Talks
+:PROPERTIES:
+:CUSTOM_ID: post-doc-2-talks
+:END:
+
+- *Thesis and since then: Solvers for coupled sparse/dense linear systems in*
+  *aeroacoustics and automatic task-based parallelization of C source code*
+  - [[https://www-pequan.lip6.fr/][PEQUAN team]] seminar @ LiP6 UMR 7606, Paris,
+    France, Januray 2025
+  - [[./images/pdf.png]]
+    [[https://gitlab.lip6.fr/api/v4/projects/2205/jobs/artifacts/main/raw/slides.pdf?job=build][Slides]]
+
+** Running tutorials
+:PROPERTIES:
+:CUSTOM_ID: post-doc-2-tutorials
+:END:
+
+- [[./images/fr.png]] *Guix et org mode, vers une étude scientifique*
+  *expérimentale reproductible* (upcoming)
+  - [[https://2025.compas-conference.fr/][ComPAS 2023]] conferece @ Bordeaux,
+    France, June 2025
+  - [[./images/html.png]] [[https://2025.compas-conference.fr/tutoriaux/][List
+    of scheduled tutorials]]
 
 * Automatic parallelization through task insertion
 :PROPERTIES:
@@ -31,29 +66,47 @@ resources often remains the prerogative of experts with the technical knowledge
 and time required to optimize their software. Numerous compilation studies have
 addressed this issue and proposed different approaches to automatic
 parallelization. These are traditionally oriented towards loop nest
-parallelization, based on the polyhedral model. We are interested in task-based
-parallel programming. In this model, the program is broken down into tasks
-comprising one or more instructions. Tasks are associated with dependency
-constraints to enable an execution engine to schedule and execute tasks in the
-right order, i.e. respecting any dependencies between tasks accessing the same
-data in memory. In this way, tasks that are independent of each other can be
-executed in parallel. The challenge in optimizing this approach is to find an
-efficient way of breaking down the initial program into tasks. In this context,
-we are working on a tool for the automatic parallelization of C/C++ source code,
-enabling us to analyze a sequential input program, find an efficient task-based
-parallelism model and insert tasks at the right places in the input program.
-Having implemented the preliminary analysis phases, notably the analysis of
-dependencies between different instructions in the input program, we are now
-exploring different strategies for automatically inserting tasks into the
-program.
+parallelization, based on the polyhedral model.
 
-To implement our approach, we rely on the OptiTrust source-to-source code
-transformation tool, to which we add the functionalities needed to analyze and
-transform the original program. We work closely with the authors and
-contributors of the [[https://github.com/charguer/optitrust][OptiTrust]]
-project, in particular [[http://chargueraud.org/][Arthur Chargéraud]]
+We are interested in the task-based parallel programming. In this model, the
+program is broken down into tasks comprising one or more instructions. Tasks are
+associated with dependency constraints to enable an execution engine to schedule
+and execute tasks in the right order, i.e. respecting any dependencies between
+tasks accessing the same data in memory. In this way, tasks that are independent
+of each other can be executed in parallel. The challenge in the automatization
+of this approach is to find an efficient way of breaking down the initial
+program into tasks.
+
+In this context, APAC was developed. It is an automatic translator for rewriting
+a sequential C/C++ program into a parallel task-based program using appropriate
+directives from the OpenMP programming interface. During the post-doctorate, we
+formalized APAC as a source-to-source compilation architecture built around an
+intermediate representation called the task candidate graph. In the latter, each
+vertex comprises one or more sequential source code instructions. Data
+dependencies between instructions are represented by edges connecting the
+corresponding vertices. Analyses and transformations on the graph enable us to
+identify suitable candidates to become parallelizable tasks in the resulting
+source code, and to introduce mechanisms to control the number of tasks and the
+depth of parallelism at runtime. We have also equipped APAC with a module to
+model the execution time of task candidates as a function of the value of the
+arguments of the associated instructions. The aim is to refine the selection of
+suitable candidates and condition task creation at runtime.
+
+Based on [[https://github.com/charguer/optitrust][OptiTrust]] [cite:@OptiTrust],
+a source code transformation framework, we implemented a prototype APAC capable
+of translating a sequential program written in a subset of the C language into a
+parallel program based on OpenMP tasks. During the post-doctorate, we
+contributed to the development of OptiTrust and worked closely with the authors
+and other contributors to the project, in particular
+[[http://chargueraud.org/][Arthur Chargéraud]]
 ([[https://www.inria.fr/en/][Inria]]) and Thomas Koehler
 ([[https://www.inria.fr/en/][Inria]]).
+
+A preliminary experimental study allowed us to validate the prototype and
+demonstrate the effectiveness of the programs produced on a selection of source
+codes. We then submitted a summary of our work to the
+[[https://2025.compas-conference.fr/][ComPAS 2025]] conference. We are currently
+working on finalizing an extended experimental study.
 
 ** Running tutorials
 :PROPERTIES:
@@ -87,7 +140,7 @@ project, in particular [[http://chargueraud.org/][Arthur Chargéraud]]
 - *Peer-review*
   - [[https://www.worldscientific.com/worldscinet/PPL][Parallel Processing
     Letters (PPL)]] journal, January 2024
-- *Reproducibility committee* (upcoming)
+- *Reproducibility committee*
   - [[https://sc24.supercomputing.org][International Conference for High
     Performance Computing, Networking, Storage, and Analysis (SC) 2024]] @
     Atlanta, Georgia, United States, November 2024
@@ -152,8 +205,8 @@ We then briefly presented our work in the short paper [cite:@Waves22] published
 at the Waves 2022 conference [fn:waves].
 
 Finally, the study of these algorithms carried out in a distributed memory
-environment and presented in the thesis is currently the subject of an article
-being prepared for publication.
+environment and presented in the thesis is the subject of a research report
+[cite:@RR24].
 
 The methods developed have been implemented and included in Airbus proprietary
 software based on the MUMPS, SPIDO and HMAT solvers.
@@ -222,7 +275,7 @@ Author names always appear in alphabetical order.
 
 - *Solution of larger coupled sparse/dense linear systems in an industrial*
   *aeroacoustic context*
-  - [[https://team.inria.fr/camus/][CAMUS team]] seminar @ ICube lab,
+  - [[https://team.inria.fr/camus/][CAMUS team]] seminar @ ICube UMR 7357,
     Illkirch-Graffenstaden, France, June 2022
   - [[./images/pdf.png]]
     [[https://thesis-mfelsoci.gitlabpages.inria.fr/slides/camus/camus.pdf][Slides]]

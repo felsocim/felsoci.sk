@@ -2,17 +2,15 @@
 #+AUTHOR: Marek Felšöci
 
 I am call_age(birth-date="1996-04-23 00:00:00") years old post-doctoral research
-fellow in computer science at [[https://www.inria.fr/en][French National
-Institute for Research in Computer science and Automation (Inria)]] in the
-[[https://www.inria.fr/en/camus][Camus team]] detached at
-[[https://icube.unistra.fr/en][ICube]] (within the
-[[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
-Strasbourg area, France. For couple of years, I have been passionate about
-parallel computing, program optimization and compilation. Thanks to my previous
-university studies at the [[http://en.unistra.fr/][University of Strasbourg]],
-internships at [[https://icps.icube.unistra.fr/][ICube laboratory]], my Ph.D.
-and post-doctoral research topics (see [[./research.org][Research]]) I can work
-on something I like and believe in.
+fellow in computer science at in the [[https://www-pequan.lip6.fr/][PEQUAN]]
+team of [[https://www.lip6.fr/?LANG=en][LiP6]] at
+[[https://www.sorbonne-universite.fr/en][Sorbonne Université]] in Paris, France.
+For couple of years, I have been passionate about parallel computing, program
+optimization and compilation. Thanks to my previous university studies at the
+[[http://en.unistra.fr/][University of Strasbourg]], internships at
+[[https://icps.icube.unistra.fr/][ICube laboratory]], my Ph.D. and post-doctoral
+research topics (see [[./research.org][Research]]) I can work on something I
+like and believe in.
 
 In my free time I like to work on extra projects, learn new foreign languages or
 read history and linguistics-related literature. And when I want to take a real

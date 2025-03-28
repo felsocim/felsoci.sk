@@ -12,22 +12,15 @@
 
 #+BEGIN_EXPORT html
     </span>
-    <a href="https://www.inria.fr/en" target="_blank">
-      <img src="/images/inria.png" alt="Inria"/>
-    </a>
-    <a href="https://icube.unistra.fr/en" target="_blank">
-      <img src="/images/icube.png" alt="ICube"/>
-    </a>
+    <img src="/images/employer.png" alt="Sorbonne Université, LiP6 UMR 7606"/>
 #+END_EXPORT
 
-Working on automatic source code parallelization through task insertion (see
-more in [[./research.org::#research-post-doc][Research]]) at French National
-Institute for Research in Computer science and Automation
-([[https://www.inria.fr/en/][Inria]]) in the
-[[https://www.inria.fr/en/camus][Camus team]] detached at
-[[https://icube.unistra.fr/en][ICube]] (within the
-[[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
-Strasbourg area, France.
+Working on the transition to mixed precision computation within a numerical
+processing block of a distributed acousting sensing device (see more in
+[[./research.org::#research-post-doc-2][Research]]) at
+[[https://www.sorbonne-universite.fr/en][Sorbonne Université]], in the
+[[https://www-pequan.lip6.fr/][PEQUAN]] team of the
+[[https://www.lip6.fr/?LANG=en][LiP6]] computer science lab in Paris, France.
 
 #+BEGIN_EXPORT html
     <table border="2" rules="rows" cellspacing="2">
@@ -37,8 +30,8 @@ Strasbourg area, France.
             <img class="icon" src="/images/work.png" alt="Address"/>
           </td>
           <td class="contact-right">
-            ICube UMR 7357, Office B236 <br>
-            300 boulevard Sébastien Brant, CS 10413, F-67412 Illkirch
+            Sorbonne Université - LiP6, Postal box 169, Office 26-00.326 <br>
+            4 place Jussieu, 75252 Paris Cédex 05, France
           </td>
         </tr>
         <tr>
@@ -46,7 +39,7 @@ Strasbourg area, France.
             <img class="icon" src="/images/e-mail.png" alt="E-mail"/>
           </td>
           <td class="contact-right">
-            <a href="mailto:marek.felsoci@inria.fr">marek.felsoci@inria.fr</a>
+            <a href="mailto:marek.felsoci@lip6.fr">marek.felsoci@lip6.fr</a>
           </td>
         </tr>
       </tbody>
@@ -80,15 +73,21 @@ on the design of fast solvers for coupled sparse and dense systems arising from
 numerical modelizations in high-frequency aeroacoustics (see
 [[./research.org::#research-thesis][Research]]). He defended his thesis
 [cite:@Thesis] on February 22, 2023 and was granted the Ph.D. degree in computer
-science from the University of Bordeaux, France. At the present, he works as
-post-doctoral research fellow at the French National Institute for Research in
-Computer science and Automation ([[https://www.inria.fr/en/][Inria]]), in
+science from the University of Bordeaux, France. From April 1, 2023 to November
+30, 2024 he was a post-doctoral research fellow working on automatic task-based
+parallelization at the French National Institute for Research in Computer
+science and Automation ([[https://www.inria.fr/en/][Inria]]), in
 [[https://www.inria.fr/en/camus][Camus team]] detached at
 [[https://icube.unistra.fr/en][ICube]] (within the
 [[https://icps.icube.unistra.fr/][ICPS team]]) in Illkirch-Graffenstaden,
-Strasbourg area, France. His current research interest resides in automatic
-parallelization of C/C++ source code through task insertion (see
-[[./research.org::#research-post-doc][Research]]).
+Strasbourg area, France. On December 1, 2024 he has joined the
+[[https://www-pequan.lip6.fr/][PEQUAN]] team of
+[[https://www.lip6.fr/?LANG=en][LiP6]] at
+[[https://www.sorbonne-universite.fr/en][Sorbonne Université]] in Paris, France
+for a second post-doctoral fellowship. His current research focuses on the
+transition to mixed precision computation within a numerical processing block of
+a distributed acousting sensing device (see
+[[./research.org::#research-post-doc-1][Research]]).
 
 Between 2019 and 2022, Marek Felšöci was a member of the
 [[https://afodib.labri.fr][Association de la formation doctorale d'informatique
@@ -118,9 +117,9 @@ Teaching represents a true passion for me since my very first experience. Find
 the description of all of my past and current teaching activities on the
 [[./teaching.org][Teaching]] page.
 
-* Blogging
+* Blog
 :PROPERTIES:
-:CUSTOM_ID: blogging
+:CUSTOM_ID: blog
 :END:
 
 Finally, this personal page features a [[./blog/posts.org][Blog]] too. I would
@@ -135,5 +134,5 @@ simply like to exchange on one of the subjects!
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ./shared/biblio-setup.org
+#+BIBLIOGRAPHY: ./references.bib
 #+PRINT_BIBLIOGRAPHY:

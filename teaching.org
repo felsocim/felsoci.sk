@@ -23,6 +23,10 @@ hours of tutorials [fn:td] and 24 hours of labs [fn:tp]. As part of my
 activities, I also took part in the preparation of the exam subjects and the
 project.
 
+The notebook of the second lab is
+[[https://mfelsoci.gitlab.io/td-compilation/TP2/demo.html][available online]]
+[[./images/fr.png]].
+
 [fn:td] referred to as /travaux dirigés/ in French
 [fn:tp] referred to as /travaux pratiques/ in French
 
@@ -100,7 +104,7 @@ most of the lectures of the second semester had to be done remotely.
 Nevertheless, it was a very valuable experience!
 
 The teaching materials, exercices, exam and project assignments are
-[[https://mfelsoci.gitlabpages.inria.fr/lectures/][available online]]
+[[https://mfelsoci.gitlab.io/cours-c-saintonge/][available online]]
 [[./images/fr.png]].
 
 [fn:bts] referred to as /Brevet de technicien supérieur/ or BTS in French
