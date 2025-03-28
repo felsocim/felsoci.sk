@@ -242,5 +242,5 @@ tarball containing the entire example project at the end.
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ../shared/biblio-setup.org
+#+BIBLIOGRAPHY: ../references.bib
 #+PRINT_BIBLIOGRAPHY:

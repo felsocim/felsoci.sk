@@ -212,7 +212,7 @@ Wave Propagation
 
 Author names always appear in alphabetical order.
 
-#+INCLUDE: ./shared/biblio-setup.org
+#+BIBLIOGRAPHY: ./references.bib
 #+PRINT_BIBLIOGRAPHY: :keyword "OrgMe" :notkeyword "Xfor"
 
 ** Talks

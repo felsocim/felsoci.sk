@@ -34,7 +34,6 @@ The file structure of the project is described below.
 ├── blog
 │   ├── creating-website-and-blogging-in-org-mode.org
 │   ├── attachments
-│   ├── biblio-setup.org (symbolic link to '../shared/biblio-setup.org')
 │   └── ...
 ├── images
 │   ├── marek.jpg
@@ -45,7 +44,6 @@ The file structure of the project is described below.
 │   ├── custom.css
 │   └── htmlize.css
 ├── shared
-│   ├── biblio-setup.org
 │   ├── footer.html
 │   └── header.html
 ├── about.org
@@ -66,12 +64,11 @@ used to store the exported website (see more in
 [[#general-configuration][General configuration]]). The custom CSS sheets reside
 in ~styles~ where ~htmlize.css~ stylizes syntax highlighting in source code
 blocks and ~custom.css~ defines the look and feel of all the other elements of
-the website. ~shared~ holds the common static header and footer files as well as
-an Org setup file providing some common document configuration, e.g. for
-bibliography. The Org documents corresponding to the content pages are stored in
-the root of the project's folder as well as the global LaTeX bibliography file
-~references.bib~ for the entire website. Finally, the Emacs Lisp script
-~publish.el~ controls the publishing of the website.
+the website. ~shared~ holds the common static header and footer files. The Org
+documents corresponding to the content pages are stored in the root of the
+project's folder as well as the global LaTeX bibliography file ~references.bib~
+for the entire website. Finally, the Emacs Lisp script ~publish.el~ controls the
+publishing of the website.
 
 ** Software environment
 :PROPERTIES:
@@ -132,45 +129,6 @@ directly in HTML format and reside in the ~shared~ folder.
 
 The header contains the site name and the navigation. The footer contains the
 legal information, the bottom navigation menu and a short information section.
-
-** Setup file
-:PROPERTIES:
-:CUSTOM_ID: setup-file
-:header-args: :tangle ../shared/biblio-setup.org
-:END:
-
-I put global bibliography configuration into a dedicated Org file stored in the
-~shared~ folder. This file can then be included in Org documents featuring
-citations and a bibliography listing.
-
-~biblio-setup.org~ is quiet short. I only need to provide the path to
-the file containing bibliography entries
-
-#+BEGIN_SRC org
-#+BIBLIOGRAPHY: references.bib
-#+END_SRC
-
-and specify the export processor to use, i.e. =csl= [cite:@Csl] in this case.
-The second argument of =#+CITE_EXPORT= is the style file [cite:@CslStyles] to
-use when formatting citations and bibliography listings on export.
-Unfortunately, the absolute path must be given here.
-
-#+BEGIN_SRC org
-#+CITE_EXPORT: csl ~/src/felsoci.sk/styles/ieee-with-url.csl
-#+END_SRC
-
-Finally, to include a bibliography listing in an Org document I use the
-=#+PRINT_BIBLIOGRAPHY:= directive within an associated *References* section.
-
-#+BEGIN_EXAMPLE
-,* References
-:PROPERTIES:
-:CUSTOM_ID: references
-:END:
-
-#+INCLUDE: ../shared/biblio-setup.org
-#+PRINT_BIBLIOGRAPHY:
-#+END_EXAMPLE
 
 * Publishing script
 :PROPERTIES:
@@ -686,22 +644,20 @@ replace the original footnote export template as suggested
 </div>")
 #+END_SRC
 
-Finally, I define a utility function allowing me to change the output folder
-through an environment variable, namely =ORG_OUTPUT_PATH=. This way, I can
-switch between my local Apache server for testing and the production server
-easily. If the variable is not set in the current environment, the output will
-be published into the ~public~ folder located in the root of the project.
-
-Note that, the optional =suffix= argument specifies the local path starting from
-the root of the output folder.
+Most of the Org documents constituting this site cite one or more bibliography
+entries. These documents then contain a /References/ section providing the list
+of the bibliography entires. To specify the path to the bibliography file to
+consider, I use the =#+BIBLIOGRAPHY:= directive. Then, to export the contents of
+the section, I use the =#+PRINT_BIBLIOGRAPHY:= directive. For typesetting the
+bibliography in HTML, I opt for the =csl= [cite:@Csl] citation processor. The
+latter allows me to customize the appearance of citations and the bibliography
+listings using a style file [cite:@CslStyles]. The following configuration tells
+Org to use =csl=, but also where to look for style files which one to rely on.
 
 #+BEGIN_SRC elisp
-(defun get-output-path (&optional suffix)
-  (let
-      ((custom (getenv "ORG_OUTPUT_PATH")))
-    (if custom
-        (concat custom "/" suffix)
-      (concat "./public/" suffix))))
+(setq org-cite-csl-styles-dir "/home/marek/src/github.com/felsoci.sk/styles")
+(setq org-cite-export-processors
+      '((t . (csl "ieee-with-url.csl"))))
 #+END_SRC
 
 ** Project components
@@ -731,7 +687,7 @@ All of the configuration properties are pretty self-explanatory.
        (list "blog"
              :base-directory "./blog"
              :base-extension "org"
-             :publishing-directory (get-output-path "blog")
+             :publishing-directory "./public/blog"
              :htmllized-source t
              :with-author t
              :with-creator t
@@ -794,7 +750,7 @@ very close to the previous one
         (list "pages"
               :base-directory "."
               :base-extension "org"
-              :publishing-directory (get-output-path)
+              :publishing-directory "./public/"
               :publishing-function '(org-html-publish-to-html)
               :htmllized-source t
               :with-author t
@@ -839,18 +795,18 @@ the ~styles~ folder, I enable recursive lookup in order to include also the
               :base-directory "./styles"
               :base-extension ".*"
               :recursive t
-              :publishing-directory (get-output-path "styles")
+              :publishing-directory "./public/styles"
               :publishing-function '(org-publish-attachment))
         (list "images"
               :base-directory "./images"
               :base-extension ".*"
-              :publishing-directory (get-output-path "images")
+              :publishing-directory "./public/images"
               :publishing-function '(org-publish-attachment))
         (list "attachments"
               :base-directory "./blog/attachments"
               :base-extension ".*"
               :recursive t
-              :publishing-directory (get-output-path "blog/attachments")
+              :publishing-directory "./public/blog/attachments"
               :publishing-function '(org-publish-attachment))
 #+END_SRC
 
@@ -871,14 +827,14 @@ At this point, I am ready to go. To launch the publishing I need to:
 
 1. extract the source code from the Org document corresponding to this page,
    #+BEGIN_SRC shell
-guix time-machine -C .guix/channels.scm -- shell --pure \
-     -m .guix/manifest.scm -- emacs --batch -l org --eval \
+guix time-machine -C .guix/channels.scm -- shell --container \
+     git emacs emacs-org -- emacs --batch -l org --eval \
 '(org-babel-tangle-file "blog/creating-websites-and-blogging-in-org-mode.org")'
    #+END_SRC
 
 2. call the publishing function on the ~publish.el~ file.
    #+BEGIN_SRC shell
-guix time-machine -C .guix/channels.scm -- shell --pure \
+guix time-machine -C .guix/channels.scm -- shell --container \
      -m .guix/manifest.scm -- emacs --batch --no-init-file \
      --eval '(setq org-confirm-babel-evaluate nil)' --load publish.el \
      --funcall org-publish-all
@@ -900,5 +856,5 @@ lot while building my own publishing configuration!
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ../shared/biblio-setup.org
+#+BIBLIOGRAPHY: ../references.bib
 #+PRINT_BIBLIOGRAPHY:

@@ -63,5 +63,5 @@ Finally, restart your computer!
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ../shared/biblio-setup.org
+#+BIBLIOGRAPHY: ../references.bib
 #+PRINT_BIBLIOGRAPHY:

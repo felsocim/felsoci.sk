@@ -172,5 +172,5 @@ computer for the changes to take effect.
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ../shared/biblio-setup.org
+#+BIBLIOGRAPHY: ../references.bib
 #+PRINT_BIBLIOGRAPHY:

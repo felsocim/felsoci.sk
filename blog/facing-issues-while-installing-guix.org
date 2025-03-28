@@ -178,5 +178,5 @@ as I use only one system. Although, [cite:@GrubEFIReinstall] may be helpful.
 :CUSTOM_ID: references
 :END:
 
-#+INCLUDE: ../shared/biblio-setup.org
+#+BIBLIOGRAPHY: ../references.bib
 #+PRINT_BIBLIOGRAPHY:
